@@ -4,6 +4,7 @@ from dash import html
 from dash.dependencies import Output, Input, State
 import plotly.graph_objects as go
 from page_layout import *
+from pyquaternion import Quaternion
 
 from style_settings import EXTERNAL_STYLESHEETS, GLOBAL_PAGE_STYLE
 from plotter import MachinePlotter
@@ -21,10 +22,14 @@ DROPDOWN_ID = "select-date"
 MESSAGE_SECTION_ID = "message-kinematics"
 PARAMETERS_SECTION_ID = "parameters-kinematics"
 
+quat_widgets = ["quat_w", "quat_x", "quat_y", "quat_z"]
+
 app.layout = html.Div([
       html.H1("3D Charts", style={"textAlign": "center"}),
       html.Div([dcc.Dropdown(id=DROPDOWN_ID, options=[{'label': i, 'value': i} for i in my_dates], value="2018-02-06")], className="six columns", style={"width": "40%", "margin-left": "auto", "margin-right": "auto", "display": "block"}),
-      get_page_layout(GRAPH_ID, MESSAGE_SECTION_ID)
+      get_page_layout(GRAPH_ID, MESSAGE_SECTION_ID),
+      html.Div([html.Label(dcc.Markdown(f"** QUATERNIONS **")), html.Div([make_number_widget(val, 0, _min=-1, _max=1, _input_resolution=0.1) for val in quat_widgets]+[html.Button('Apply', id='quat-apply'), html.Div(id='output-container-button',children='Enter a value and press submit')], style={"display": "flex", "flex-direction": "column"}), html.Br()])
+      
     ],className="container",
     style=GLOBAL_PAGE_STYLE)
 
@@ -41,13 +46,21 @@ app.layout = html.Div([
 #     html.Div([dcc.Graph(id=GRAPH_ID, figure=BASE_FIGURE)], className="row")
 # ], className="container")
 
+
+@app.callback(
+    Output('output-container-button', 'children'),
+    [[Input(quat_id, 'value') for quat_id in quat_widgets]],
+    [[State(quat_id, 'value') for quat_id in quat_widgets]])
+def update_output(quat_input, quat_state):
+    return f"The input value was {quat_input}, {quat_state}"
+
 @app.callback(
     Output(GRAPH_ID, 'figure'),
-    [Input(DROPDOWN_ID, 'value')],
-    State(GRAPH_ID, "figure"))
-def update_graph(dropdown_value, figure):
-  BASE_PLOTTER.update(figure)
-  print("Updating figure")
+    Input('output-container-button', 'children'),
+    [State(GRAPH_ID, "figure"), [State(quat_id, 'value') for quat_id in quat_widgets]])
+def update_graph(dropdown_value, figure, quaternion_values):
+  BASE_PLOTTER.update(figure, quaternion_values)
+  print(f"Updating figure: {quaternion_values}")
   return figure
     # global df_sliced
 
@@ -69,4 +82,4 @@ def update_graph(dropdown_value, figure):
     # return {"data": trace2, "layout": layout2}
 
 if __name__ == '__main__':
-  app.run_server(debug=True)
+  app.run_server(debug=True, port=8051)

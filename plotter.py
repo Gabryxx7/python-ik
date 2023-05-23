@@ -4,6 +4,7 @@
 # it takes in a machine model, and the figure to update
 # you can also update the camera view with it by passing a camera dictionary
 # ********************
+from pyquaternion import Quaternion
 
 class Point():
   def __init__(self, x, y, z):
@@ -16,9 +17,9 @@ class MachinePlotter:
       pass
 
   @staticmethod
-  def update(fig, machine=None):
-      MachinePlotter._draw_machine(fig)
-    #   MachinePlotter._draw_scene(fig, machine)
+  def update(fig, quaternion=None):
+      MachinePlotter._draw_machine(fig, quaternion)
+      MachinePlotter._draw_scene(fig, quaternion)
 
   @staticmethod
   def change_camera_view(fig, camera):
@@ -28,8 +29,12 @@ class MachinePlotter:
       fig["layout"]["scene"]["camera"] = camera
 
   @staticmethod
-  def _draw_machine(fig, machine=None):
-      # # Body
+  def _draw_machine(fig, quaternion=None):
+    body_idx = 0
+    legs_idx = [4,5,6,7,8,9]
+    quaternion[0] = 1.0 # setting w to 1
+    q = Quaternion(quaternion)
+    # # Body
     #   points = machine.body.vertices + [machine.body.vertices[0]]
     #   points = []
     #   points.append(Point(0,0,0))
@@ -41,10 +46,18 @@ class MachinePlotter:
     #   fig["data"][0]["z"] = [point.z for point in points]
 
     # Body Outline
-    fig["data"][1]["x"] = fig["data"][0]["x"]
-    fig["data"][1]["y"] = fig["data"][0]["y"]
-    fig["data"][1]["z"] = fig["data"][0]["z"]
-    print("Drawing")
+    # points_xyz = [p for p in zip(fig["data"][body_idx]["x"], fig["data"][body_idx]["y"], fig["data"][body_idx]["z"])]
+    # print(points_xyz)
+    # print(points_xyz)
+    axes = ["x", "y", "z"]
+    for data_idx in range(0, len(fig["data"])):
+        points_xyz = [p for p in zip(fig["data"][data_idx]["x"], fig["data"][data_idx]["y"], fig["data"][data_idx]["z"])]
+        print(f"PRE: {points_xyz}")
+        points_xyz = [q.rotate(p) for p in points_xyz]
+        print(f"POST: {points_xyz}\n")
+        for i in range(0, 3):
+            axis = axes[i]
+            fig["data"][data_idx][axis] = [p[i] for p in points_xyz]
 
     #   fig["data"][2]["x"] = [machine.body.cog.x]
     #   fig["data"][2]["y"] = [machine.body.cog.y]
@@ -54,11 +67,17 @@ class MachinePlotter:
     #   fig["data"][3]["y"] = [machine.body.head.y]
     #   fig["data"][3]["z"] = [machine.body.head.z]
 
-    #   for n, leg in zip(range(4, 10), machine.legs):
-    #       points = leg.all_points
-    #       fig["data"][n]["x"] = [point.x for point in points]
-    #       fig["data"][n]["y"] = [point.y for point in points]
-    #       fig["data"][n]["z"] = [point.z for point in points]
+    # for idx in legs_idx:
+    #     fig["data"][idx]["x"] = [point.x for point in points]
+    #     fig["data"][idx]["y"] = [point.y for point in points]
+    #     fig["data"][idx]["z"] = [point.z for point in points]
+        # print("Drawing")
+        
+    # for n, leg in zip(range(4, 10), machine.legs):
+    #     points = leg.all_points
+    #     fig["data"][n]["x"] = [point.x for point in points]
+    #     fig["data"][n]["y"] = [point.y for point in points]
+    #     fig["data"][n]["z"] = [point.z for point in points]
 
     # Machine Support Polygon
     # Draw a mesh for body contact on ground
@@ -72,7 +91,7 @@ class MachinePlotter:
   def _draw_scene(fig, machine=None):
     # Change range of view for all axes
     #   RANGE = machine.sum_of_dimensions()
-    RANGE =  100
+    RANGE =  400
     AXIS_RANGE = [-RANGE, RANGE]
 
     z_start = -10

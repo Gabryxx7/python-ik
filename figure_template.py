@@ -226,30 +226,52 @@ data = [
 
 data_cropped = [
     {
-        "name": "body mesh",
-        "showlegend": True,
-        "type": "mesh3d",
-        "opacity": BODY_MESH_OPACITY,
-        "color": BODY_MESH_COLOR,
-        "uid": "1f821e07-2c02-4a64-8ce3-61ecfe2a91b6",
-        "x": [100.0, 100.0, -100.0, -100.0, -100.0, 100.0, 100.0],
-        "y": [0.0, 100.0, 100.0, 0.0, -100.0, -100.0, 0.0],
-        "z": [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0],
+      "name": "body mesh",
+      "showlegend": True,
+      "type": "mesh3d",
+      "opacity": BODY_MESH_OPACITY,
+      "color": BODY_MESH_COLOR,
+      "uid": "1f821e07-2c02-4a64-8ce3-61ecfe2a91b6",
+      "x": [100.0, 100.0, -100.0, -100.0, -100.0, 100.0, 100.0],
+      "y": [0.0, 100.0, 100.0, 0.0, -100.0, -100.0, 0.0],
+      "z": [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0],
     },
     {
-        "line": {"color": BODY_COLOR, "opacity": 1.0, "width": BODY_OUTLINE_WIDTH},
-        "name": "body",
-        "showlegend": True,
-        "type": "scatter3d",
-        "uid": "1f821e07-2c02-4a64-8ce3-61ecfe2a91b6",
-        "x": [100.0, 100.0, -100.0, -100.0, -100.0, 100.0, 100.0],
-        "y": [0.0, 100.0, 100.0, 0.0, -100.0, -100.0, 0.0],
-        "z": [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0],
+      "line": {"color": BODY_COLOR, "opacity": 1.0, "width": BODY_OUTLINE_WIDTH},
+      "name": "body",
+      "showlegend": True,
+      "type": "scatter3d",
+      "uid": "1f821e07-2c02-4a64-8ce3-61ecfe2a91b6",
+      "x": [100.0, 100.0, -100.0, -100.0, -100.0, 100.0, 100.0],
+      "y": [0.0, 100.0, 100.0, 0.0, -100.0, -100.0, 0.0],
+      "z": [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0],
+    },
+    {
+      "line": {"color": BODY_COLOR, "opacity": 1.0, "width": BODY_OUTLINE_WIDTH},
+      "name": "Leg 1",
+      "showlegend": True,
+      "type": "scatter3d",
+      "uid": "f217db57-fe6e-4b40-90f8-4e1c20ef595e",
+      "x": [100.0, 100.0],
+      "y": [0, 0.0],
+      "z": [0.0, 100.0],
+      "legendgroup": "Leg 1" 
+    },
+    {
+      "line": {"color": BODY_COLOR, "opacity": 1.0, "width": BODY_OUTLINE_WIDTH},
+      "name": "Leg_1_arm",
+      "showlegend": False,
+      "type": "scatter3d",
+      "uid": "f217db57-fe6e-4b40-90f8-4e1c20ef595e",
+      "x": [100.0, 50.0],
+      "y": [0, 0],
+      "z": [50.0, 100.0],
+      "legendgroup": "Leg 1" 
     }
 ]
 
 HEXAPOD_FIGURE = {
-    "data": data,
+    "data": data_cropped,
     "layout": {
         "paper_bgcolor": PAPER_BG_COLOR,
         "hovermode": "closest",
