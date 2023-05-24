@@ -2,6 +2,9 @@
   font-family: 'Fira Code';
 }
 
+.tab-content{
+  width: 100%;
+}
 /* If you want to apply it to everything except certain classes element/component types, e.g. "everything except h2 and class myclass" */
 /* *:not(h2):not(.myclass){
   font-family: Garamond;

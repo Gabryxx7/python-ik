@@ -1,24 +1,8 @@
-"""
-This is a minimal example of changing themes with the ThemeSwitchAIO component
-Note - this requires dash-bootstrap-components>=1.0.0 and dash>=2.0
-    pip install dash-bootstrap-templates=1.0.0.
-
-The ThemeSwitchAIO component updates the Plotly default figure template when the
-theme changes, but the figures must be updated in a callback in order to render with the new template.
-
-This example demos:
- - how to update the figure for the new theme in a callback
- - using the dbc class which helps improve the style when the themes are switched. See the dbc.css file in the dash-bootstrap-templates library.
-
-"""
-
 from dash import Dash, dcc, html, dash_table, Input, Output, callback
+import dash_bootstrap_components as dbc
+import dash_mantine_components as dmc
 import pandas as pd
 import plotly.express as px
-import dash_bootstrap_components as dbc
-from dash_bootstrap_templates import ThemeSwitchAIO, ThemeChangerAIO, template_from_url
-import components.root as root
-import dash_mantine_components as dmc
 from components.cheatsheets_tab import cheatsheet
 
 
@@ -26,7 +10,6 @@ df = px.data.gapminder()
 years = df.year.unique()
 continents = df.continent.unique()
 
-app = Dash(__name__, external_stylesheets=root.external_css)
 
 df = pd.DataFrame(
     {
@@ -67,6 +50,9 @@ table = html.Div(
     ),
     className="dbc-row-selectable",
 )
+
+
+graph = html.Div(dcc.Graph(id="graph"), className="m-4")
 
 dropdown = html.Div(
     [
@@ -122,15 +108,13 @@ theme_colors = [
     "dark",
     "link",
 ]
-colors = html.Div(
-    [dbc.Button(f"{color}", color=f"{color}", size="sm") for color in theme_colors]
-)
-colors = html.Div(["Theme Colors:", colors], className="mt-2")
+colors = html.Div(["Theme Colors:", [dbc.Button(f"{color}", color=f"{color}", size="sm") for color in theme_colors]], className="mt-2")
 
 controls = dbc.Card(
     [dropdown, checklist, slider],
     body=True,
 )
+
 
 
 tab1 = dbc.Tab([dcc.Graph(id="line-chart")], label="Line Chart")
@@ -139,45 +123,8 @@ tab3 = dbc.Tab([table], label="Table", className="p-4")
 tab4 = dbc.Tab([cheatsheet], label="Cheatsheet")
 tabs = dbc.Card(dbc.Tabs([tab1, tab2, tab3, tab4]))
 
-graph = html.Div(dcc.Graph(id="graph"), className="m-4")
 
-"""
-===============================================================================
-Layout
-"""
-app.layout = dmc.MantineProvider(
-    inherit=True,
-    children=[
-        dbc.Container([
-                root.Navbar,
-                dbc.Row(
-                    [
-                        root.header,
-                        dbc.Col([controls], width=4),
-                        dbc.Col(
-                            [
-                                tabs,
-                                colors,
-                                buttons,
-                                graph,
-                            ],
-                            width=8
-                        )
-                    ],
-                style={'position': 'relative'}),
-            ],
-            className="dbc d-flex",
-            style={'padding-left': '0'},
-            fluid=True,
-        )
-    ])
-
-
-@app.callback(Output("graph", "figure"), root.switcher_input)
-def update_graph_theme(toggle):
-    template = root.themes_templates[0] if toggle else root.themes_templates[1]
-    return px.bar(df, x="Fruit", y="Amount", color="City", barmode="group", template=template)
-
-if __name__ == "__main__":
-    # Run app and display result inline in the notebook
-    app.run_server(debug=True, port=8051)
+# @app.callback(Output("graph", "figure"), root.switcher_input)
+# def update_graph_theme(toggle):
+#     template = root.themes_templates[0] if toggle else root.themes_templates[1]
+#     return px.bar(df, x="Fruit", y="Amount", color="City", barmode="group", template=template)

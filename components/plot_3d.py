@@ -1,10 +1,13 @@
-# ********************
-# This module updates the figure dictionary
-# that plotly uses to draw the 3d graph
-# it takes in a machine model, and the figure to update
-# you can also update the camera view with it by passing a camera dictionary
-# ********************
+from figure_template import HEXAPOD_FIGURE
+from dash import dcc
+from dash import html
+from copy import deepcopy
+from style_settings import NUMBER_INPUT_STYLE
 from pyquaternion import Quaternion
+
+GRAPH_ID = "graph-kinematics"
+BASE_FIGURE = deepcopy(HEXAPOD_FIGURE)
+plot3d = dcc.Graph(id=GRAPH_ID, figure=BASE_FIGURE,style={'height': '100vh', 'width': '100%'})
 
 class Point():
   def __init__(self, x, y, z):
@@ -32,7 +35,7 @@ class MachinePlotter:
   def _draw_machine(fig, quaternion=None):
     body_idx = 0
     legs_idx = [4,5,6,7,8,9]
-    quaternion[0] = 1.0 # setting w to 1
+    # quaternion[0] = 1.0 # setting w to 1
     q = Quaternion(quaternion)
     # # Body
     #   points = machine.body.vertices + [machine.body.vertices[0]]
@@ -51,13 +54,16 @@ class MachinePlotter:
     # print(points_xyz)
     axes = ["x", "y", "z"]
     for data_idx in range(0, len(fig["data"])):
-        points_xyz = [p for p in zip(fig["data"][data_idx]["x"], fig["data"][data_idx]["y"], fig["data"][data_idx]["z"])]
-        print(f"PRE: {points_xyz}")
-        points_xyz = [q.rotate(p) for p in points_xyz]
-        print(f"POST: {points_xyz}\n")
         for i in range(0, 3):
-            axis = axes[i]
-            fig["data"][data_idx][axis] = [p[i] for p in points_xyz]
+          axis = axes[i]
+          fig["data"][data_idx][axis] = deepcopy(BASE_FIGURE["data"][data_idx][axis])
+        points_xyz = [p for p in zip(fig["data"][data_idx]["x"], fig["data"][data_idx]["y"], fig["data"][data_idx]["z"])]
+        # print(f"PRE: {points_xyz}")
+        points_xyz = [q.rotate(p) for p in points_xyz]
+        # print(f"POST: {points_xyz}\n")
+        for i in range(0, 3):
+          axis = axes[i]
+          fig["data"][data_idx][axis] = [p[i] for p in points_xyz]
 
     #   fig["data"][2]["x"] = [machine.body.cog.x]
     #   fig["data"][2]["y"] = [machine.body.cog.y]

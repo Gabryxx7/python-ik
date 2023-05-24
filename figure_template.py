@@ -16,262 +16,190 @@ from style_settings import (
     GROUND_COLOR,
     LEGEND_FONT_COLOR,
 )
+MARKER_SIZE = 15
 
-data = [
-    {
-        "name": "body mesh",
-        "showlegend": True,
-        "type": "mesh3d",
-        "opacity": BODY_MESH_OPACITY,
-        "color": BODY_MESH_COLOR,
-        "uid": "1f821e07-2c02-4a64-8ce3-61ecfe2a91b6",
-        "x": [100.0, 100.0, -100.0, -100.0, -100.0, 100.0, 100.0],
-        "y": [0.0, 100.0, 100.0, 0.0, -100.0, -100.0, 0.0],
-        "z": [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0],
-    },
-    {
-        "line": {"color": BODY_COLOR, "opacity": 1.0, "width": BODY_OUTLINE_WIDTH},
-        "name": "body",
-        "showlegend": True,
-        "type": "scatter3d",
-        "uid": "1f821e07-2c02-4a64-8ce3-61ecfe2a91b6",
-        "x": [100.0, 100.0, -100.0, -100.0, -100.0, 100.0, 100.0],
-        "y": [0.0, 100.0, 100.0, 0.0, -100.0, -100.0, 0.0],
-        "z": [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0],
-    },
-    {
-        "marker": {"color": COG_COLOR, "opacity": 1, "size": COG_SIZE},
-        "mode": "markers",
-        "name": "cog",
-        "type": "scatter3d",
-        "uid": "a819d0e4-ddaa-476b-b3e4-48fd766e749c",
-        "x": [0.0],
-        "y": [0.0],
-        "z": [100.0],
-    },
-    {
-        "marker": {"color": BODY_COLOR, "opacity": 1.0, "size": HEAD_SIZE},
-        "mode": "markers",
-        "name": "head",
-        "type": "scatter3d",
-        "uid": "508caa99-c538-4cb6-b022-fbbb31c2350b",
-        "x": [0.0],
-        "y": [100.0],
-        "z": [100.0],
-    },
-    {
-        "line": {"color": LEG_COLOR, "width": LEG_OUTLINE_WIDTH},
-        "name": "leg 1",
-        "showlegend": False,
-        "type": "scatter3d",
-        "uid": "f217db57-fe6e-4b40-90f8-4e1c20ef595e",
-        "x": [100.0, 200.0, 300.0, 300.0],
-        "y": [0.0, 0.0, 0.0, 0.0],
-        "z": [100.0, 100.0, 100.0, 0.0],
-    },
-    {
-        "line": {"color": LEG_COLOR, "width": LEG_OUTLINE_WIDTH},
-        "name": "leg 2",
-        "showlegend": False,
-        "type": "scatter3d",
-        "uid": "d5690122-cd54-460d-ab3e-1f910eb88f0f",
-        "x": [100.0, 170.71067811865476, 241.4213562373095, 241.4213562373095],
-        "y": [100.0, 170.71067811865476, 241.42135623730948, 241.42135623730948],
-        "z": [100.0, 100.0, 100.0, 0.0],
-    },
-    {
-        "line": {"color": LEG_COLOR, "width": LEG_OUTLINE_WIDTH},
-        "name": "leg 3",
-        "showlegend": False,
-        "type": "scatter3d",
-        "uid": "9f13f416-f2b7-4eb7-993c-1e26e2e7a908",
-        "x": [-100.0, -170.71067811865476, -241.42135623730948, -241.42135623730948],
-        "y": [100.0, 170.71067811865476, 241.4213562373095, 241.4213562373095],
-        "z": [100.0, 100.0, 100.0, 0.0],
-    },
-    {
-        "line": {"color": LEG_COLOR, "width": LEG_OUTLINE_WIDTH},
-        "name": "leg 4",
-        "showlegend": False,
-        "type": "scatter3d",
-        "uid": "0d426c49-19a4-4051-b938-81b30c962dff",
-        "x": [-100.0, -200.0, -300.0, -300.0],
-        "y": [
-            0.0,
-            1.2246467991473532e-14,
-            2.4492935982947064e-14,
-            2.4492935982947064e-14,
-        ],
-        "z": [100.0, 100.0, 100.0, 0.0],
-    },
-    {
-        "line": {"color": LEG_COLOR, "width": LEG_OUTLINE_WIDTH},
-        "name": "leg 5",
-        "showlegend": False,
-        "type": "scatter3d",
-        "uid": "5ba25594-2fb5-407e-a16f-118f12769e28",
-        "x": [-100.0, -170.71067811865476, -241.42135623730954, -241.42135623730954],
-        "y": [-100.0, -170.71067811865476, -241.42135623730948, -241.42135623730948],
-        "z": [100.0, 100.0, 100.0, 0.0],
-    },
-    {
-        "line": {"color": LEG_COLOR, "width": LEG_OUTLINE_WIDTH},
-        "name": "leg 6",
-        "showlegend": False,
-        "type": "scatter3d",
-        "uid": "fa4b5f98-7d68-4eb9-bd38-a6f8dabef8a4",
-        "x": [100.0, 170.71067811865476, 241.42135623730948, 241.42135623730948],
-        "y": [-100.0, -170.71067811865476, -241.42135623730954, -241.42135623730954],
-        "z": [100.0, 100.0, 100.0, 0.0],
-    },
-    {
-        "name": "support polygon mesh",
-        "showlegend": True,
-        "type": "mesh3d",
-        "opacity": SUPPORT_POLYGON_MESH_OPACITY,
-        "color": SUPPORT_POLYGON_MESH_COLOR,
-        "uid": "1f821e07-2c02-4a64-8ce3-61ecfe2a91b6",
-        "x": [
-            300.0,
-            241.4213562373095,
-            -241.42135623730948,
-            -300.0,
-            -241.42135623730954,
-            241.42135623730948,
-        ],
-        "y": [
-            0.0,
-            241.42135623730948,
-            241.4213562373095,
-            2.4492935982947064e-14,
-            -241.42135623730948,
-            -241.42135623730954,
-        ],
-        "z": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-    },
-    {
-        "line": {"color": "#2f3640", "width": 2},
-        "name": "hexapod x",
-        "mode": "lines",
-        "showlegend": False,
-        "opacity": 1.0,
-        "type": "scatter3d",
-        "uid": "d5690122-cd54-460d-ab3e-1f910eb88f0f",
-        "x": [0.0, 50.0],
-        "y": [0.0, 0.0],
-        "z": [100.0, 100.0],
-    },
-    {
-        "line": {"color": "#e67e22", "width": 2},
-        "name": "hexapod y",
-        "mode": "lines",
-        "showlegend": False,
-        "opacity": 1.0,
-        "type": "scatter3d",
-        "uid": "d5690122-cd54-460d-ab3e-1f910eb88f0f",
-        "x": [0.0, 0.0],
-        "y": [0.0, 50.0],
-        "z": [100.0, 100.0],
-    },
-    {
-        "line": {"color": "#0097e6", "width": 2},
-        "name": "hexapod z",
-        "mode": "lines",
-        "showlegend": False,
-        "opacity": 1.0,
-        "type": "scatter3d",
-        "uid": "d5690122-cd54-460d-ab3e-1f910eb88f0f",
-        "x": [0.0, 0.0],
-        "y": [0.0, 0.0],
-        "z": [100.0, 150.0],
-    },
-    {
-        "line": {"color": "#2f3640", "width": 2},
-        "name": "x direction",
-        "showlegend": False,
-        "mode": "lines",
-        "opacity": 1.0,
-        "type": "scatter3d",
-        "uid": "d5690122-cd54-460d-ab3e-1f910eb88f0f",
-        "x": [0, 50],
-        "y": [0, 0],
-        "z": [0, 0],
-    },
-    {
-        "line": {"color": "#e67e22", "width": 2},
-        "name": "y direction",
-        "showlegend": False,
-        "mode": "lines",
-        "opacity": 1.0,
-        "type": "scatter3d",
-        "uid": "d5690122-cd54-460d-ab3e-1f910eb88f0f",
-        "x": [0, 0],
-        "y": [0, 50],
-        "z": [0, 0],
-    },
-    {
-        "line": {"color": "#0097e6", "width": 2},
-        "name": "z direction",
-        "showlegend": False,
-        "mode": "lines",
-        "opacity": 1.0,
-        "type": "scatter3d",
-        "uid": "d5690122-cd54-460d-ab3e-1f910eb88f0f",
-        "x": [0, 0],
-        "y": [0, 0],
-        "z": [0, 50],
-    },
-]
+X_AXIS = 0
+Y_AXIS = 1
+Z_AXIS = 2
 
+model_structure = {
+  "plane": {
+    "parts": ["plane"]
+  },
+  "arm_1": {
+    "parts": ["arm_1_piston", "arm_1_arm"]
+  }
+}
 
-data_cropped = [
-    {
-      "name": "body mesh",
-      "showlegend": True,
-      "type": "mesh3d",
-      "opacity": BODY_MESH_OPACITY,
-      "color": BODY_MESH_COLOR,
-      "uid": "1f821e07-2c02-4a64-8ce3-61ecfe2a91b6",
-      "x": [100.0, 100.0, -100.0, -100.0, -100.0, 100.0, 100.0],
-      "y": [0.0, 100.0, 100.0, 0.0, -100.0, -100.0, 0.0],
-      "z": [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0],
-    },
-    {
-      "line": {"color": BODY_COLOR, "opacity": 1.0, "width": BODY_OUTLINE_WIDTH},
-      "name": "body",
-      "showlegend": True,
-      "type": "scatter3d",
-      "uid": "1f821e07-2c02-4a64-8ce3-61ecfe2a91b6",
-      "x": [100.0, 100.0, -100.0, -100.0, -100.0, 100.0, 100.0],
-      "y": [0.0, 100.0, 100.0, 0.0, -100.0, -100.0, 0.0],
-      "z": [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0],
-    },
-    {
-      "line": {"color": BODY_COLOR, "opacity": 1.0, "width": BODY_OUTLINE_WIDTH},
-      "name": "Leg 1",
-      "showlegend": True,
-      "type": "scatter3d",
-      "uid": "f217db57-fe6e-4b40-90f8-4e1c20ef595e",
-      "x": [100.0, 100.0],
-      "y": [0, 0.0],
-      "z": [0.0, 100.0],
-      "legendgroup": "Leg 1" 
-    },
-    {
-      "line": {"color": BODY_COLOR, "opacity": 1.0, "width": BODY_OUTLINE_WIDTH},
-      "name": "Leg_1_arm",
+PISTON_HEIGHT = 200.0
+PLANE_INITIAL_HEIGHT = PISTON_HEIGHT*1.5
+V1_XY = [100.0, 100.0]
+ARM1_XY = [V1_XY[0]+25, V1_XY[1]]
+V2_XY = [-100.0, 100.0]
+ARM2_XY = [V2_XY[0]-25, V2_XY[1]]
+V3_XY = [0.0, -100.0]
+ARM3_XY = [V3_XY[0], V3_XY[1]-25]
+
+models_vertices = {
+  "plane": [
+      [100.0, 100.0, PLANE_INITIAL_HEIGHT],
+      [-100.0, 100.0, PLANE_INITIAL_HEIGHT],
+      [0.0, -100.0, PLANE_INITIAL_HEIGHT],
+      [100.0, 100.0, PLANE_INITIAL_HEIGHT]
+    ],
+  "arm_1_piston": [
+      [ARM1_XY[0], ARM1_XY[1], 0.0],
+      [ARM1_XY[0], ARM1_XY[1], PISTON_HEIGHT],
+    ],
+  "arm_1_arm": [
+      [ARM1_XY[0], ARM1_XY[1], PISTON_HEIGHT*0.5],
+      [V1_XY[0], V1_XY[1], PLANE_INITIAL_HEIGHT],
+    ],
+  "arm_2_piston": [
+      [ARM2_XY[0], ARM2_XY[1], 0.0],
+      [ARM2_XY[0], ARM2_XY[1], PISTON_HEIGHT],
+    ],
+  "arm_2_arm": [
+      [ARM2_XY[0], ARM2_XY[1], PISTON_HEIGHT*0.5],
+      [V2_XY[0], V2_XY[1], PLANE_INITIAL_HEIGHT],
+    ],
+  "arm_3_piston": [
+      [ARM3_XY[0], ARM3_XY[1], 0.0],
+      [ARM3_XY[0], ARM3_XY[1], PISTON_HEIGHT],
+    ],
+  "arm_3_arm": [
+      [ARM3_XY[0], ARM3_XY[1], PISTON_HEIGHT*0.5],
+      [V3_XY[0], V3_XY[1], PLANE_INITIAL_HEIGHT],
+    ]
+}
+
+new_data = [
+  {
+    "name": "body mesh",
+    "showlegend": True,
+    "type": "mesh3d",
+    "opacity": BODY_MESH_OPACITY,
+    "color": BODY_MESH_COLOR,
+    "x": [p[X_AXIS] for p in models_vertices['plane']],
+    "y": [p[Y_AXIS] for p in models_vertices['plane']],
+    "z": [p[Z_AXIS] for p in models_vertices['plane']],
+  },
+  {
+    "line": {"color": BODY_COLOR, "opacity": 0.8, "width": BODY_OUTLINE_WIDTH},
+    "name": "body",
+    "showlegend": True,
+    "mode": "lines",
+    "type": "scatter3d",
+    "x": [p[X_AXIS] for p in models_vertices['plane']],
+    "y": [p[Y_AXIS] for p in models_vertices['plane']],
+    "z": [p[Z_AXIS] for p in models_vertices['plane']]
+  },
+  {
+    "line": {"color": LEG_COLOR, "width": LEG_OUTLINE_WIDTH*2},
+    "mode": "lines",
+    "name": "Leg 1",
+    "showlegend": False,
+    "type": "scatter3d",
+    "legendgroup": "Leg 1",
+    "x": [p[X_AXIS] for p in models_vertices['arm_1_piston']],
+    "y": [p[Y_AXIS] for p in models_vertices['arm_1_piston']],
+    "z": [p[Z_AXIS] for p in models_vertices['arm_1_piston']]
+  },
+  {
+    "line": {"color": LEG_COLOR, "opacity": 1.0, "width": LEG_OUTLINE_WIDTH},
+    "marker": {"size": MARKER_SIZE},
+    "name": "Leg_1_arm",
+    "mode": "lines+markers",
+    "showlegend": False,
+    "type": "scatter3d",
+    "legendgroup": "Leg 1",
+    "x": [p[X_AXIS] for p in models_vertices['arm_1_arm']],
+    "y": [p[Y_AXIS] for p in models_vertices['arm_1_arm']],
+    "z": [p[Z_AXIS] for p in models_vertices['arm_1_arm']]
+  },
+  {
+    "line": {"color": LEG_COLOR, "width": LEG_OUTLINE_WIDTH*2},
+    "mode": "lines",
+    "name": "Leg 2",
+    "showlegend": False,
+    "type": "scatter3d",
+    "legendgroup": "Leg 2",
+    "x": [p[X_AXIS] for p in models_vertices['arm_2_piston']],
+    "y": [p[Y_AXIS] for p in models_vertices['arm_2_piston']],
+    "z": [p[Z_AXIS] for p in models_vertices['arm_2_piston']]
+  },
+  {
+    "line": {"color": LEG_COLOR, "opacity": 1.0, "width": LEG_OUTLINE_WIDTH},
+    "marker": {"size": MARKER_SIZE},
+    "name": "Leg_2_arm",
+    "mode": "lines+markers",
+    "showlegend": False,
+    "type": "scatter3d",
+    "legendgroup": "Leg 2",
+    "x": [p[X_AXIS] for p in models_vertices['arm_2_arm']],
+    "y": [p[Y_AXIS] for p in models_vertices['arm_2_arm']],
+    "z": [p[Z_AXIS] for p in models_vertices['arm_2_arm']]
+  },
+  {
+    "line": {"color": LEG_COLOR, "width": LEG_OUTLINE_WIDTH*2},
+    "mode": "lines",
+    "name": "Leg 3",
+    "showlegend": False,
+    "type": "scatter3d",
+    "legendgroup": "Leg 3",
+    "x": [p[X_AXIS] for p in models_vertices['arm_3_piston']],
+    "y": [p[Y_AXIS] for p in models_vertices['arm_3_piston']],
+    "z": [p[Z_AXIS] for p in models_vertices['arm_3_piston']]
+  },
+  {
+    "line": {"color": LEG_COLOR, "opacity": 1.0, "width": LEG_OUTLINE_WIDTH},
+    "marker": {"size": MARKER_SIZE},
+    "name": "Leg_3_arm",
+    "mode": "lines+markers",
+    "showlegend": False,
+    "type": "scatter3d",
+    "legendgroup": "Leg 3",
+    "x": [p[X_AXIS] for p in models_vertices['arm_3_arm']],
+    "y": [p[Y_AXIS] for p in models_vertices['arm_3_arm']],
+    "z": [p[Z_AXIS] for p in models_vertices['arm_3_arm']]
+  },
+  {
+      "line": {"color": "#e64722", "width": 2},
+      "name": "x direction",
       "showlegend": False,
+      "mode": "lines",
+      "opacity": 1.0,
       "type": "scatter3d",
-      "uid": "f217db57-fe6e-4b40-90f8-4e1c20ef595e",
-      "x": [100.0, 50.0],
+      "x": [0, 200],
       "y": [0, 0],
-      "z": [50.0, 100.0],
-      "legendgroup": "Leg 1" 
-    }
+      "z": [0, 0],
+  },
+  {
+      "line": {"color": "#4de622", "width": 2},
+      "name": "y direction",
+      "showlegend": False,
+      "mode": "lines",
+      "opacity": 1.0,
+      "type": "scatter3d",
+      "x": [0, 0],
+      "y": [0, 200],
+      "z": [0, 0],
+  },
+  {
+      "line": {"color": "#2284e6", "width": 2},
+      "name": "z direction",
+      "showlegend": False,
+      "mode": "lines",
+      "opacity": 1.0,
+      "type": "scatter3d",
+      "x": [0, 0],
+      "y": [0, 0],
+      "z": [0, 200],
+  },
 ]
 
 HEXAPOD_FIGURE = {
-    "data": data_cropped,
+    "data": new_data,
     "layout": {
         "paper_bgcolor": PAPER_BG_COLOR,
         "hovermode": "closest",
