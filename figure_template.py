@@ -33,19 +33,19 @@ model_structure = {
 
 PISTON_HEIGHT = 200.0
 PLANE_INITIAL_HEIGHT = PISTON_HEIGHT*1.5
-V1_XY = [100.0, 100.0]
-ARM1_XY = [V1_XY[0]+25, V1_XY[1]]
-V2_XY = [-100.0, 100.0]
-ARM2_XY = [V2_XY[0]-25, V2_XY[1]]
-V3_XY = [0.0, -100.0]
-ARM3_XY = [V3_XY[0], V3_XY[1]-25]
+V1 = [100.0, 100.0, PLANE_INITIAL_HEIGHT]
+ARM1_XY = [V1[0]+25, V1[1]]
+V2 = [-100.0, 100.0, PLANE_INITIAL_HEIGHT]
+ARM2_XY = [V2[0]-25, V2[1]]
+V3 = [0.0, -100.0, PLANE_INITIAL_HEIGHT*0.7]
+ARM3_XY = [V3[0], V3[1]-25]
 
 models_vertices = {
   "plane": [
-      [100.0, 100.0, PLANE_INITIAL_HEIGHT],
-      [-100.0, 100.0, PLANE_INITIAL_HEIGHT],
-      [0.0, -100.0, PLANE_INITIAL_HEIGHT],
-      [100.0, 100.0, PLANE_INITIAL_HEIGHT]
+      V1,
+      V2,
+      V3,
+      V1
     ],
   "arm_1_piston": [
       [ARM1_XY[0], ARM1_XY[1], 0.0],
@@ -53,7 +53,7 @@ models_vertices = {
     ],
   "arm_1_arm": [
       [ARM1_XY[0], ARM1_XY[1], PISTON_HEIGHT*0.5],
-      [V1_XY[0], V1_XY[1], PLANE_INITIAL_HEIGHT],
+      [V1[0], V1[1], V1[2]],
     ],
   "arm_2_piston": [
       [ARM2_XY[0], ARM2_XY[1], 0.0],
@@ -61,7 +61,7 @@ models_vertices = {
     ],
   "arm_2_arm": [
       [ARM2_XY[0], ARM2_XY[1], PISTON_HEIGHT*0.5],
-      [V2_XY[0], V2_XY[1], PLANE_INITIAL_HEIGHT],
+      [V2[0], V2[1], V2[2]],
     ],
   "arm_3_piston": [
       [ARM3_XY[0], ARM3_XY[1], 0.0],
@@ -69,7 +69,7 @@ models_vertices = {
     ],
   "arm_3_arm": [
       [ARM3_XY[0], ARM3_XY[1], PISTON_HEIGHT*0.5],
-      [V3_XY[0], V3_XY[1], PLANE_INITIAL_HEIGHT],
+      [V3[0], V3[1], V3[2]],
     ]
 }
 
