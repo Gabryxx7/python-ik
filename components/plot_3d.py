@@ -1,9 +1,14 @@
-from figure_template import HEXAPOD_FIGURE
+from figure_template import HEXAPOD_FIGURE, VTest_1, VTest_2, VTest_3, models_vertices
 from dash import dcc
 from dash import html
 from copy import deepcopy
 from style_settings import NUMBER_INPUT_STYLE
 from pyquaternion import Quaternion
+from pytransform3d import rotations as pr
+from pytransform3d import transformations as pt
+from pytransform3d.transform_manager import TransformManager
+import numpy as np
+import matplotlib.pyplot as plt
 
 GRAPH_ID = "graph-kinematics"
 BASE_FIGURE = deepcopy(HEXAPOD_FIGURE)
@@ -14,6 +19,7 @@ class Point():
     self.x = x
     self.y = y
     self.z = z
+
 
 class MachinePlotter:
   def __init__(self):
@@ -36,34 +42,53 @@ class MachinePlotter:
     body_idx = 0
     legs_idx = [4,5,6,7,8,9]
     # quaternion[0] = 1.0 # setting w to 1
-    q = Quaternion(quaternion)
-    # # Body
-    #   points = machine.body.vertices + [machine.body.vertices[0]]
-    #   points = []
-    #   points.append(Point(0,0,0))
-    #   points.append(Point(0,10,0))
-    #   points.append(Point(0,10,10))
-    #   # Body Surface Mesh
-    #   fig["data"][0]["x"] = [point[] for point in points]
-    #   fig["data"][0]["y"] = [point.y for point in points]
-    #   fig["data"][0]["z"] = [point.z for point in points]
+    P1_to_P2 = pt.transform_from_pq(np.hstack((np.array(VTest_2)-np.array(VTest_1), quaternion)))
+    P2_to_P3 = pt.transform_from_pq(np.hstack((np.array(VTest_3)-np.array(VTest_2), pr.q_id))) # pr.q_id = no rotation
 
+    tm = TransformManager()
+    tm.add_transform("start", "robot", P1_to_P2)
+    tm.add_transform("robot", "end-effector", P2_to_P3)
+    # See here: https://towardsdatascience.com/the-one-stop-guide-for-transformation-matrices-cea8f609bdb1
     # Body Outline
     # points_xyz = [p for p in zip(fig["data"][body_idx]["x"], fig["data"][body_idx]["y"], fig["data"][body_idx]["z"])]
     # print(points_xyz)
     # print(points_xyz)
     axes = ["x", "y", "z"]
+    VTest1_t = np.array([VTest_1[0], VTest_1[1], VTest_1[2], 1.0])
+    VTest2_t = P1_to_P2@VTest1_t
+    VTest3_t = P2_to_P3@VTest2_t
+    final_transform = tm.get_transform("start", "end-effector")
+    VTest_final = final_transform@VTest1_t
+    # print(f"Test:{VTest1_t}")
+    # print(f"Test Transformed:{VTest_final}")
     for data_idx in range(0, len(fig["data"])):
-        for i in range(0, 3):
-          axis = axes[i]
-          fig["data"][data_idx][axis] = deepcopy(BASE_FIGURE["data"][data_idx][axis])
-        points_xyz = [p for p in zip(fig["data"][data_idx]["x"], fig["data"][data_idx]["y"], fig["data"][data_idx]["z"])]
-        # print(f"PRE: {points_xyz}")
-        points_xyz = [q.rotate(p) for p in points_xyz]
-        # print(f"POST: {points_xyz}\n")
-        for i in range(0, 3):
-          axis = axes[i]
-          fig["data"][data_idx][axis] = [p[i] for p in points_xyz]
+        name = fig['data'][data_idx]['name'].lower()
+        if "test" in name:
+          if "ee" in name:
+            fig['data'][data_idx]['x'] = [VTest_final[0]]
+            fig['data'][data_idx]['y'] = [VTest_final[1]]
+            fig['data'][data_idx]['z'] = [VTest_final[2]]
+          if "piston" in name:
+            arm_test_piston_transformed = [VTest1_t, VTest2_t]
+            fig['data'][data_idx]['x'] = [p[0] for p in arm_test_piston_transformed]
+            fig['data'][data_idx]['y'] = [p[1] for p in arm_test_piston_transformed]
+            fig['data'][data_idx]['z'] = [p[2] for p in arm_test_piston_transformed]
+          if "arm" in name:
+            arm_test_arm_transformed = [VTest2_t, VTest3_t]
+            fig['data'][data_idx]['x'] = [p[0] for p in arm_test_arm_transformed]
+            fig['data'][data_idx]['y'] = [p[1] for p in arm_test_arm_transformed]
+            fig['data'][data_idx]['z'] = [p[2] for p in arm_test_arm_transformed]
+          continue
+        # for i in range(0, 3):
+        #   axis = axes[i]
+        #   fig["data"][data_idx][axis] = deepcopy(BASE_FIGURE["data"][data_idx][axis])
+        # points_xyz = [p for p in zip(fig["data"][data_idx]["x"], fig["data"][data_idx]["y"], fig["data"][data_idx]["z"])]
+        # # print(f"PRE: {points_xyz}")
+        # points_xyz = [q.rotate(p) for p in points_xyz]
+        # # print(f"POST: {points_xyz}\n")
+        # for i in range(0, 3):
+        #   axis = axes[i]
+        #   fig["data"][data_idx][axis] = [p[i] for p in points_xyz]
 
     #   fig["data"][2]["x"] = [machine.body.cog.x]
     #   fig["data"][2]["y"] = [machine.body.cog.y]
@@ -97,7 +122,7 @@ class MachinePlotter:
   def _draw_scene(fig, machine=None):
     # Change range of view for all axes
     #   RANGE = machine.sum_of_dimensions()
-    RANGE =  400
+    RANGE = 700
     AXIS_RANGE = [-RANGE, RANGE]
 
     z_start = -10

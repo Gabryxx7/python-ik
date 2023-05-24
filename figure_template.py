@@ -40,6 +40,11 @@ ARM2_XY = [V2[0]-25, V2[1]]
 V3 = [0.0, -100.0, PLANE_INITIAL_HEIGHT*0.7]
 ARM3_XY = [V3[0], V3[1]-25]
 
+
+VTest_1 = [0.0, 0.0, 50]
+VTest_2 = [VTest_1[0], VTest_1[1]+50, VTest_1[2]+50]
+VTest_3 = [VTest_2[0]+50, VTest_2[1]+50, VTest_2[2]+150]
+
 models_vertices = {
   "plane": [
       V1,
@@ -70,6 +75,14 @@ models_vertices = {
   "arm_3_arm": [
       [ARM3_XY[0], ARM3_XY[1], PISTON_HEIGHT*0.5],
       [V3[0], V3[1], V3[2]],
+    ],
+  "arm_test_piston": [
+      [VTest_1[0], VTest_1[1], VTest_1[2]],
+      [VTest_2[0], VTest_2[1], VTest_2[2]],
+    ],
+  "arm_test_arm": [
+      [VTest_2[0], VTest_2[1], VTest_2[2]],
+      [VTest_3[0], VTest_3[1], VTest_3[2]]
     ]
 }
 
@@ -162,6 +175,41 @@ new_data = [
     "x": [p[X_AXIS] for p in models_vertices['arm_3_arm']],
     "y": [p[Y_AXIS] for p in models_vertices['arm_3_arm']],
     "z": [p[Z_AXIS] for p in models_vertices['arm_3_arm']]
+  },
+  {
+    "line": {"color": "#2284e6", "width": LEG_OUTLINE_WIDTH},
+    "mode": "lines",
+    "name": "Leg_Test_Piston",
+    "showlegend": False,
+    "type": "scatter3d",
+    "legendgroup": "Leg Test",
+    "x": [p[X_AXIS] for p in models_vertices['arm_test_piston']],
+    "y": [p[Y_AXIS] for p in models_vertices['arm_test_piston']],
+    "z": [p[Z_AXIS] for p in models_vertices['arm_test_piston']]
+  },
+  {
+    "line": {"color": "#2284e6", "opacity": 1.0, "width": LEG_OUTLINE_WIDTH},
+    "marker": {"size": MARKER_SIZE},
+    "name": "Leg_Test_Arm",
+    "mode": "lines+markers",
+    "showlegend": False,
+    "type": "scatter3d",
+    "legendgroup": "Leg Test",
+    "x": [p[X_AXIS] for p in models_vertices['arm_test_arm']],
+    "y": [p[Y_AXIS] for p in models_vertices['arm_test_arm']],
+    "z": [p[Z_AXIS] for p in models_vertices['arm_test_arm']]
+  },
+  {
+    "line": {"color": "#ffffff", "opacity": 1.0, "width": LEG_OUTLINE_WIDTH},
+    "marker": {"size": MARKER_SIZE},
+    "name": "Leg_EE_Test",
+    "mode": "lines+markers",
+    "showlegend": False,
+    "type": "scatter3d",
+    "legendgroup": "Leg Test",
+    "x": [],
+    "y": [],
+    "z": []
   },
   {
       "line": {"color": "#e64722", "width": 2},
