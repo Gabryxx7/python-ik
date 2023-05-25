@@ -9,9 +9,11 @@ from pytransform3d import transformations as pt
 from pytransform3d.transform_manager import TransformManager
 import numpy as np
 import matplotlib.pyplot as plt
+import json
 
 GRAPH_ID = "graph-kinematics"
-BASE_FIGURE = deepcopy(HEXAPOD_FIGURE)
+# BASE_FIGURE = deepcopy(HEXAPOD_FIGURE)
+BASE_FIGURE = HEXAPOD_FIGURE
 plot3d = dcc.Graph(id=GRAPH_ID, figure=BASE_FIGURE,style={'height': '100vh', 'width': '100%'})
 
 class Point():
@@ -27,15 +29,28 @@ class MachinePlotter:
 
   @staticmethod
   def update(fig, quaternion=None):
-      MachinePlotter._draw_machine(fig, quaternion)
-      MachinePlotter._draw_scene(fig, quaternion)
-
+      # MachinePlotter._draw_arm(fig, arm)
+      # MachinePlotter._draw_machine(fig, quaternion)
+      # MachinePlotter._draw_scene(fig, quaternion)
+      return
+  
   @staticmethod
-  def change_camera_view(fig, camera):
+  def _draw_arm(fig, arm):
+    fig['data'] = arm.draw(fig['data'])
+    # with open("data_debug2.json", "w") as f:
+    #   json.dump(fig, f)
+    MachinePlotter._draw_scene(fig)
+    # fig["layout"]["scene"]["camera"] = camera
+      
+  @staticmethod
+  def change_camera_view(fig, relayout_data):
+    if relayout_data and "scene.camera" in relayout_data:
+        camera = relayout_data["scene.camera"]
+        fig["layout"]["scene"]["camera"] = camera
       # camera = { 'up': {'x': 0, 'y': 0, 'z': 0},
       #        'center': {'x': 0, 'y': 0, 'z': 0},
       #           'eye': {'x': 0, 'y': 0, 'z': 0)}}
-      fig["layout"]["scene"]["camera"] = camera
+      # fig["layout"]["scene"]["camera"] = camera
 
   @staticmethod
   def _draw_machine(fig, quaternion=None):

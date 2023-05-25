@@ -23,15 +23,15 @@ if DARKMODE:
 
 quat_widgets = ["w", "x", "y", "z"]
 
-def make_number_widget(_name, _value, _min=0, _max=200, _input_resolution=1, _label=None, _type="slider"):
+def make_number_widget(_slider_id, _name, _value, _min=0, _max=200, _input_resolution=1, _label=None, _type="slider"):
   _label = _name if _label is None else _label
   if _type == "slider":
-    input_field = dcc.Slider(_min, _max, _input_resolution, value=_value, id=_name, marks=None, updatemode='drag',
+    input_field = dcc.Slider(_min, _max, _input_resolution, value=_value, id=_slider_id, marks=None, updatemode='drag',
                              persistence=True,
                              tooltip={"placement": "bottom", "always_visible": True})
   else:
     input_field = dcc.Input(
-      id=_name,
+      id=_slider_id,
       type="number",
       value=_value,
       min=_min,
@@ -40,18 +40,8 @@ def make_number_widget(_name, _value, _min=0, _max=200, _input_resolution=1, _la
       marks=None
       # style=NUMBER_INPUT_STYLE,
     )
-  label = html.Div(_label, id=f"{_name}_label", **{'data-name': _label})
+  label = html.Div(_label, id=f"{_slider_id}_label", **{'data-name': _label})
   return dbc.Row([dbc.Col([label], width=2), dbc.Col([input_field], width=10)])
-
-quat_comp_widgets = [make_number_widget(f"quat_{val}", 0 if val!="w" else 1, _min=-1, _max=1, _input_resolution=0.05, _label=val.upper()) for val in quat_widgets]
-quaternion_widget = html.Div([
-  html.Label(dcc.Markdown(f"** QUATERNIONS **")),
-  html.Div(
-      quat_comp_widgets+
-      [html.Button('Reset', id='quat-reset'),
-       html.Div(id='output-container-button',children="[]")],
-    style={"display": "flex", "flex-direction": "column"}),
-  html.Br()])
 
 def update_slider_label(slider_value, slider_name):
   return f"{slider_name}: {slider_value}"
@@ -62,19 +52,45 @@ def update_quaternion_string(*quat_input):
 def reset_quat(n_clicks):
   return [1,0,0,0]
 
-def add_quat_widget_callback(app):
-  [app.callback(Output(f"quat_{val}_label", 'children'),
-                Input(f"quat_{val}", 'value'),
-                State(f"quat_{val}_label", 'data-name'))
-                (update_slider_label) for val in quat_widgets]
-  app.callback(Output('output-container-button', 'children'), [[Input(f"quat_{val}", 'value') for val in quat_widgets]])(update_quaternion_string)
-  app.callback([Output(f"quat_{val}", 'value') for val in quat_widgets],
-               [Input(f"quat-reset", 'n_clicks')])(reset_quat)
+def make_quaternion_widget(app, _joint_id, _joint_name, color="inherit"):
+  quat_comp_widgets = [make_number_widget(f"quat_{_joint_id}_{val}", f"quat_{_joint_id}_{val}", 0 if val!="w" else 1, _min=-1, _max=1, _input_resolution=0.05, _label=val.upper()) for val in quat_widgets]
+  quaternion_widget = html.Div([
+    html.Label(dcc.Markdown(f"** QUATERNION {_joint_name} **")),
+    html.Div(
+        quat_comp_widgets+
+        [html.Button('Reset', id=f"quat-reset-{_joint_id}"),
+        html.Div(id=f"output-container-button_{_joint_id}",children="[]")],
+      style={"display": "flex", "flex-direction": "column", "color":color}),
+    html.Br()])
   
+  [app.callback(Output(f"quat_{_joint_id}_{val}_label", 'children'),
+                Input(f"quat_{_joint_id}_{val}", 'value'),
+                State(f"quat_{_joint_id}_{val}_label", 'data-name'))
+                (update_slider_label) for val in quat_widgets]
+  app.callback(Output(f"output-container-button_{_joint_id}", 'children'), [[Input(f"quat_{_joint_id}_{val}", 'value') for val in quat_widgets]])(update_quaternion_string)
+  app.callback([Output(f"quat_{_joint_id}_{val}", 'value') for val in quat_widgets],
+               [Input(f"quat-reset-{_joint_id}", 'n_clicks')])(reset_quat)
+  inpt = [[Input(f"quat_{_joint_id}_{val}", 'value') for val in quat_widgets]]
+  return quaternion_widget, inpt
+
+
+# def add_quat_widget_callback(app):
+#   [app.callback(Output(f"quat_{val}_label", 'children'),
+#                 Input(f"quat_{val}", 'value'),
+#                 State(f"quat_{val}_label", 'data-name'))
+#                 (update_slider_label) for val in quat_widgets]
+#   app.callback(Output('output-container-button', 'children'), [[Input(f"quat_{val}", 'value') for val in quat_widgets]])(update_quaternion_string)
+#   app.callback([Output(f"quat_{val}", 'value') for val in quat_widgets],
+#                [Input(f"quat-reset", 'n_clicks')])(reset_quat)
+
+def get_quaternion_inputs():
+  inpt = [[Input(f"quat_{_joint_id}_{val}", 'value') for val in quat_widgets]]
+  return inpt
+
 def add_quaternion_listener(app, callback=None, output=None, state=None):
   callback = update_quaternion_string if callback is None else callback
   output = Output('output-container-button', 'children') if output is None else output
-  inpt = [[Input(f"quat_{val}", 'value') for val in quat_widgets]]
+  inpt = [[Input(f"quat_{_joint_id}_{val}", 'value') for val in quat_widgets]]
   if state is not None:
     app.callback(output, inpt, state)(callback)
   else:
