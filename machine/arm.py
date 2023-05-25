@@ -23,6 +23,8 @@ class Arm:
       self.joints[-2].link_to(self.joints[-1])
       self.joints[-1].update_transform()
       self.tm.add_transform(f"joint_{len(self.joints)-2}", f"joint_{len(self.joints)-1}", self.joints[-2].transform)
+      return
+    # self.joints[-1].update_transform()
     
   def forward_kinematics(self):
     combined_transform = None
@@ -31,8 +33,12 @@ class Arm:
       self.joints[idx].update_transform()
       self.joints[idx].apply_transform(combined_transform)
   
+  def set_visibility(self, vis):
+    for j in self.joints:
+      figure_data = j.set_visibility(vis)
+  
   def draw(self, figure_data):
     for j in self.joints:
       figure_data = j.draw(figure_data)
-    return  figure_data
+    return figure_data
     

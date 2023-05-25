@@ -77,7 +77,7 @@ class JointConstraints:
     return True
     
 class Joint:
-  def __init__(self, _name, _origin, euler_rot=None, quaternion=None, constraints=None, color=None):
+  def __init__(self, _name, _origin, euler_rot=None, quaternion=None, constraints=None, color=LEG_COLOR):
     self.name = _name
     self.prev = None
     self.next = None
@@ -91,12 +91,14 @@ class Joint:
     self.quaternion = pr.q_id
     self.update_transform()
     self.rotate(euler_rot, quaternion)
+    self.visible = True
     self.trace = deepcopy(DEFAULT_TRACE)
   
   def update_transform(self):
     if self.prev is not None:
       self.transform = pt.transform_from_pq(np.hstack(((self.prev.pos)[:3], self.prev.quaternion)))
     else:
+      # self.transform = pt.transform_from_pq(np.hstack((np.array(self._origin[:3]), self.quaternion)))
       self.transform = pt.transform_from_pq(np.hstack((np.array([0,0,0]), self.quaternion)))
       
   def rotate(self, euler_rot=None, quaternion=None):
@@ -124,8 +126,11 @@ class Joint:
   def apply_transform(self, transform=None):
     transform = self.transform if transform is None else transform
     self.pos = transform@self._origin
-    
-  def draw(self, figure_data):
+  
+  def set_visibility(self, vis):
+    self.visible = vis
+  
+  def get_trace(self, figure_data):
     trace = None
     for t in figure_data:
       if 'uuid' in t and t['uuid'] == self.uuid:
@@ -138,8 +143,10 @@ class Joint:
       trace['uuid'] = self.uuid
       # print(f"Appending trace: {self.uuid}")
       figure_data.append(trace)
-    
-    # print(f"{self.name} Origin: {self._origin}")
+    return trace
+      
+  def draw(self, figure_data):
+    trace = self.get_trace(figure_data)
     points = [self.pos]
     if self.next is not None:
       points.append(self.next.pos)
@@ -148,5 +155,6 @@ class Joint:
     trace['x'] = [float(p[AXIS_ORDER_CONVENTION[0]]) for p in points]
     trace['y'] = [float(p[AXIS_ORDER_CONVENTION[1]]) for p in points]
     trace['z'] = [float(p[AXIS_ORDER_CONVENTION[2]]) for p in points]
+    trace['visible'] = self.visible
     return figure_data
         

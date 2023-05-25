@@ -60,8 +60,9 @@ def make_quaternion_widget(app, _joint_id, _joint_name, color="inherit"):
         quat_comp_widgets+
         [html.Button('Reset', id=f"quat-reset-{_joint_id}"),
         html.Div(id=f"output-container-button_{_joint_id}",children="[]")],
-      style={"display": "flex", "flex-direction": "column", "color":color}),
-    html.Br()])
+      style={"display": "flex", "flex-direction": "column"}),
+    html.Br()],
+    style={"color":color})
   
   [app.callback(Output(f"quat_{_joint_id}_{val}_label", 'children'),
                 Input(f"quat_{_joint_id}_{val}", 'value'),

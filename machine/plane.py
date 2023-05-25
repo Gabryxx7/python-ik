@@ -28,6 +28,7 @@ class Plane:
     self.tm = TransformManager()
     self.joints = []
     self.trace = deepcopy(DEFAULT_TRACE)
+    self.visible = True
   
   def add_vertex(self, joint):
     self.joints.append(joint)
@@ -39,7 +40,13 @@ class Plane:
   #     self.joints[idx].update_transform()
   #     self.joints[idx].apply_transform(combined_transform)
   
-  def draw(self, figure_data):
+  def set_visibility(self, vis):
+    self.visible = vis
+    for j in self.joints:
+      figure_data = j.set_visibility(vis)
+      
+  
+  def get_trace(self, figure_data):
     trace = None
     for t in figure_data:
       if 'uuid' in t and t['uuid'] == self.uuid:
@@ -52,10 +59,15 @@ class Plane:
       trace['uuid'] = self.uuid
       print(f"Appending trace: {self.uuid}")
       figure_data.append(trace)
+    return trace
+      
+  def draw(self, figure_data):
+    trace = self.get_trace(figure_data)
     
     points = [j.pos for j in self.joints]
     trace['x'] = [float(p[AXIS_ORDER_CONVENTION[0]]) for p in points]
     trace['y'] = [float(p[AXIS_ORDER_CONVENTION[1]]) for p in points]
     trace['z'] = [float(p[AXIS_ORDER_CONVENTION[2]]) for p in points]
+    trace['visible'] = self.visible
     return figure_data
     
