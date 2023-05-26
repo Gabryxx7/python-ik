@@ -33,13 +33,18 @@ plane_model['arm_joint0_widgets'] = []
 plane_model['arm_joint0_inputs'] = []
 plane_model['tf_widgets'] = []
 plane_model['tf_outputs'] = []
+plane_model['tf_widgets_ee'] = []
+plane_model['tf_outputs_ee'] = []
 for i in range(0, len(plane_model['arms'])):
     arm_joint0_widget, arm_joint0_inpt = make_quaternion_widget(app, plane_model['arms'][i].joints[0])
     tf_widget, tf_output = make_transform_widget(app, plane_model['arms'][i].joints[0])
+    tf_widget_ee, tf_output_ee = make_transform_widget(app, plane_model['arms'][i].joints[1])
     plane_model['arm_joint0_widgets'].append(arm_joint0_widget)
     plane_model['arm_joint0_inputs'].append(arm_joint0_inpt)
     plane_model['tf_widgets'].append(tf_widget)
     plane_model['tf_outputs'].append(tf_output)
+    plane_model['tf_widgets_ee'].append(tf_widget_ee)
+    plane_model['tf_outputs_ee'].append(tf_output_ee)
 
 test_model['joints_widgets'] = []
 test_model['joints_inputs'] = []
@@ -58,7 +63,7 @@ for i in range(0, len(test_model['arm'].joints)):
 pistons_widgets = dbc.Row(plane_model['piston_widgets'] + plane_model['arm_joint0_widgets'])
 test_arm_widgets = dbc.Row(test_model['joints_widgets'])
 robots_show_options = ['Plane', 'Test Arm']
-info_panel = html.Div(plane_model['tf_widgets'],
+info_panel = html.Div(plane_model['tf_widgets']+plane_model['tf_widgets_ee'],
                       className="info-panel d-flex align-items-start justify-items-start flex-row", style={'gap': '1rem', 'padding': '1rem', 'width': '100%'})
 
 main_plot_page = html.Div([

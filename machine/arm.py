@@ -16,7 +16,8 @@ class Arm:
     self.pos = deepcopy(_origin)
     self.tm = TransformManager()
     self.joints = []
-    self.origin_transform = pt.transform_from_pq(np.hstack((np.array(self.pos), pr.q_id)))
+    self.origin = Joint("Origin", self.pos)
+    self.origin.transform = pt.transform_from_pq(np.hstack((np.array(self.pos), pr.q_id)))
   
   def add_joint(self, joint):
     self.joints.append(joint)
@@ -25,16 +26,17 @@ class Arm:
       self.joints[-1].update_transform()
       self.tm.add_transform(f"joint_{len(self.joints)-2}", f"joint_{len(self.joints)-1}", self.joints[-2].transform)
       return
-    # self.joints[-1].update_transform()
+    self.origin.link_to(self.joints[0])
     
   def forward_kinematics(self):
-    combined_transform = self.origin_transform
-    # combined_transform = None
+    # combined_transform = self.origin_transform
     for i in range(0,len(self.joints)):
       idx = i
       self.joints[idx].update_transform()
-      self.joints[idx].apply_transform(combined_transform)
-  
+      self.joints[idx].apply_transform()
+      # if combined_transform is not None:
+      #   combined_transform = None
+        
   def set_visibility(self, vis):
     for j in self.joints:
       figure_data = j.set_visibility(vis)
