@@ -27,7 +27,9 @@ def make_piston_widget(piston_id, _name, _value, _min=0, _max=200, _input_resolu
                              persistence=True,
                              tooltip={"placement": "bottom", "always_visible": True})
   label = html.Div(_label, id=f"{piston_id}_label", **{'data-name': _label})
-  return dbc.Row([dbc.Col([label], width=2), dbc.Col([input_field], width=10)])
+  widget = dbc.Row([dbc.Col([label], width=2), dbc.Col([input_field], width=10)])
+  inpt = Input(piston_id, "value")
+  return widget, inpt
 
 # quat_comp_widgets = [make_number_widget(f"quat_{val}", 0 if val!="w" else 1, _min=-1, _max=1, _input_resolution=0.05, _label=val.upper()) for val in quat_widgets]
 # quaternion_widget = html.Div([

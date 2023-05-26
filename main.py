@@ -11,8 +11,9 @@ from components.plot_3d import plot3d, GRAPH_ID, MachinePlotter
 from components.example_tabs import controls, colors, buttons, graph
 from components.quaternion_widget import  make_quaternion_widget
 from components.piston_widget import make_piston_widget, add_piston_slider_listener
+from components.transform_widget import make_transform_widget
 import json
-from model import arm_test, arm1, arm1_2, arm2, arm2_2, arm3, arm3_2, plane, PISTON_START_HEIGHT_RATIO
+from model import test_model, plane_model, PISTON_START_HEIGHT_RATIO
 
 BASE_PLOTTER = MachinePlotter()
 
@@ -21,21 +22,38 @@ PARAMETERS_SECTION_ID = "parameters-kinematics"
 
 app = Dash(__name__, external_stylesheets=root.external_css)
 
-piston1_widget = make_piston_widget(arm1.uuid, "Piston 1", PISTON_START_HEIGHT_RATIO, _min=0, _max=1, _input_resolution=0.05)
-piston2_widget = make_piston_widget(arm2.uuid, "Piston 2", PISTON_START_HEIGHT_RATIO, _min=0, _max=1, _input_resolution=0.05)
-piston3_widget = make_piston_widget(arm3.uuid, "Piston 3", PISTON_START_HEIGHT_RATIO, _min=0, _max=1, _input_resolution=0.05)
+plane_model['piston_widgets'] = []
+plane_model['piston_inputs'] = []
+plane_model['arm_joint0_widgets'] = []
+plane_model['arm_joint0_inputs'] = []
+for i in range(0, len(plane_model['pistons'])):
+    piston_widget, piston_input = make_piston_widget(plane_model['pistons'][i].uuid, f"Piston {i+1}", PISTON_START_HEIGHT_RATIO, _min=0, _max=1, _input_resolution=0.05)
+    plane_model['piston_widgets'].append(piston_widget)
+    plane_model['piston_inputs'].append(piston_input)
 
-arm_1_2_widget, arm_1_2_widget_inpt = make_quaternion_widget(app, arm1_2.joints[0].uuid, arm1_2.joints[0].name, arm1_2.joints[0].color)
-arm_2_2_widget, arm_2_2_widget_inpt = make_quaternion_widget(app, arm2_2.joints[0].uuid, arm2_2.joints[0].name, arm2_2.joints[0].color)
-arm_3_2_widget, arm_3_2_widget_inpt = make_quaternion_widget(app, arm3_2.joints[0].uuid, arm3_2.joints[0].name, arm3_2.joints[0].color)
+for i in range(0, len(plane_model['arms'])):
+    arm_joint0_widget, arm_joint0_inpt = make_quaternion_widget(app, plane_model['arms'][i].joints[0])
+    plane_model['arm_joint0_widgets'].append(arm_joint0_widget)
+    plane_model['arm_joint0_inputs'].append(arm_joint0_inpt)
 
-arm_test_widget_1, arm_test_widget_1_inpt = make_quaternion_widget(app, arm_test.joints[0].uuid, arm_test.joints[0].name, arm_test.joints[0].color)
-arm_test_widget_2, arm_test_widget_2_inpt = make_quaternion_widget(app, arm_test.joints[1].uuid, arm_test.joints[1].name, arm_test.joints[1].color)
-arm_test_widget_3, arm_test_widget_3_inpt = make_quaternion_widget(app, arm_test.joints[2].uuid, arm_test.joints[2].name, arm_test.joints[2].color)
+test_model['joints_widgets'] = []
+test_model['joints_inputs'] = []
+test_model['tf_widgets'] = []
+for i in range(0, len(test_model['arm'].joints)):
+    arm_widget, arm_inpt = make_quaternion_widget(app, test_model['arm'].joints[i])
+    tf_widget = make_transform_widget(app, test_model['arm'].joints[i])
+    test_model['joints_widgets'].append(arm_widget)
+    test_model['joints_inputs'].append(arm_inpt)
+    test_model['tf_widgets'].append(tf_widget)
+
+
 """ ========================= LAYOUT ========================= """
-pistons_widgets = dbc.Row([arm_1_2_widget,arm_2_2_widget,arm_3_2_widget,piston1_widget,piston2_widget, piston3_widget])
-test_arm_widgets = dbc.Row([arm_test_widget_1,arm_test_widget_2,arm_test_widget_3])
+pistons_widgets = dbc.Row(plane_model['piston_widgets'] + plane_model['arm_joint0_widgets'])
+test_arm_widgets = dbc.Row(test_model['joints_widgets'])
 robots_show_options = ['Plane', 'Test Arm']
+info_panel = html.Div(test_model['tf_widgets'],
+                      className="info-panel d-flex align-items-start justify-items-start flex-row", style={'gap': '1rem', 'padding': '1rem', 'width': '100%'})
+
 main_plot_page = html.Div([
                     html.Div([
                             dcc.Checklist(robots_show_options.copy(), [robots_show_options[0]], style={'display': 'flex', 'padding': '0.5rem', 'place-content': 'space-evenly'}, id='show-robots-checklist'),
@@ -47,7 +65,7 @@ main_plot_page = html.Div([
                         ],
                         style={'width': '30%'}
                     ),
-                    html.Div(plot3d, style={'width': '70%'})
+                    dbc.Row([info_panel, plot3d], style={'width': '70%'})
                 ], className="main-container-plot3d", style={'position': 'relative', 'display': 'flex', 'width': '100%'})
 tabs = []
 tabs.append(dbc.Tab(main_plot_page,
@@ -74,93 +92,44 @@ app.layout = dmc.MantineProvider(
     ])
 
 
-def update_graph(plane_quat, test_arm_quat, piston_heights, show_robots_checks, figure, relayout_data):
-    piston_height_ratio = piston_heights[0]
-    arm1_2.joints[0]._origin[2] = float(arm1.joints[1]._origin[2]) * float(piston_height_ratio)
-    arm1_2.joints[0].rotate(quaternion=plane_quat[0][0])
-    # arm1_2.joints[1]._origin[2] = float(arm1_2.joints[0]._origin[2]) + float(50.0)
-    arm1_2.forward_kinematics()
-    piston_height_ratio = piston_heights[1]
-    arm2_2.joints[0]._origin[2] = float(arm2.joints[1]._origin[2]) * float(piston_height_ratio)
-    arm2_2.joints[0].rotate(quaternion=plane_quat[1][0])
-    # arm2_2.joints[1]._origin[2] = float(arm2_2.joints[0]._origin[2]) + float(50.0)
-    arm2_2.forward_kinematics()
-    piston_height_ratio = piston_heights[2]
-    arm3_2.joints[0]._origin[2] = float(arm3.joints[1]._origin[2]) * float(piston_height_ratio)
-    arm3_2.joints[0].rotate(quaternion=plane_quat[2][0])
-    # arm3_2.joints[1]._origin[2] = float(arm3_2.joints[0]._origin[2]) + float(50.0)
-    arm3_2.forward_kinematics()
-    # BASE_PLOTTER.update(figure, plane_quat)
-    # print(figure)
-    # print("\n")
-    # with open("data_debug1.json", "w") as f:
-    #     json.dump(figure, f)
+def update_graph(plane_quat, piston_heights, test_arm_quat, show_robots_checks, figure, relayout_data):
+    for i in range(0, len(plane_model['arms'])):
+        plane_model['arms'][i].joints[0]._origin[2] = float(plane_model['pistons'][i].joints[1]._origin[2]) * float(piston_heights[i])
+        plane_model['arms'][i].joints[0].rotate(quaternion=plane_quat[i][0])
+        plane_model['arms'][i].forward_kinematics()
     
-    # Swap w and z
-    # w = plane_quat[0]
-    # z = plane_quat[3]
-    # plane_quat[0] = z
-    # plane_quat[3] = w
-    # print(plane_quat[1][0])
-    
-    
-    # arm_test.joints[0]._origin[2] = float(arm_test.joints[1]._origin[2]) * float(piston_height_ratio)
-    # arm_test.joints[1]._origin[2] = float(arm_test.joints[0]._origin[2]) + float(50.0)
-    arm_test.joints[0].rotate(quaternion=test_arm_quat[0][0])
-    # arm_test.joints[0].trace['line']['color'] = "#EE5A24"
-    arm_test.joints[1].rotate(quaternion=test_arm_quat[1][0])
-    # arm_test.joints[1].trace['line']['color'] = "#EE5A24"
-    arm_test.joints[2].rotate(quaternion=test_arm_quat[2][0])
-    # arm_test.joints[2].trace['line']['color'] = "#EE5A24"
-    arm_test.forward_kinematics()
+    for i in range(0, len(test_model['arm'].joints)):
+        test_model['arm'].joints[i].rotate(quaternion=test_arm_quat[i][0])
+    test_model['arm'].forward_kinematics()
     return draw_plot(figure, relayout_data, show_robots_checks)
 
 def draw_plot(figure, relayout_data, robots_to_show=None):
     if robots_to_show is None:
         robots_to_show = robots_show_options
     
-    arm1.set_visibility(robots_show_options[0] in robots_to_show)
-    arm_test.set_visibility(robots_show_options[1] in robots_to_show)
-    arm_test.set_visibility(robots_show_options[1] in robots_to_show)
-    BASE_PLOTTER._draw_arm(figure, arm_test)
+    test_model['arm'].set_visibility(robots_show_options[1] in robots_to_show)
+    BASE_PLOTTER._draw_arm(figure, test_model['arm'])
     
-    arm1.set_visibility(robots_show_options[0] in robots_to_show)
-    BASE_PLOTTER._draw_arm(figure, arm1)
-    
-    arm1_2.set_visibility(robots_show_options[0] in robots_to_show)
-    BASE_PLOTTER._draw_arm(figure, arm1_2)
-    
-    arm2.set_visibility(robots_show_options[0] in robots_to_show)
-    BASE_PLOTTER._draw_arm(figure, arm2)
-    
-    arm2_2.set_visibility(robots_show_options[0] in robots_to_show)
-    BASE_PLOTTER._draw_arm(figure, arm2_2)
-    
-    arm3.set_visibility(robots_show_options[0] in robots_to_show)
-    BASE_PLOTTER._draw_arm(figure, arm3)
-    
-    arm3_2.set_visibility(robots_show_options[0] in robots_to_show)
-    BASE_PLOTTER._draw_arm(figure, arm3_2)
-    
-    plane.set_visibility(robots_show_options[0] in robots_to_show)
-    BASE_PLOTTER._draw_arm(figure, plane)
-    
+    for i in range(0, len(plane_model['arms'])):
+        plane_model['arms'][i].set_visibility(robots_show_options[0] in robots_to_show)
+        plane_model['pistons'][i].set_visibility(robots_show_options[0] in robots_to_show)
+        BASE_PLOTTER._draw_arm(figure, plane_model['arms'][i])
+        BASE_PLOTTER._draw_arm(figure, plane_model['pistons'][i])
+    plane_model['plane'].set_visibility(robots_show_options[0] in robots_to_show)
+    BASE_PLOTTER._draw_arm(figure, plane_model['plane'])
+
     BASE_PLOTTER.change_camera_view(figure, relayout_data)
     # print(f"Updating figure: {quaternion_values}")
     return figure
 
 
 # add_quat_widget_callback(app)
-quat_inpt = [arm_1_2_widget_inpt, arm_2_2_widget_inpt, arm_3_2_widget_inpt]
-quat_inpt_test = [arm_test_widget_1_inpt, arm_test_widget_2_inpt, arm_test_widget_3_inpt]
-piston_inpt = [Input(arm1.uuid, "value"), Input(arm2.uuid, "value"), Input(arm3.uuid, "value")]
 show_robots_checks = Input('show-robots-checklist', 'value')
-inpts = [quat_inpt, quat_inpt_test, piston_inpt, show_robots_checks]
+inpts = [plane_model['arm_joint0_inputs'], plane_model['piston_inputs'], test_model['joints_inputs'], show_robots_checks]
 graph_out = Output(GRAPH_ID, 'figure')
 graph_state = [State(GRAPH_ID, "figure"), State(GRAPH_ID, "relayoutData")]
+
 app.callback(graph_out, inpts, graph_state)(update_graph)
-# add_piston_slider_listener(app, arm2.uuid, update_piston2_height, Output(GRAPH_ID, 'figure'), [State(GRAPH_ID, "figure"), State(GRAPH_ID, "relayoutData")])
-# add_piston_slider_listener(app, arm3.uuid, update_piston3_height, Output(GRAPH_ID, 'figure'), [State(GRAPH_ID, "figure"), State(GRAPH_ID, "relayoutData")])
 
 if __name__ == "__main__":
     # Run app and display result inline in the notebook

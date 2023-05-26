@@ -116,7 +116,6 @@ controls = dbc.Card(
 )
 
 
-
 tab1 = dbc.Tab([dcc.Graph(id="line-chart")], label="Line Chart")
 tab2 = dbc.Tab([dcc.Graph(id="scatter-chart")], label="Scatter Chart")
 tab3 = dbc.Tab([table], label="Table", className="p-4")
