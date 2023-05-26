@@ -16,6 +16,7 @@ class Arm:
     self.pos = deepcopy(_origin)
     self.tm = TransformManager()
     self.joints = []
+    self.origin_transform = pt.transform_from_pq(np.hstack((np.array(self.pos), pr.q_id)))
   
   def add_joint(self, joint):
     self.joints.append(joint)
@@ -27,7 +28,8 @@ class Arm:
     # self.joints[-1].update_transform()
     
   def forward_kinematics(self):
-    combined_transform = None
+    combined_transform = self.origin_transform
+    # combined_transform = None
     for i in range(0,len(self.joints)):
       idx = i
       self.joints[idx].update_transform()

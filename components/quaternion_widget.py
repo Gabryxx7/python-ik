@@ -52,8 +52,8 @@ def make_quaternion_widget(app, joint):
   output_string = html.Div(id=f"output-label-{j_id}",children="[]")
   
   widget = html.Div([
-    html.Label(dcc.Markdown(f"** QUATERNION {name} **")),
-    html.Div(comp_widgets + [reset_button,output_string],
+    html.Div([dcc.Markdown(f"** QUATERNION {name} **"), output_string], className='d-flex', style={'gap': '1rem'}),
+    html.Div(comp_widgets + [reset_button],
       style={"display": "flex", "flex-direction": "column"}),
     html.Br()],
     style={"color":color})
