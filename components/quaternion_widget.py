@@ -36,33 +36,37 @@ def make_quaternion_widget(app, joint):
   value_outputs = []
   comp_label_outputs = []
   comp_label_states = []
+  callback_outputs = []
   for key, data in quat_components.items():
     slider_id = f"quat_{j_id}_{key}"
     input_field = dcc.Slider(data['min'], data['max'], data['res'], value=data['value'], id=slider_id, marks=None, updatemode='drag', persistence=True, tooltip={"placement": "bottom", "always_visible": True})
     label_id = slider_id +"_label"
     input_label = html.Div(key.upper(), id=label_id, **{'data-name': key.upper()})
-    comp_widget = dbc.Row([dbc.Col([input_label], width=2), dbc.Col([input_field], width=10)])
-    comp_widgets.append(comp_widget)
     value_inputs.append(Input(slider_id, 'value'))
     value_outputs.append(Output(slider_id, 'value'))
     comp_label_outputs.append(Output(label_id, 'children'))
     comp_label_states.append(State(label_id, 'data-name'))
+    comp_widget = dbc.Row([dbc.Col([input_label], width=2), dbc.Col([input_field], width=10)])
+    comp_widgets.append(comp_widget)
     
   reset_button = html.Button('Reset', id=f"quat-reset-{j_id}")
   output_string = html.Div(id=f"output-label-{j_id}",children="[]")
+  callback_out_id = slider_id +"_cb_out"
+  callback_out = html.Div("", id=callback_out_id, style={'display': 'none'})
+  callback_outputs.append(Output(callback_out_id, 'children'))
   
   widget = html.Div([
-    html.Div([dcc.Markdown(f"** QUATERNION {name} **"), output_string], className='d-flex', style={'gap': '1rem'}),
+    html.Div([dcc.Markdown(f"** QUATERNION {name} **"), output_string, callback_out], className='d-flex', style={'gap': '1rem'}),
     html.Div(comp_widgets + [reset_button],
       style={"display": "flex", "flex-direction": "column"}),
     html.Br()],
-    style={"color":color})
+    style={"color":color, 'width': '100%'})
 
+  
   [app.callback(data[0], [data[1]], [data[2]])(update_slider_label) for data in zip(comp_label_outputs, value_inputs, comp_label_states)]
   app.callback(Output(f"output-label-{j_id}", 'children'), [value_inputs])(update_quaternion_string)
   app.callback(value_outputs, Input(f"quat-reset-{j_id}", 'n_clicks'))(reset_quat)
-  
-  return widget, [value_inputs]
+  return {'widget': widget, 'inputs':value_inputs, 'cb_outputs': callback_outputs}
 
 
 # def add_quat_widget_callback(app):

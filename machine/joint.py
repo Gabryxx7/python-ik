@@ -1,9 +1,13 @@
 import uuid
 import numpy as np
+from dash import dcc
+from dash import html
+from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 from pyquaternion import Quaternion
 from pytransform3d import rotations as pr
 from pytransform3d import transformations as pt
 from pytransform3d.transform_manager import TransformManager
+from components.quaternion_widget import  make_quaternion_widget
 from copy import deepcopy
 from style_settings import (
     BODY_MESH_COLOR,
@@ -86,20 +90,43 @@ class Joint:
     self._origin = np.array(deepcopy(_origin))
     if len(self._origin) < 4:
       self._origin = np.append(self._origin, [1.0])
-    self.pos = deepcopy(self._origin)
+    self.relative_pos = deepcopy(self._origin)
+    self.absolute_pos = deepcopy(self._origin)
     self.constraints = constraints
     self.quaternion = pr.q_id
-    self.update_transform()
+    self.parent = None
+    self.children = []
     self.rotate(euler_rot, quaternion)
     self.visible = True
     self.trace = deepcopy(DEFAULT_TRACE)
+    self.combined_transform = None 
+    self.transform = pt.transform_from_pq(np.hstack((self._origin[:3], self.quaternion)))
+    self.quat_widget = None
+    self.tf_widget = None
   
-  def update_transform(self):
-    if self.prev is not None:
-      self.transform = pt.transform_from_pq(np.hstack(((self.prev.pos)[:3], self.prev.quaternion)))
-    else:
-      # self.transform = pt.transform_from_pq(np.hstack((np.array(self._origin[:3]), self.quaternion)))
-      self.transform = pt.transform_from_pq(np.hstack((np.array([0,0,0]), self.quaternion)))
+  def update_from_transform(self, transform):
+    self.absolute_pos = transform@self._origin
+  
+  def update(self, dbg_prefix=""):
+    dbg = f"{dbg_prefix}- Updating {self.name} Transform "
+    self.transform = pt.transform_from_pq(np.hstack((self._origin[:3], self.quaternion)))
+    # self.transform = pt.transform_from_pq(np.hstack((np.array([0,0,0]), self.quaternion)))
+    # self.transform = pt.transform_from_pq(np.hstack((self.absolute_pos[:3], self.quaternion)))
+    if self.parent is not None:
+      dbg += f"Using parent ({self.parent.name}) transform"
+      # self.transform = self.parent.transform * self.transform
+      self.transform = pt.concat(self.parent.transform, self.transform)
+    # if self.parent is not None and self.parent.combined_transform is not None:
+    #   dbg += f"Using parent ({self.parent.name}) transform"
+    #   self.combined_transform = self.parent.combined_transform * self.transform
+    # else:
+    #   dbg += f"NO PARENT TRANSFORM"
+    #   self.combined_transform = self.transform
+    print(dbg)
+    self.absolute_pos = pt.transform(self.transform, self._origin)
+    # self.absolute_pos = self.transform@self._origin
+    for child in self.children:
+      child.update(dbg_prefix=dbg_prefix)
       
   def rotate(self, euler_rot=None, quaternion=None):
     # print(f"Rotating {self.name} ({self.uuid}) with: {quaternion}")
@@ -118,15 +145,11 @@ class Joint:
     # print(self.transform)
     # print("\n")
       
-  def link_to(self, next_joint):
-    print(f"Linking joints {self.name} to {next_joint.name}")
-    self.next = next_joint
-    next_joint.prev = self
-  
-  def apply_transform(self, transform=None):
-    transform = self.transform if transform is None else transform
-    self.pos = transform@self._origin
-  
+  def link_to(self, parent):
+    print(f"Linking joints {parent.name} to {self.name}")
+    self.parent = parent
+    parent.children.append(self)
+    
   def set_visibility(self, vis):
     self.visible = vis
   
@@ -145,11 +168,14 @@ class Joint:
       figure_data.append(trace)
     return trace
       
+  def get_joint_length(self):
+    return (np.linalg.norm(self.parent.absolute_pos - self.absolute_pos))
+  
   def draw(self, figure_data):
     trace = self.get_trace(figure_data)
-    points = [self.pos]
-    if self.next is not None:
-      points.append(self.next.pos)
+    points = [self.absolute_pos]
+    if self.parent is not None:
+      points = [self.parent.absolute_pos] + points
     if self.color is not None:
       trace['line']['color'] = self.color
     trace['x'] = [float(p[AXIS_ORDER_CONVENTION[0]]) for p in points]
@@ -157,4 +183,26 @@ class Joint:
     trace['z'] = [float(p[AXIS_ORDER_CONVENTION[2]]) for p in points]
     trace['visible'] = self.visible
     return figure_data
-        
+  
+  def get_quaternion_widget(self, app):
+    if self.quat_widget is None:
+      self.quat_widget = make_quaternion_widget(app, self)
+    return self.quat_widget
+  
+  def get_transform_widget(self, app, color="inherit"):
+    color = "inherit" if self.color is None else self.color
+    mk_id = f"{self.uuid}-md-transform-view"
+    markdown_widget = dcc.Markdown(self.get_transform_text(), id=mk_id, style={"color": color})
+    self.tf_widget = html.Div([markdown_widget],
+      style={"color":color})
+    self.tf_output = Output(mk_id, 'children')
+    return {'widget': self.tf_widget, 'outputs': self.tf_output}
+
+  def get_transform_text(self):
+    tf_text = f"{self.name}"
+    tf_text += f"\n```{np.array2string(self.transform, precision=2, floatmode='fixed')}"
+    tf_text += f"\n\nOrigin: {np.round(self._origin, 2)}"
+    tf_text += f"\nPosition: {np.round(self.absolute_pos, 2)}"
+    tf_text += f"\nDistance from prev: {np.round(self.get_joint_length(), 2)}"
+    tf_text += f"\nQuaternion: {self.quaternion}"
+    return tf_text

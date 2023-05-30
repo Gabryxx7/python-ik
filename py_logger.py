@@ -147,7 +147,7 @@ class VisualLogWidget(LogWidgetMeta):
         def __init__(self, text, color, pos, font=None, font_size=0.4, line_height=-1, thickness=1):
             self.text = text
             self.color = color
-            self.pos = pos
+            self.absolute_pos = pos
             self.font = font
             self.font_size = font_size
             self.thickness = thickness
@@ -225,8 +225,8 @@ class CvLogWidget(VisualLogWidget):
 
     def draw_text_line(self, line, canvas=None):
         canvas = self.canvas if canvas is None else canvas
-        self.cv2.putText(canvas, line.text, (int(line.pos.x), int(
-            line.pos.y)), self.cv2.FONT_HERSHEY_SIMPLEX, line.font_size, line.color, line.thickness, self.cv2.LINE_AA)
+        self.cv2.putText(canvas, line.text, (int(line.absolute_pos.x), int(
+            line.absolute_pos.y)), self.cv2.FONT_HERSHEY_SIMPLEX, line.font_size, line.color, line.thickness, self.cv2.LINE_AA)
 
     def draw_line(self, start, end, color, thickness):
         self.cv2.line(self.canvas, (int(start.x), int(start.y)),
@@ -266,7 +266,7 @@ class PyGameLogWidget(VisualLogWidget):
     def draw_text_line(self, line, canvas=None):
         canvas = self.canvas if canvas is None else canvas
         canvas.blit(line.font.render(line.text, True, line.color),
-                    (int(line.pos.x), int(line.pos.y)))
+                    (int(line.absolute_pos.x), int(line.absolute_pos.y)))
 
     def draw_line(self, start, end, color, thickness):
         self.drawer.draw.line(self.canvas, color=color, start_pos=(

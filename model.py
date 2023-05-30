@@ -20,10 +20,10 @@ VTest_4 = [VTest_3[0]+50, VTest_3[1]+25, VTest_3[2]+25]
 
 origin = [0,0,0]
 arm_test = Arm("Test Arm", origin)
-arm_test.add_joint(Joint("TA_Joint0", origin, color="#90FF33"))
-arm_test.add_joint(Joint("TA_Joint", VTest_1, color="#33FF74"))
-arm_test.add_joint(Joint("TA_EE", VTest_2, color="#33FFEC"))
-arm_test.add_joint(Joint("TA_Joint3", VTest_3, color="#33C1FF"))
+arm_test.add_joint(Joint("Base", origin, color="#90FF33"))
+arm_test.add_joint(Joint("First", VTest_1, color="#33FF74"))
+arm_test.add_joint(Joint("Second", VTest_2, color="#33FFEC"))
+arm_test.add_joint(Joint("EE", VTest_3, color="#33C1FF"))
 test_model = {'arm': arm_test}
 
 # origin = [200,250,0]
@@ -85,7 +85,7 @@ model_arms.append(arm3)
 
 
 # arm2.joints[1].link_to(arm1.joints[1])
-# arm3.joints[1].link_to(arm2.joints[1])
+# arm2.joints[-1].link_to(arm.joints[-1])
 # # arm3.joints[1].link_to(arm1.joints[1])
 
 # arm2.joints[1].update_transform()
@@ -113,8 +113,8 @@ model_arms.append(arm3)
 # triangle_v3.link_to(triangle_v2)
 
 plane = Plane("Arm1", origin)
-plane.add_vertex(arm1.joints[-1])
-plane.add_vertex(arm2.joints[-1])
-plane.add_vertex(arm3.joints[-1])
+plane.add_joint(arm1.joints[-1])
+plane.add_joint(arm2.joints[-1])
+plane.add_joint(arm3.joints[-1])
 
 plane_model = {'pistons': model_pistons, 'arms': model_arms, 'plane': plane}

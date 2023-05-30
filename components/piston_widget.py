@@ -27,7 +27,7 @@ def make_piston_widget(piston_id, _name, _value, _min=0, _max=200, _input_resolu
                              persistence=True,
                              tooltip={"placement": "bottom", "always_visible": True})
   label = html.Div(_label, id=f"{piston_id}_label", **{'data-name': _label})
-  widget = dbc.Row([dbc.Col([label], width=2), dbc.Col([input_field], width=10)])
+  widget = dbc.Row([dbc.Col([label], width=2), dbc.Col([input_field], width=10)], style={'width': '100%'})
   inpt = Input(piston_id, "value")
   return widget, inpt
 
