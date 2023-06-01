@@ -24,7 +24,6 @@ arm_test.add_joint(Joint("Base", origin, color="#90FF33"))
 arm_test.add_joint(Joint("First", VTest_1, color="#33FF74"))
 arm_test.add_joint(Joint("Second", VTest_2, color="#33FFEC"))
 arm_test.add_joint(Joint("EE", VTest_3, color="#33C1FF"))
-test_model = {'arm': arm_test}
 
 # origin = [200,250,0]
 # VTest_1 = np.add(origin, VTest_1)
@@ -113,8 +112,10 @@ model_arms.append(arm3)
 # triangle_v3.link_to(triangle_v2)
 
 plane = Plane("Arm1", origin)
-plane.add_joint(arm1.joints[-1])
-plane.add_joint(arm2.joints[-1])
-plane.add_joint(arm3.joints[-1])
-
-plane_model = {'pistons': model_pistons, 'arms': model_arms, 'plane': plane}
+for arm in model_arms:
+  plane.add_arm(arm)
+for piston in model_pistons:
+  plane.add_piston(piston)
+# plane.add_joint(arm1.joints[-1])
+# plane.add_joint(arm2.joints[-1])
+# plane.add_joint(arm3.joints[-1])

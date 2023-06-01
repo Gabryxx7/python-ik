@@ -11,6 +11,8 @@ from machine.IModel import IModel
 class Arm(IModel):
   def __init__(self, _name, _origin):
     super().__init__(_name, _origin)
+    self.page = None
+    self.uuid = f"Arm_{str(uuid.uuid4())}"
   
   def add_joint(self, joint):
     self.joints.append(joint)
@@ -42,4 +44,4 @@ class Arm(IModel):
     for j in self.joints:
       figure_data = j.draw(figure_data)
     return figure_data
-    
+  

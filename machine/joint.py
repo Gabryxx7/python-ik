@@ -7,7 +7,10 @@ from pyquaternion import Quaternion
 from pytransform3d import rotations as pr
 from pytransform3d import transformations as pt
 from pytransform3d.transform_manager import TransformManager
-from components.quaternion_widget import  make_quaternion_widget
+from components.transform_widget import TransformWidget
+from components.quaternion_widget import QuaternionWidget
+from components.widget_interface import Widget
+# from components.quaternion_widget import  make_quaternion_widget
 from copy import deepcopy
 from style_settings import (
     BODY_MESH_COLOR,
@@ -71,6 +74,7 @@ DEFAULT_AXIS_TRACE = {
 }
 
 class JointConstraints:
+  
   def __init__(self, max_angles=None, min_angles=None, max_pos=None, min_pos=None):
     self.max_angles = max_angles
     self.min_angles = min_angles
@@ -80,12 +84,20 @@ class JointConstraints:
   def check(self):
     return True
     
+JOINT_WIDGET_STYLE = {'display': 'flex', 'flex-direction': 'row'}
+
 class Joint:
+  @staticmethod
+  def make_widget(app, joint):
+    tf_widget = TransformWidget.make_widget(app, joint)
+    q_widget = QuaternionWidget.make_widget(app, joint)
+    return html.Div([q_widget['widget'], tf_widget.widget], style=JOINT_WIDGET_STYLE)
+  
   def __init__(self, _name, _origin, euler_rot=None, quaternion=None, constraints=None, color=LEG_COLOR):
     self.name = _name
     self.prev = None
     self.next = None
-    self.uuid = str(uuid.uuid4())
+    self.uuid = f"Joint_{str(uuid.uuid4())}"
     self.color = color
     self._origin = np.array(deepcopy(_origin))
     if len(self._origin) < 4:
@@ -103,6 +115,7 @@ class Joint:
     self.transform = pt.transform_from_pq(np.hstack((self._origin[:3], self.quaternion)))
     self.quat_widget = None
     self.tf_widget = None
+    self.widget = None
   
   def update_from_transform(self, transform):
     self.absolute_pos = transform@self._origin
@@ -188,21 +201,5 @@ class Joint:
     if self.quat_widget is None:
       self.quat_widget = make_quaternion_widget(app, self)
     return self.quat_widget
-  
-  def get_transform_widget(self, app, color="inherit"):
-    color = "inherit" if self.color is None else self.color
-    mk_id = f"{self.uuid}-md-transform-view"
-    markdown_widget = dcc.Markdown(self.get_transform_text(), id=mk_id, style={"color": color})
-    self.tf_widget = html.Div([markdown_widget],
-      style={"color":color})
-    self.tf_output = Output(mk_id, 'children')
-    return {'widget': self.tf_widget, 'outputs': self.tf_output}
 
-  def get_transform_text(self):
-    tf_text = f"{self.name}"
-    tf_text += f"\n```{np.array2string(self.transform, precision=2, floatmode='fixed')}"
-    tf_text += f"\n\nOrigin: {np.round(self._origin, 2)}"
-    tf_text += f"\nPosition: {np.round(self.absolute_pos, 2)}"
-    tf_text += f"\nDistance from prev: {np.round(self.get_joint_length(), 2)}"
-    tf_text += f"\nQuaternion: {self.quaternion}"
-    return tf_text
+  

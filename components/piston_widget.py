@@ -3,6 +3,7 @@ from dash import dcc
 from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
+from components.trigger import Trigger
 
 DARKMODE = True
 
@@ -20,31 +21,38 @@ if DARKMODE:
     NUMBER_INPUT_STYLE["color"] = "#2ecc71"
     NUMBER_INPUT_STYLE["borderColor"] = "#2980b9"
 
-def make_piston_widget(piston_id, _name, _value, _min=0, _max=200, _input_resolution=1, _label=None, _type="slider"):
-  _label = _name if _label is None else _label
-  if _type == "slider":
-    input_field = dcc.Slider(_min, _max, _input_resolution, value=_value, id=piston_id, marks=None, updatemode='drag',
-                             persistence=True,
-                             tooltip={"placement": "bottom", "always_visible": True})
-  label = html.Div(_label, id=f"{piston_id}_label", **{'data-name': _label})
-  widget = dbc.Row([dbc.Col([label], width=2), dbc.Col([input_field], width=10)], style={'width': '100%'})
-  inpt = Input(piston_id, "value")
-  return widget, inpt
+config = {'value': 0.5, 'min': 0, 'max': 1, 'res': 0.01}
 
-# quat_comp_widgets = [make_number_widget(f"quat_{val}", 0 if val!="w" else 1, _min=-1, _max=1, _input_resolution=0.05, _label=val.upper()) for val in quat_widgets]
-# quaternion_widget = html.Div([
-#   html.Label(dcc.Markdown(f"** QUATERNIONS **")),
-#   html.Div(
-#       quat_comp_widgets+
-#       [html.Button('Reset', id='quat-reset'),
-#        html.Div(id='output-container-button',children="[]")],
-#     style={"display": "flex", "flex-direction": "column"}),
-#   html.Br()])
-
-def add_piston_slider_listener(app, piston_id, callback, output, state):
-  inpt = Input(piston_id, 'value')
-  if state is not None:
-    app.callback(output, inpt, state)(callback)
-  else:
-    app.callback(output, inpt)(callback)
+class PistonWidget:
+  def __init__(self, piston, app):
+    self.app = app
+    self.piston = piston
+    self.widget = None
+    self.slider_input = None
+    self.trigger = None
+    
+  def get_widget(self):
+    if self.widget is None:
+      self.widget = self.make_widget()
+    return self.widget
   
+  def make_widget(self):
+    name = self.piston.name
+    slider_id = f"{self.piston.uuid}_slider"
+    input_field = dcc.Slider(config['min'], config['max'], config['res'], value=config['value'], id=slider_id, marks=None, updatemode='drag',
+                            persistence=True,
+                            tooltip={"placement": "bottom", "always_visible": True})
+    label_id = f"{self.piston.uuid}_label"
+    label = html.Div(name, id=label_id, **{'data-name': name})
+    self.trigger = Trigger(self.piston.uuid)
+    self.widget = dbc.Row([dbc.Col([self.trigger.component, label], width=2), dbc.Col([input_field], width=10)], className="piston-widget", style={'width': '100%'})
+    self.slider_input = Input(slider_id, "value")
+    return self.widget
+    
+  def update_piston(self, *slider_input):
+    print(f"{self.piston.origin.absolute_pos[2]}\t{float(slider_input[0])}")
+    self.piston.joints[-2].absolute_pos[2] = float(self.piston.joints[-1].absolute_pos[2]) * float(slider_input[0])
+    return ""
+    
+  def add_callback(self):
+    self.app.callback(self.trigger.output, self.slider_input)(self.update_piston)

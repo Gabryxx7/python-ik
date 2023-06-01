@@ -24,7 +24,7 @@ class Plane(IModel):
     self.name = _name
     self.prev = None
     self.next = None
-    self.uuid = str(uuid.uuid4())
+    self.uuid = f"Plane_{str(uuid.uuid4())}"
     self.absolute_pos = deepcopy(_origin)
     self.tm = TransformManager()
     self.joints = []
@@ -34,62 +34,37 @@ class Plane(IModel):
     self.visible = True
     self.arms = []
     self.pistons = []
-  
-  def get_top_right_side_widgets(self, app):
-    r_widgets = []
-    for i in range(0, len(plane_model['arms'])):
-        tf_widget = make_transform_widget(app, plane_model['arms'][i].joints[0])
-        # tf_widget_ee, tf_output_ee = make_transform_widget(app, plane_model['arms'][i].joints[1])
-        r_widgets.append(tf_widget)
-        # tf_widget, tf_output = make_transform_widget(app, plane_model['arms'][i].joints[0])
-        # tf_widget_ee, tf_output_ee = make_transform_widget(app, plane_model['arms'][i].joints[1])
-        # plane_model['arm_joint0_inputs'].append(arm_joint0_inpt)
-        # plane_model['tf_widgets'].append(tf_widget)
-        # plane_model['tf_outputs'].append(tf_output)
-        # plane_model['tf_widgets_ee'].append(tf_widget_ee)
-        # plane_model['tf_outputs_ee'].append(tf_output_ee)
-    return l_widgets
-  
-  def get_left_side_widgets(self, app):
-    l_widgets = []
-    plane_model['piston_inputs'] = []
-    for i in range(0, len(plane_model['pistons'])):
-        piston_widget = make_piston_widget(plane_model['pistons'][i].uuid, f"Piston {i+1}", PISTON_START_HEIGHT_RATIO, _min=0, _max=1, _input_resolution=0.05)
-        l_widgets.append(piston_widget)
     
-    for i in range(0, len(plane_model['arms'])):
-        arm_joint0_widget = make_quaternion_widget(app, plane_model['arms'][i].joints[0])
-        l_widgets.append(arm_joint0_widget)
-        # tf_widget, tf_output = make_transform_widget(app, plane_model['arms'][i].joints[0])
-        # tf_widget_ee, tf_output_ee = make_transform_widget(app, plane_model['arms'][i].joints[1])
-        # plane_model['arm_joint0_inputs'].append(arm_joint0_inpt)
-        # plane_model['tf_widgets'].append(tf_widget)
-        # plane_model['tf_outputs'].append(tf_output)
-        # plane_model['tf_widgets_ee'].append(tf_widget_ee)
-        # plane_model['tf_outputs_ee'].append(tf_output_ee)
-    return l_widgets
+  def add_arm(self, arm):
+    self.arms.append(arm)
+  def add_piston(self, piston):
+    self.pistons.append(piston)
   
   def add_joint(self, joint):
     self.joints.append(joint)
-    # if len(self.joints) > 1:
-    #   self.joints[-2].link_to(self.joints[-1])
-    #   self.joints[-1].update_transform()
-    #   self.tm.add_transform(f"joint_{len(self.joints)-2}", f"joint_{len(self.joints)-1}", self.joints[-2].transform)
-    #   return
-    # self.origin.link_to(self.joints[0])
+    if len(self.joints) > 1:
+      self.joints[-1].link_to(self.joints[-2])
+      self.tm.add_transform(f"joint_{self.joints[-2].name}", f"joint_{self.joints[-1].name}", self.joints[-2].transform)
+      return
+    print(f"Origin Linking: {self.origin.name} -> {self.joints[0].name}")
+    self.joints[0].link_to(self.origin)
     
   def forward_kinematics(self):
-    combined_transform = None
-    for i in range(0,len(self.joints)):
-      idx = i
-      self.joints[idx].update_transform()
-      self.joints[idx].apply_transform(combined_transform)
-  
-  def set_visibility(self, vis):
-    self.visible = vis
-    for j in self.joints:
-      figure_data = j.set_visibility(vis)
-      
+    print("\n\nStarting Forward Kinematics:")
+    for arm in self.arms:
+      arm.forward_kinematics()
+    # self.origin.update(dbg_prefix="\t")
+    
+    # for i in range(1, len(self.joints)):
+    #   print(f"Calculated Transform {self.joints[i-1].name} -> {self.joints[i]}: ")
+    #   print(self.joints[i].transform)
+    #   # print(f"\nTM MANAGER Transform joint_{self.joints[i-1].name} to joint_{self.joints[i].name}")
+    #   # t = self.tm.get_transform(f"joint_{self.joints[i-1].name}", f"joint_{self.joints[i].name}")
+    #   # self.joints[i].update_from_transform(t)
+    #   # print(t)
+    #   print(f"Distance from Parent: {np.linalg.norm(self.joints[i-1].absolute_pos - self.joints[i].absolute_pos)}")
+        
+              
   def draw(self, figure_data):
     trace = self.get_trace(figure_data)
     
