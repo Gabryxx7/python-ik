@@ -111,7 +111,7 @@ model_arms.append(arm3)
 # triangle_v2.link_to(triangle_v1)
 # triangle_v3.link_to(triangle_v2)
 
-plane = Plane("Arm1", origin)
+plane = Plane("Plane", origin)
 for arm in model_arms:
   plane.add_arm(arm)
 for piston in model_pistons:

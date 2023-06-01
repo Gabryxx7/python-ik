@@ -80,47 +80,41 @@ app.layout = dmc.MantineProvider(
 def update_graph(*callback_data):
     inputs = callback_data[0]
     states = callback_data[1]
-    BASE_PLOTTER._draw_arm(states['figure'], arm_test)
     for i in range(0, len(plane.arms)):
-        BASE_PLOTTER._draw_arm(states['figure'], plane.arms[i])
+        states['figure']['data'] = plane.arms[i].draw(states['figure']['data'])
     for i in range(0, len(plane.pistons)):
-        BASE_PLOTTER._draw_arm(states['figure'], plane.pistons[i])
+        states['figure']['data'] = plane.pistons[i].draw(states['figure']['data'])
+    states['figure']['data'] = arm_test.draw(states['figure']['data'])
+    states['figure']['data'] = plane.draw(states['figure']['data'])
     BASE_PLOTTER.change_camera_view(states['figure'], states['relayout'])
+    BASE_PLOTTER._draw_scene(states['figure'])
     return states['figure']
-    # for i in range(0, len(plane_model['arms'])):
-    #     plane_model['arms'][i].joints[-2]._origin[2] = float(plane_model['pistons'][i].joints[-1]._origin[2]) * float(piston_heights[i])
-    #     plane_model['arms'][i].joints[-2].rotate(quaternion=plane_quat[i][0])
-    #     plane_model['arms'][i].forward_kinematics()
-    
-    
-    return draw_plot(states['figure'], states['relayout'])
 
-def draw_plot(figure, relayout_data, robots_to_show=None):
-    if robots_to_show is None:
-        robots_to_show = robots_show_options
+# def draw_plot(figure, relayout_data, robots_to_show=None):
+#     if robots_to_show is None:
+#         robots_to_show = robots_show_options
     
-    test_model['arm'].set_visibility(robots_show_options[1] in robots_to_show)
-    BASE_PLOTTER._draw_arm(figure, test_model['arm'])
+#     test_model['arm'].set_visibility(robots_show_options[1] in robots_to_show)
+#     BASE_PLOTTER._draw_arm(figure, test_model['arm'])
     
-    for i in range(0, len(plane_model['arms'])):
-        plane_model['arms'][i].set_visibility(robots_show_options[0] in robots_to_show)
-        plane_model['pistons'][i].set_visibility(robots_show_options[0] in robots_to_show)
-        BASE_PLOTTER._draw_arm(figure, plane_model['arms'][i])
-        BASE_PLOTTER._draw_arm(figure, plane_model['pistons'][i])
-    plane_model['plane'].set_visibility(robots_show_options[0] in robots_to_show)
-    BASE_PLOTTER._draw_arm(figure, plane_model['plane'])
+#     for i in range(0, len(plane_model['arms'])):
+#         plane_model['arms'][i].set_visibility(robots_show_options[0] in robots_to_show)
+#         plane_model['pistons'][i].set_visibility(robots_show_options[0] in robots_to_show)
+#         BASE_PLOTTER._draw_arm(figure, plane_model['arms'][i])
+#         BASE_PLOTTER._draw_arm(figure, plane_model['pistons'][i])
+#     plane_model['plane'].set_visibility(robots_show_options[0] in robots_to_show)
+#     BASE_PLOTTER._draw_arm(figure, plane_model['plane'])
 
-    BASE_PLOTTER.change_camera_view(figure, relayout_data)
-    # print(f"Updating figure: {quaternion_values}")
-    return figure
-
+#     BASE_PLOTTER.change_camera_view(figure, relayout_data)
+#     # print(f"Updating figure: {quaternion_values}")
+#     return figure
 
 graph_out = Output(GRAPH_ID, 'figure')
 graph_state = {'figure': State(GRAPH_ID, "figure"), 'relayout': State(GRAPH_ID, "relayoutData")}
 print("******* PLANE TRIGGER *******")
-# triggers = {'arm': arm_page.trigger.input, 'plane':plane_page.trigger.input}
+triggers = {'arm': arm_page.trigger.input, 'plane':plane_page.trigger.input}
 # triggers = {'arm': arm_page.trigger.input}
-triggers = {'plane':plane_page.trigger.input}
+# triggers = {'plane':plane_page.trigger.input}
 app.callback(graph_out, triggers, graph_state)(update_graph)
 
 if __name__ == "__main__":

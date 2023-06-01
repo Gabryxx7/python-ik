@@ -30,19 +30,23 @@ class IModel:
     self.trace = None
     self.visible = True
     
+  def make_trace(self):
+    trace = {}
+    trace['name'] = self.name
+    trace['uuid'] = self.uuid
+    return trace
+  
   def get_trace(self, fig_data):
     if self.trace is not None:
       return self.trace
     trace = None
     for t in fig_data:
       if 'uuid' in t and t['uuid'] == self.uuid:
-        # print(f"Updating trace: {self.uuid}")
+        print(f"Updating trace: {self.uuid}")
         trace = t
         break
     if trace is None:
-      trace = self.trace
-      trace['name'] = self.name
-      trace['uuid'] = self.uuid
+      trace = self.make_trace()
       print(f"Appending trace: {self.uuid}")
       fig_data.append(trace)
     return trace
