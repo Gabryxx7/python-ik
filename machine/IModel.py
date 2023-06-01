@@ -17,7 +17,7 @@ CONTAINER_STYLE = {'display': 'flex', 'flex-direction': 'row'}
 COLUMN_STYLE = {'display': 'flex', 'flex-direction': 'row'}
 
 class IModel:
-  def __init__(self, _name, _origin):
+  def __init__(self, _name, _origin, origin_joint=None):
     self.name = _name
     self.prev = None
     self.next = None
@@ -25,7 +25,7 @@ class IModel:
     self.absolute_pos = deepcopy(_origin)
     self.tm = TransformManager()
     self.joints = []
-    self.origin = Joint(f"{self.name}_Origin", self.absolute_pos)
+    self.origin = origin_joint if origin_joint is not None else Joint(f"{self.name}_Origin", self.absolute_pos)
     self.origin.transform = pt.transform_from_pq(np.hstack((np.array(self.absolute_pos), pr.q_id)))
     self.trace = None
     self.visible = True

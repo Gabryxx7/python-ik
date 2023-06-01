@@ -36,50 +36,51 @@ arm_test.add_joint(Joint("EE", VTest_3, color="#33C1FF"))
 # piston2.add_joint(Joint("TA2_Joint3", VTest_3))
 # arm.add_joint(Joint("TA_Joint4", VTest_4))
 
-model_arms = []
-model_pistons = []
 
+plane = Plane("Plane", origin)
+  
 origin = [-200,-200,0]
 color="#90FF33"
 piston1 = Arm("Arm1_Piston", origin)
-piston1.add_joint(Joint("Piston1_Joint0", origin))
-piston1.add_joint(Joint("Piston1_Joint", np.add(origin, [0,0,PISTON_HEIGHT])))
-model_pistons.append(piston1)
-arm1 = Arm("Arm", origin)
+piston1.add_joint(Joint("Piston1_Joint0", [0,0,PISTON_HEIGHT]))
+# piston1.add_joint(Joint("Piston1_Joint", np.add(origin, [0,0,PISTON_HEIGHT])))
+plane.add_piston(piston1)
+
+arm1 = Arm("Arm", origin, origin_joint=piston1.joints[-1])
 # arm1.add_joint(Joint("Arm1_Joint0", [0,0,0], color=color))
 # arm1.add_joint(Joint("Arm1_Joint0", origin, color=color))
-arm1.add_joint(Joint("Arm1_Joint", np.array([0, 0, PISTON_START_HEIGHT]), color=color))
+# arm1.add_joint(Joint("Arm1_Joint", np.array([0, 0, PISTON_START_HEIGHT]), color=color))
 arm1.add_joint(Joint("Arm1_EE", np.array([PISTON_ARM_LENGTH, PISTON_ARM_LENGTH, PISTON_ARM_LENGTH]), color=color))
-model_arms.append(arm1)
+plane.add_arm(arm1)
 
 origin = [200,200,0]
 color="#33FFEC"
 piston2 = Arm("Arm2_Piston", origin)
-piston2.add_joint(Joint("Piston2_Joint0", origin))
-piston2.add_joint(Joint("Piston2_Joint", np.add(origin, [0,0,PISTON_HEIGHT])))
-model_pistons.append(piston2)
+piston2.add_joint(Joint("Piston2_Joint0", [0,0,PISTON_HEIGHT]))
+# piston2.add_joint(Joint("Piston2_Joint", np.add(origin, [0,0,PISTON_HEIGHT])))
+plane.add_piston(piston2)
 
-arm2 = Arm("Arm", origin)
+arm2 = Arm("Arm", origin, origin_joint=piston2.joints[-1])
 # arm2.add_joint(Joint("Arm2_Joint0", [0,0,0], color=color))
 # arm2.add_joint(Joint("Arm2_Joint0", origin, color=color))
-arm2.add_joint(Joint("Arm2_Joint", np.array([0, 0, PISTON_START_HEIGHT]), color=color))
+# arm2.add_joint(Joint("Arm2_Joint", np.array([0, 0, PISTON_START_HEIGHT]), color=color))
 arm2.add_joint(Joint("Arm2_EE", np.array([-PISTON_ARM_LENGTH, -PISTON_ARM_LENGTH, PISTON_ARM_LENGTH]), color=color))
-model_arms.append(arm2)
+plane.add_arm(arm2)
 
 
 origin = [300,-300,0]
 color="#33C1FF"
 piston3 = Arm("Arm3_Piston", origin)
-piston3.add_joint(Joint("Piston3_Joint0", origin))
-piston3.add_joint(Joint("Piston3_Joint", np.add(origin, [0,0,PISTON_HEIGHT])))
-model_pistons.append(piston3)
+piston3.add_joint(Joint("Piston3_Joint0", [0,0,PISTON_HEIGHT]))
+# piston3.add_joint(Joint("Piston3_Joint", np.add(origin, [0,0,PISTON_HEIGHT])))
+plane.add_piston(piston3)
 
-arm3 = Arm("Arm", origin)
+arm3 = Arm("Arm", origin, origin_joint=piston3.joints[-1])
 # arm3.add_joint(Joint("Arm3_Joint0", [0,0,0], color=color))
 # arm3.add_joint(Joint("Arm3_Joint0", origin, color=color))
-arm3.add_joint(Joint("Arm3_Joint", np.array([0, 0, PISTON_START_HEIGHT]), color=color))
+# arm3.add_joint(Joint("Arm3_Joint", np.array([0, 0, PISTON_START_HEIGHT]), color=color))
 arm3.add_joint(Joint("Arm3_EE", np.array([-PISTON_ARM_LENGTH, +PISTON_ARM_LENGTH, PISTON_ARM_LENGTH]), color=color))
-model_arms.append(arm3)
+plane.add_arm(arm3)
 
 
 
@@ -111,11 +112,6 @@ model_arms.append(arm3)
 # triangle_v2.link_to(triangle_v1)
 # triangle_v3.link_to(triangle_v2)
 
-plane = Plane("Plane", origin)
-for arm in model_arms:
-  plane.add_arm(arm)
-for piston in model_pistons:
-  plane.add_piston(piston)
 # plane.add_joint(arm1.joints[-1])
 # plane.add_joint(arm2.joints[-1])
 # plane.add_joint(arm3.joints[-1])

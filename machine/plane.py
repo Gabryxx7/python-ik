@@ -61,6 +61,7 @@ class Plane(IModel):
     
   def add_arm(self, arm):
     self.arms.append(arm)
+    
   def add_piston(self, piston):
     self.pistons.append(piston)
     

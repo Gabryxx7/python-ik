@@ -9,8 +9,8 @@ from machine.joint import *
 from machine.IModel import IModel
 
 class Arm(IModel):
-  def __init__(self, _name, _origin):
-    super().__init__(_name, _origin)
+  def __init__(self, _name, _origin, origin_joint=None):
+    super().__init__(_name, _origin, origin_joint)
     self.page = None
     self.uuid = f"Arm_{str(uuid.uuid4())}"
   
