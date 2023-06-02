@@ -95,7 +95,6 @@ class Joint:
   
   def __init__(self, _name, _origin, euler_rot=None, quaternion=None, constraints=None, color=LEG_COLOR):
     self.name = _name
-    self.prev = None
     self.next = None
     self.uuid = f"Joint_{str(uuid.uuid4())}"
     self.color = color
@@ -127,17 +126,8 @@ class Joint:
     # self.transform = pt.transform_from_pq(np.hstack((self.absolute_pos[:3], self.quaternion)))
     if self.parent is not None:
       dbg += f"Using parent ({self.parent.name}) transform"
-      # self.transform = self.parent.transform * self.transform
-      self.transform = pt.concat(self.parent.transform, self.transform)
-    # if self.parent is not None and self.parent.combined_transform is not None:
-    #   dbg += f"Using parent ({self.parent.name}) transform"
-    #   self.combined_transform = self.parent.combined_transform * self.transform
-    # else:
-    #   dbg += f"NO PARENT TRANSFORM"
-    #   self.combined_transform = self.transform
-    print(dbg)
-    self.absolute_pos = pt.transform(self.transform, self._origin)
-    # self.absolute_pos = self.transform@self._origin
+      self.transform = np.dot(np.matrix(self.parent.transform), np.matrix(self.transform))
+    self.absolute_pos = np.array(self.transform@self._origin).flatten()
     for child in self.children:
       child.update(dbg_prefix=dbg_prefix)
       

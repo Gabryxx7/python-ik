@@ -20,11 +20,11 @@ class Arm(IModel):
       self.joints[-1].link_to(self.joints[-2])
       self.tm.add_transform(f"joint_{self.joints[-2].name}", f"joint_{self.joints[-1].name}", self.joints[-2].transform)
       return
-    print(f"Origin Linking: {self.origin.name} -> {self.joints[0].name}")
+    # print(f"Origin Linking: {self.origin.name} -> {self.joints[0].name}")
     self.joints[0].link_to(self.origin)
     
   def forward_kinematics(self):
-    print("\n\nStarting Forward Kinematics:")
+    # print("\n\nStarting Forward Kinematics:")
     self.origin.update(dbg_prefix="\t")
     
     # for i in range(1, len(self.joints)):

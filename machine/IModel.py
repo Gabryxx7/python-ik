@@ -14,7 +14,6 @@ IMPL_MISSING_MSG = "implementatiom missing (did you override it in your new mode
 class IModel:
   def __init__(self, _name, _origin, origin_joint=None):
     self.name = _name
-    self.prev = None
     self.next = None
     self.uuid = f"IModel_{str(uuid.uuid4())}"
     self.absolute_pos = deepcopy(_origin)
@@ -23,7 +22,7 @@ class IModel:
     self.origin = origin_joint if origin_joint is not None else Joint(f"{self.name}_Origin", self.absolute_pos)
     self.origin.transform = pt.transform_from_pq(np.hstack((np.array(self.absolute_pos), pr.q_id)))
     self.trace = None
-    self.visible = True
+    self.visible = False
     
   def make_trace(self):
     trace = {}

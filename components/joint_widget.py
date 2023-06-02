@@ -30,7 +30,7 @@ class JointWidget:
     return self.widget
   
   def update_joint(self, *q_input):
-    print("JOINT UPDATE")
+    # print("JOINT UPDATE")
     self.joint.rotate(quaternion=q_input)
     return ""
   

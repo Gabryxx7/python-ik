@@ -33,7 +33,8 @@ class TransformWidget:
   
   def get_transform_info(self):
     matrix_data = []
-    for row in self.joint.transform:
+    tf = np.array(self.joint.transform)
+    for row in tf:
       for col in row:
         matrix_data.append(html.Span(f"{col:.2f}"))
     tf_matrix_div = html.Div(matrix_data, className="transform-matrix-view")

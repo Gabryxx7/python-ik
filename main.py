@@ -77,11 +77,12 @@ app.layout = dmc.MantineProvider(
 
 
 def switch_model_visibility(tab, fig_data):
-    print(f"Switching visibility: {tab}")
-    if tab == plane_page.id:
+    if tab == plane_page.id and not plane_page.plane.visible:
+        print(f"Showing tab {plane_page.plane.name}")
         plane_page.plane.set_visibility(True)
         arm_page.model.set_visibility(False)
-    if tab == arm_page.id:
+    if tab == arm_page.id and not arm_page.model.visible:
+        print(f"Showing tab {arm_page.model.name}")
         plane_page.plane.set_visibility(False)
         arm_page.model.set_visibility(True)
 

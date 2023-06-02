@@ -51,8 +51,7 @@ class PistonWidget:
     return self.widget
     
   def update_piston(self, *slider_input):
-    print(f"{self.piston.joints[-1].absolute_pos[2]}\t{float(slider_input[0])}")
-    self.piston.joints[-1].relative_pos[2] = PISTON_HEIGHT * float(slider_input[0])
+    self.piston.joints[-1]._origin[2] = PISTON_HEIGHT * float(slider_input[0])
     return ""
     
   def add_callback(self):

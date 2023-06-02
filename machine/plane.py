@@ -46,7 +46,6 @@ DEFAULT_PLANE_TRACE = {
 class Plane(IModel):
   def __init__(self, _name, _origin):
     self.name = _name
-    self.prev = None
     self.next = None
     self.uuid = f"Plane_{str(uuid.uuid4())}"
     self.absolute_pos = deepcopy(_origin)
@@ -55,7 +54,7 @@ class Plane(IModel):
     self.origin = Joint("Origin", self.absolute_pos)
     self.origin.transform = pt.transform_from_pq(np.hstack((np.array(self.absolute_pos), pr.q_id)))
     self.trace = None
-    self.visible = True
+    self.visible = False
     self.arms = []
     self.pistons = []
     
@@ -75,16 +74,6 @@ class Plane(IModel):
     print("\n\nStarting Forward Kinematics:")
     for arm in self.arms:
       arm.forward_kinematics()
-    # self.origin.update(dbg_prefix="\t")
-    
-    # for i in range(1, len(self.joints)):
-    #   print(f"Calculated Transform {self.joints[i-1].name} -> {self.joints[i]}: ")
-    #   print(self.joints[i].transform)
-    #   # print(f"\nTM MANAGER Transform joint_{self.joints[i-1].name} to joint_{self.joints[i].name}")
-    #   # t = self.tm.get_transform(f"joint_{self.joints[i-1].name}", f"joint_{self.joints[i].name}")
-    #   # self.joints[i].update_from_transform(t)
-    #   # print(t)
-    #   print(f"Distance from Parent: {np.linalg.norm(self.joints[i-1].absolute_pos - self.joints[i].absolute_pos)}")
         
   def set_visibility(self, vis):
     self.visible = vis
