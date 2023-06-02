@@ -33,6 +33,7 @@ arm_page.add_callback()
 plane_page = PlaneModelPage(plane, app)
 plane_page_layout = plane_page.get_page()
 plane_page.add_callback()
+IK_point = Joint("IK_Point", [ 300, 200, 100], color="#555555")
 
 info_panel = html.Div("", className="info-panel")
 
@@ -75,16 +76,17 @@ app.layout = dmc.MantineProvider(
         )
     ])
 
-
 def switch_model_visibility(tab, fig_data):
-    if tab == plane_page.id and not plane_page.plane.visible:
-        print(f"Showing tab {plane_page.plane.name}")
-        plane_page.plane.set_visibility(True)
-        arm_page.model.set_visibility(False)
-    if tab == arm_page.id and not arm_page.model.visible:
-        print(f"Showing tab {arm_page.model.name}")
-        plane_page.plane.set_visibility(False)
-        arm_page.model.set_visibility(True)
+    if tab == plane_page.id:
+        if not plane_page.plane.visible:
+            print(f"Showing plane tab {plane_page.plane.name}")
+            plane_page.plane.set_visibility(True)
+            arm_page.model.set_visibility(False)
+    elif tab == arm_page.id:
+        if not arm_page.model.visible:
+            print(f"Showing arm tab {arm_page.model.name}")
+            plane_page.plane.set_visibility(False)
+            arm_page.model.set_visibility(True)
 
 def update_graph(*callback_data):
     inputs = callback_data[0]
@@ -96,28 +98,12 @@ def update_graph(*callback_data):
         states['figure']['data'] = plane.pistons[i].draw(states['figure']['data'])
     states['figure']['data'] = arm_test.draw(states['figure']['data'])
     states['figure']['data'] = plane.draw(states['figure']['data'])
+    states['figure']['data'] = IK_point.draw(states['figure']['data'])
+    
     BASE_PLOTTER.change_camera_view(states['figure'], states['relayout'])
     BASE_PLOTTER._draw_scene(states['figure'])
     return states['figure']
 
-# def draw_plot(figure, relayout_data, robots_to_show=None):
-#     if robots_to_show is None:
-#         robots_to_show = robots_show_options
-    
-#     test_model['arm'].set_visibility(robots_show_options[1] in robots_to_show)
-#     BASE_PLOTTER._draw_arm(figure, test_model['arm'])
-    
-#     for i in range(0, len(plane_model['arms'])):
-#         plane_model['arms'][i].set_visibility(robots_show_options[0] in robots_to_show)
-#         plane_model['pistons'][i].set_visibility(robots_show_options[0] in robots_to_show)
-#         BASE_PLOTTER._draw_arm(figure, plane_model['arms'][i])
-#         BASE_PLOTTER._draw_arm(figure, plane_model['pistons'][i])
-#     plane_model['plane'].set_visibility(robots_show_options[0] in robots_to_show)
-#     BASE_PLOTTER._draw_arm(figure, plane_model['plane'])
-
-#     BASE_PLOTTER.change_camera_view(figure, relayout_data)
-#     # print(f"Updating figure: {quaternion_values}")
-#     return figure
 
 graph_out = Output(GRAPH_ID, 'figure')
 graph_state = {'figure': State(GRAPH_ID, "figure"), 'relayout': State(GRAPH_ID, "relayoutData")}

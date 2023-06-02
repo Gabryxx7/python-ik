@@ -37,6 +37,7 @@ class Arm(IModel):
     #   print(f"Distance from Parent: {np.linalg.norm(self.joints[i-1].absolute_pos - self.joints[i].absolute_pos)}")
         
   def set_visibility(self, vis):
+    self.visible = vis
     for j in self.joints:
       j.set_visibility(vis)
   
