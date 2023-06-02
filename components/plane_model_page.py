@@ -25,8 +25,7 @@ class PlaneModelPage:
       for piston in self.plane.pistons:
         self.pistons_widgets.append(PistonWidget(piston, self.app))
       self.trigger = Trigger(self.plane.uuid)
-      self.page = html.Div([pw.get_widget() for pw in self.pistons_widgets] + [jw.get_widget() for jw in self.joints_widgets] + [self.trigger.component],
-                           style=CONTAINER_STYLE)
+      self.page = html.Div([pw.get_widget() for pw in self.pistons_widgets] + [jw.get_widget() for jw in self.joints_widgets] + [self.trigger.component], className="model-sidebar")
     return self.page
   
   def update_plane(self, *joints_callbacks):

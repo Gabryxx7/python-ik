@@ -9,8 +9,6 @@ from components.quaternion_widget import QuaternionWidget
 from components.widget_interface import Widget
 from components.trigger import Trigger
 
-JOINT_WIDGET_STYLE = {'display': 'flex', 'flex-direction': 'row'}
-
 class JointWidget:
   def __init__(self, joint, app):
     self.joint = joint
@@ -24,8 +22,11 @@ class JointWidget:
     if self.widget is None:
       self.q_widget = QuaternionWidget(self.joint, self.app)
       self.tf_widget = TransformWidget(self.joint, self.app)
+      color = "inherit" if self.joint.color is None else self.joint.color
+      title = dcc.Markdown(f"** JOINT {self.joint.name.upper()} **", style={'color': color})
       self.trigger = Trigger(self.joint.uuid)
-      self.widget = html.Div([self.q_widget.get_widget(), self.tf_widget.get_widget(), self.trigger.component], className="joint-widget", style=JOINT_WIDGET_STYLE)
+      widget_container = html.Div([self.q_widget.get_widget(), self.tf_widget.get_widget(), self.trigger.component], className="joint-widget-container")
+      self.widget = html.Div([title, widget_container])
     return self.widget
   
   def update_joint(self, *q_input):

@@ -40,13 +40,13 @@ class PistonWidget:
   def make_widget(self):
     name = self.piston.name
     slider_id = f"{self.piston.uuid}_slider"
-    input_field = dcc.Slider(config['min'], config['max'], config['res'], value=config['value'], id=slider_id, marks=None, updatemode='drag',
+    input_slider = dcc.Slider(config['min'], config['max'], config['res'], value=config['value'], id=slider_id, marks=None, updatemode='drag',
                             persistence=True,
                             tooltip={"placement": "bottom", "always_visible": True})
     label_id = f"{self.piston.uuid}_label"
     label = html.Div(name, id=label_id, **{'data-name': name})
     self.trigger = Trigger(self.piston.uuid)
-    self.widget = dbc.Row([dbc.Col([self.trigger.component, label], width=2), dbc.Col([input_field], width=10)], className="piston-widget", style={'width': '100%'})
+    self.widget = dbc.Row([dbc.Col([self.trigger.component, label], width=2), dbc.Col([input_slider], width=10)], className="pistons-widget-container")
     self.slider_input = Input(slider_id, "value")
     return self.widget
     

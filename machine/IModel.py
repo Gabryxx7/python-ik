@@ -10,11 +10,6 @@ from machine.joint import *
 from dash import Dash, dcc, html, dash_table, Input, Output, State, callback
 
 IMPL_MISSING_MSG = "implementatiom missing (did you override it in your new model class?)"
-left_side_width = "30vw"
-LEFT_PANEL_STYLE = {'display': 'flex', 'width': left_side_width, 'max-width': left_side_width, 'flex-wrap': 'wrap', 'flex-direction': 'row'}
-RIGHT_PANEL_STYLE = {'display': 'flex', 'flex-direction': 'column', 'gap': '1rem', 'padding': '1rem', 'width': 'right_side_width', 'flex-wrap': 'nowrap', 'align-items': 'start', 'justify-items': 'start'}
-CONTAINER_STYLE = {'display': 'flex', 'flex-direction': 'row'}
-COLUMN_STYLE = {'display': 'flex', 'flex-direction': 'row'}
 
 class IModel:
   def __init__(self, _name, _origin, origin_joint=None):

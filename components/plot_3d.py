@@ -14,7 +14,7 @@ import json
 GRAPH_ID = "graph-kinematics"
 # BASE_FIGURE = deepcopy(HEXAPOD_FIGURE)
 BASE_FIGURE = HEXAPOD_FIGURE
-plot3d = dcc.Graph(id=GRAPH_ID, figure=BASE_FIGURE,style={'width': '100%', 'z-index': '999'})
+plot3d = dcc.Graph(id=GRAPH_ID, figure=BASE_FIGURE, className="plotly-graph")
 
 class Point():
   def __init__(self, x, y, z):

@@ -41,5 +41,5 @@ switcher_input = Input(ThemeSwitchAIO.ids.switch("theme"), "value")
 
 # actions = [ham_menu, switcher]
 actions = [switcher]
-actions_container = html.Div(actions, style={'position': 'absolute', 'left': '2rem', 'gap': '3rem'}, className="d-flex align-items-center justify-content-center")
-header = html.Div([actions_container, header_title], className="d-flex align-items-center justify-content-center")
+actions_container = html.Div(actions, className="actions-container")
+header = html.Div([actions_container, header_title], className="header-container")

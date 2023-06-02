@@ -4,8 +4,6 @@ from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
 
-CONTAINER_STYLE = {'display': 'flex', 'flex-direction': 'column'}
-
 class ModelPage:
   @staticmethod
   def make_page(app, model):
@@ -13,7 +11,7 @@ class ModelPage:
     for joint in model.joints:
       j_w = joint.get_widget(app)
       j_widgets.append(j_w)
-    widget = html.Div(j_widgets, style=CONTAINER_STYLE)
+    widget = html.Div(j_widgets)
     return widget
   
   def __init__(self, _id, _title, app, model):

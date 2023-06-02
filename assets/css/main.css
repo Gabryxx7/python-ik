@@ -1,0 +1,101 @@
+.main-container {
+  display: flex;
+  width: 100vw;
+  position: relative;
+}
+
+.info-panel{
+  height: 20vh;
+  background-color: rgb(33, 33, 36);
+}
+
+.view-panel{
+  position: absolute;
+  top: 0vh;
+  left: 30vw;
+  margin-left: 0.1rem;
+  width: 60vw;
+}
+.view-panel > div:first-child{
+  top: 0vh;
+  height: 70vh;
+}
+.view-panel > div:last-child{
+  top: 30vh;
+}
+.sidebar{
+  width: 30vw;
+}
+.model-sidebar{
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-pane{
+  padding: 1rem;
+}
+
+.actions-container{
+  position: absolute;
+  left: 2rem;
+  gap: 3rem;
+  display: flex;
+  place-items: center;
+  place-content: center;
+}
+
+.header-container{
+  display: flex;
+  place-items: center;
+  place-content: center;
+}
+
+.quaternion-widget-container{
+  width: 50%;
+}
+.transform-widget{
+  width: 50%;
+  font-size: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.transform-infos{
+  display: flex;
+  height: 90%;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.transform-matrix-view{
+  display: grid;
+  grid-template-columns: 24% 24% 24% 24%;
+  column-gap: 1%;
+}
+
+.joint-widget-container{
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.quaternion-sliders-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.quat-comp-slider-container{
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+}
+.quat-comp-slider{
+  width: 100%;
+  padding: 0.6rem;
+}
+
+.pistons-widget-container{
+  width: 100%;
+  font-size: 0.8rem;
+}

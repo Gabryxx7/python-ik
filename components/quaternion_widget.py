@@ -3,6 +3,7 @@ from dash import dcc
 from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
+from components.trigger import Trigger
 
 quat_components = {
   'w': {'value': 1, 'min': -1, 'max': 1, 'res': 0.01},
@@ -19,10 +20,10 @@ class QuaternionWidget:
     self.label_outputs = []
     self.sliders_inputs = []
     self.sliders_outputs = []
-    self.callback_output = None
     self.component_widgets = []
     self.component_label_states = []
     self.component_label_outputs = []
+    self.trigger = None
     
   def get_widget(self):
     if self.widget is None:
@@ -35,27 +36,24 @@ class QuaternionWidget:
     color = "inherit" if self.joint.color is None else self.joint.color
     for key, data in quat_components.items():
       slider_id = f"quat_{j_id}_{key}"
-      input_field = dcc.Slider(data['min'], data['max'], data['res'], value=data['value'], id=slider_id, marks=None, updatemode='drag', persistence=True, tooltip={"placement": "bottom", "always_visible": True})
+      input_slider = dcc.Slider(data['min'], data['max'], data['res'], value=data['value'], id=slider_id, className="quat-comp-slider", marks=None, updatemode='drag', persistence=True, tooltip={"placement": "bottom", "always_visible": True})
       label_id = slider_id +"_label"
       input_label = html.Div(key.upper(), id=label_id, **{'data-name': key.upper()})
       self.sliders_inputs.append(Input(slider_id, 'value'))
       self.sliders_outputs.append(Output(slider_id, 'value'))
       self.component_label_outputs.append(Output(label_id, 'children'))
       self.component_label_states.append(State(label_id, 'data-name'))
-      comp_widget = dbc.Row([dbc.Col([input_label], width=2), dbc.Col([input_field], width=10)])
+      comp_widget = html.Div([input_label, input_slider], className="quat-comp-slider-container")
       self.component_widgets.append(comp_widget)
       
     reset_button = html.Button('Reset', id=f"quat-reset-{j_id}")
-    callback_out_id = slider_id +"_cb_out"
-    callback_out = html.Div("", id=callback_out_id, style={'display': 'none'})
-    self.callback_output = Output(callback_out_id, 'children')
+    self.trigger = Trigger(slider_id)
     
     self.widget = html.Div([
-      html.Div([dcc.Markdown(f"** QUATERNION {name} **"), callback_out], className='d-flex', style={'gap': '1rem'}),
-      html.Div(self.component_widgets + [reset_button],
-        style={"display": "flex", "flex-direction": "column"}),
+      html.Div([self.trigger.component] + self.component_widgets + [reset_button], className="quaternion-sliders-container"),
       html.Br()],
-      style={"color":color, 'width': '50%'})
+      style={"color":color},
+      className="quaternion-widget-container")
     return self.widget
   
 

@@ -25,10 +25,6 @@ PARAMETERS_SECTION_ID = "parameters-kinematics"
 
 app = Dash(__name__, external_stylesheets=root.external_css)
 
-left_side_width = '30vw'
-right_side_width = '60vw'
-plot_height = "100vh"
-info_panel_height = "0vh"
 """ ========================= LAYOUT ========================= """
 robots_show_options = ['Plane', 'Test Arm']
 arm_page = ArmPage(arm_test, app)
@@ -38,20 +34,22 @@ plane_page = PlaneModelPage(plane, app)
 plane_page_layout = plane_page.get_page()
 plane_page.add_callback()
 
+info_panel = html.Div("", className="info-panel")
+
 main_plot_page = html.Div([
                     html.Div([
                             # dcc.Checklist(robots_show_options.copy(), [robots_show_options[0]], style={'display': 'flex', 'padding': '0.5rem', 'place-content': 'space-evenly'}, id='show-robots-checklist'),
                             dbc.Tabs([
-                                dbc.Tab(plane_page_layout, label="Plane", style={"padding": "1rem"}),
-                                # dbc.Tab(test_arm_widgets, label="Test Arm", style={"padding": "1rem"}),
-                                dbc.Tab(arm_page_layout, label="Test Arm", style={"padding": "1rem"}),
-                                dbc.Tab(html.Label(dcc.Markdown(f"** QUATERNION **")), label="Nothing", style={"padding": "1rem"})],
+                                dbc.Tab(plane_page_layout, label="Plane"),
+                                # dbc.Tab(test_arm_widgets, label="Test Arm"),
+                                dbc.Tab(arm_page_layout, label="Test Arm"),
+                                dbc.Tab(html.Label(dcc.Markdown(f"** QUATERNION **")), label="Nothing")],
                                 ),
                         ],
-                        # style={'width': 'left_side_width'}
+                        className="sidebar"
                     ),
-                    dbc.Row([plot3d], style={'width': 'right_side_width','position': 'absolute', 'top': info_panel_height, 'left': left_side_width, 'margin-left': '1rem', 'height': plot_height, 'width': right_side_width})
-                ], className="main-container-plot3d", style={'position': 'relative', 'display': 'flex', 'width': '100vw'})
+                    html.Div([plot3d, info_panel], className="view-panel")
+                ], className="main-container")
 tabs = []
 tabs.append(dbc.Tab(main_plot_page,
                 style={'position': 'relative', 'width': '100%'},

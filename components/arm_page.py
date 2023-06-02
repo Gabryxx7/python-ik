@@ -6,8 +6,6 @@ import dash_bootstrap_components as dbc
 from components.joint_widget import JointWidget
 from components.trigger import Trigger
 
-CONTAINER_STYLE = {'display': 'flex', 'flex-direction': 'column'}
-
 class ArmPage:  
   def __init__(self, model, app):
     self.app = app
@@ -21,7 +19,7 @@ class ArmPage:
       for joint in self.model.joints:
         self.joints_widgets.append(JointWidget(joint, self.app))
       self.trigger = Trigger(self.model.uuid)
-      self.page = html.Div([jw.get_widget() for jw in self.joints_widgets]+[self.trigger.component], style=CONTAINER_STYLE)
+      self.page = html.Div([jw.get_widget() for jw in self.joints_widgets]+[self.trigger.component], className="model-sidebar")
     return self.page
   
   def update_arm(self, *joints_callbacks):
