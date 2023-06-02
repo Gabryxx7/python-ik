@@ -6,6 +6,7 @@ from pytransform3d import transformations as pt
 from pytransform3d.transform_manager import TransformManager
 from machine.joint import *
 from machine.IModel import IModel
+import math
 
 from copy import deepcopy
 from style_settings import (
@@ -93,3 +94,56 @@ class Plane(IModel):
     trace['visible'] = self.visible
     return figure_data
     
+  """
+  http://ww2.me.ntu.edu.tw/~measlab/download/2003/sensitivity%20of%203-PRS%202003.pdf
+    Input:
+      z_T - height of platform w.r.t. inertial frame at the bottom
+      alpha - roll
+      beta - pitch
+      Intermittent output:
+      gamma - yaw
+      x_T - x position w.r.t. IF
+      y_T - y pos w.r.t. IF
+    Actual output:
+      H1, H2, H3 - heights of the legs
+  """  
+  def Inverse_Kinematics(zT, alpha, beta):
+    Rbig = 22.645  # outer radius
+    Rsmall = 15  # inner radius
+    gamma = -np.arctan(np.sin(alpha) * np.sin(beta) / (np.cos(alpha) + np.cos(beta)))
+    xT = Rbig / 2 + Rsmall / 2 * (
+                np.cos(beta) * np.cos(gamma) + np.sin(alpha) * np.sin(beta) * np.sin(gamma) - np.cos(alpha) * np.cos(
+            gamma))
+    yT = -Rsmall * (np.cos(alpha) * np.sin(gamma) + np.sin(alpha) * np.sin(beta) * np.cos(gamma))
+    
+    Rx = np.array([[1, 0, 0], [0, np.cos(alpha), -np.sin(alpha)], [0, np.sin(alpha), np.cos(alpha)]])
+    Ry = np.array([[np.cos(beta), 0, np.sin(beta)], [0, 1, 0], [-np.sin(beta), 0, np.cos(beta)]])
+    Rz = np.array([[np.cos(gamma), -np.sin(gamma), 0], [np.sin(gamma), np.cos(gamma), 0], [0, 0, 1]])
+    
+    Txyz = np.matmul(np.matmul(Rx, Ry), Rz)
+    Txyz = np.matmul(np.eye(4, 3), Txyz)
+    Txyz = np.matmul(Txyz, np.eye(3, 4))
+    v = np.array([xT, yT, zT, 1])
+    
+    for i in range(4):
+      Txyz[i][3] += v[i]
+      
+    R1 = np.array([3 / 2 * Rbig, 0, 1])
+    R2 = np.array([0, math.sqrt(3) / 2 * Rbig, 1])
+    R3 = np.array([0, -math.sqrt(3) / 2 * Rbig, 1])
+    
+    b1 = np.array([[Rsmall], [0], [0], [1]])
+    b2 = np.array([[-Rsmall / 2], [math.sqrt(3) / 2 * Rsmall], [0], [1]])
+    b3 = np.array([[-Rsmall / 2], [-math.sqrt(3) / 2 * Rsmall], [0], [1]])
+    
+    b10 = np.matmul(Txyz, b1)
+    b20 = np.matmul(Txyz, b2)
+    b30 = np.matmul(Txyz, b3)
+    
+    l = 25
+    
+    H1 = b10[2][0] - math.sqrt(l ** 2 - (R1[0] - b10[0][0]) ** 2 - (R1[1] - b10[1][0]) ** 2)
+    H2 = b20[2][0] - math.sqrt(l ** 2 - (R2[0] - b20[0][0]) ** 2 - (R2[1] - b20[1][0]) ** 2)
+    H3 = b30[2][0] - math.sqrt(l ** 2 - (R3[0] - b30[0][0]) ** 2 - (R3[1] - b30[1][0]) ** 2)
+    
+    return H1, H2, H3, xT, yT, gamma

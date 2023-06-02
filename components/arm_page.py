@@ -27,11 +27,11 @@ class ArmPage:
   
   def update_arm(self, **inputs):
     # print(inputs)
-    if(inputs['ik_button'] is None or inputs['ik_button'] > self.ik_button['n_clicks']):
-      self.ik_button['n_clicks'] += 1
-      print("IK button pressed")
-    else:
-      self.model.forward_kinematics()
+    # if(inputs['ik_button'] is None or inputs['ik_button'] > self.ik_button['n_clicks']):
+    #   self.ik_button['n_clicks'] += 1
+    #   print("IK button pressed")
+    # else:
+    self.model.forward_kinematics()
     
     return ""
   
