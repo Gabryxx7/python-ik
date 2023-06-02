@@ -92,10 +92,10 @@ def update_graph(*callback_data):
     inputs = callback_data[0]
     states = callback_data[1]
     switch_model_visibility(inputs['tab-id'], states['figure']['data'])
-    for i in range(0, len(plane.arms)):
-        states['figure']['data'] = plane.arms[i].draw(states['figure']['data'])
-    for i in range(0, len(plane.pistons)):
-        states['figure']['data'] = plane.pistons[i].draw(states['figure']['data'])
+    # for i in range(0, len(plane.arms)):
+    #     states['figure']['data'] = plane.arms[i].draw(states['figure']['data'])
+    # for i in range(0, len(plane.pistons)):
+    #     states['figure']['data'] = plane.pistons[i].draw(states['figure']['data'])
     states['figure']['data'] = arm_test.draw(states['figure']['data'])
     states['figure']['data'] = plane.draw(states['figure']['data'])
     states['figure']['data'] = IK_point.draw(states['figure']['data'])

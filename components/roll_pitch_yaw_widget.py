@@ -6,16 +6,15 @@ import dash_bootstrap_components as dbc
 from components.trigger import Trigger
 
 quat_components = {
-  'w': {'value': 1, 'min': -1, 'max': 1, 'res': 0.01},
-  'x': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01},
-  'y': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01},
-  'z': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01}
+  'Roll': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01},
+  'Pitch': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01},
+  'Yaw': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01}
 }
 
-class QuaternionWidget:
-  def __init__(self, joint, app):
+class RollPitchYawWidget:
+  def __init__(self, plane, app):
     self.app = app
-    self.joint = joint
+    self.plane = plane
     self.widget = None
     self.label_outputs = []
     self.sliders_inputs = []
@@ -31,9 +30,9 @@ class QuaternionWidget:
     return self.widget
   
   def make_widget(self):
-    name = self.joint.name.upper()
-    j_id = self.joint.uuid
-    color = "inherit" if self.joint.color is None else self.joint.color
+    name = self.plane.name.upper()
+    j_id = self.plane.uuid
+    color = "inherit" if self.plane.color is None else self.plane.color
     for key, data in quat_components.items():
       slider_id = f"quat_{j_id}_{key}"
       input_slider = dcc.Slider(data['min'], data['max'], data['res'], value=data['value'], id=slider_id, className="quat-comp-slider", marks=None, updatemode='drag', persistence=True, tooltip={"placement": "bottom", "always_visible": True})
@@ -55,6 +54,12 @@ class QuaternionWidget:
       style={"color":color},
       className="quaternion-widget-container")
     return self.widget
-
-  def reset_quat(n_clicks):
-    return [1,0,0,0]
+  
+  
+  def update_plane_orientation(self, *inputs):
+    # print("JOINT UPDATE")
+    self.plane.update_plane_vertices(*inputs)
+    return ""
+  
+  def add_callback(self):
+    self.app.callback(self.trigger.output, self.sliders_inputs)(self.update_plane_orientation)

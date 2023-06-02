@@ -44,6 +44,32 @@ DEFAULT_PLANE_TRACE = {
   "z": []
 }
 
+class PlaneOrientation:
+  def __init__(self, yaw, pitch, roll):
+    self.yawMatrix = np.matrix([])
+    self.pitchMatrix = np.matrix([])
+    self.rollMatrix = np.matrix([])
+    self.update(yaw, pitch, roll)
+  
+  def update( yaw, pitch, roll):
+    self.yawMatrix = np.matrix([
+      [math.cos(yaw), -math.sin(yaw), 0],
+      [math.sin(yaw), math.cos(yaw), 0],
+      [0, 0, 1]
+    ])
+
+    self.pitchMatrix = np.matrix([
+      [math.cos(pitch), 0, math.sin(pitch)],
+      [0, 1, 0],
+      [-math.sin(pitch), 0, math.cos(pitch)]
+    ])
+
+    self.rollMatrix = np.matrix([
+      [1, 0, 0],
+      [0, math.cos(roll), -math.sin(roll)],
+      [0, math.sin(roll), math.cos(roll)]
+    ])
+
 class Plane(IModel):
   def __init__(self, _name, _origin):
     self.name = _name
@@ -58,6 +84,13 @@ class Plane(IModel):
     self.visible = False
     self.arms = []
     self.pistons = []
+    self.vertices = None
+    self.vertices_orig =np.array([
+                              [-100, 100, 200],
+                              [100, 100, 200],
+                              [0, -100, 200],
+                              ])
+    self.color = "#ff6348"
     
   def add_arm(self, arm):
     self.arms.append(arm)
@@ -84,14 +117,38 @@ class Plane(IModel):
       a.set_visibility(vis)
     for p in self.pistons:
       p.set_visibility(vis)
-              
+      
+  # https://au.mathworks.com/matlabcentral/answers/500680-how-to-convert-euler-angle-roll-pitch-yaw-to-position-x-y-z
+  def update_plane_vertices(self, roll, pitch, yaw):
+    if self.vertices is None:
+      self.vertices = deepcopy(self.vertices_orig)
+      # self.vertices = [deepcopy(p.joints[-1].absolute_pos) for p in self.arms]
+    roll *= math.pi/180
+    pitch *= math.pi/180
+    yaw *= math.pi/180
+    print(roll, pitch, yaw)
+    print(f"Updating vertices {self.vertices[0]}")
+    dist = 50
+    # self.vertices[0,0] = self.vertices_orig[0,0] + dist * math.cos(yaw)*math.cos(pitch)
+    # self.vertices[0,1] = self.vertices_orig[0,1] + dist * math.cos(yaw)*math.sin(pitch)*math.sin(roll) - math.sin(yaw)*math.cos(roll)
+    self.vertices[0,2] = self.vertices_orig[0,2] + dist * math.cos(yaw)*math.sin(pitch)*math.cos(roll) + math.sin(yaw)*math.sin(roll)
+    # self.vertices[2,0] = self.vertices_orig[2,0] - dist * math.sin(yaw)*math.cos(pitch)
+    # self.vertices[2,1] = self.vertices_orig[2,1] - dist * math.sin(yaw)*math.sin(pitch)*math.sin(roll) + math.cos(yaw)*math.cos(roll)
+    self.vertices[2,2] = self.vertices_orig[2,2] - dist * math.sin(yaw)*math.sin(pitch)*math.cos(roll) - math.cos(yaw)*math.sin(roll)
+    # self.vertices[1,0] = self.vertices_orig[1,0] + dist * -math.sin(pitch)
+    # self.vertices[1,1] = self.vertices_orig[1,1] + dist * math.cos(pitch)*math.sin(roll)
+    self.vertices[1,2] = self.vertices_orig[1,2] + dist * math.cos(pitch)*math.cos(roll)
+    print(f"Updating vertices {self.vertices[0]}")
+    
+      
   def draw(self, figure_data):
     trace = self.get_trace(figure_data)
-    points = [p.joints[-1].absolute_pos for p in self.arms]
+    points = self.vertices if self.vertices is not None else []
     trace['x'] = [float(p[AXIS_ORDER_CONVENTION[0]]) for p in points]
     trace['y'] = [float(p[AXIS_ORDER_CONVENTION[1]]) for p in points]
     trace['z'] = [float(p[AXIS_ORDER_CONVENTION[2]]) for p in points]
     trace['visible'] = self.visible
+    trace['color'] = self.color
     return figure_data
     
   """
