@@ -86,6 +86,14 @@ class Plane(IModel):
     #   # print(t)
     #   print(f"Distance from Parent: {np.linalg.norm(self.joints[i-1].absolute_pos - self.joints[i].absolute_pos)}")
         
+  def set_visibility(self, vis):
+    self.visible = vis
+    for j in self.joints:
+      j.set_visibility(vis)
+    for a in self.arms:
+      a.set_visibility(vis)
+    for p in self.pistons:
+      p.set_visibility(vis)
               
   def draw(self, figure_data):
     trace = self.get_trace(figure_data)
@@ -93,7 +101,6 @@ class Plane(IModel):
     trace['x'] = [float(p[AXIS_ORDER_CONVENTION[0]]) for p in points]
     trace['y'] = [float(p[AXIS_ORDER_CONVENTION[1]]) for p in points]
     trace['z'] = [float(p[AXIS_ORDER_CONVENTION[2]]) for p in points]
-    print(trace)
-    # trace['visible'] = 'true'
+    trace['visible'] = self.visible
     return figure_data
     

@@ -38,7 +38,7 @@ class Arm(IModel):
         
   def set_visibility(self, vis):
     for j in self.joints:
-      figure_data = j.set_visibility(vis)
+      j.set_visibility(vis)
   
   def draw(self, figure_data):
     for j in self.joints:

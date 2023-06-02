@@ -99,3 +99,27 @@
   width: 100%;
   font-size: 0.8rem;
 }
+
+
+.tab{
+  width: 100% !important;
+  padding: 0.5rem !important;
+}
+
+.tab-container{
+  flex-direction: column !important;
+}
+.tab-parent{
+  flex-direction: row !important;
+}
+
+.main-container .tab-parent{
+  flex-direction: column !important;
+}
+.main-container .tab-container{
+  flex-direction: row !important;
+}
+.main-container .tab-content{
+  width: 100% !important;
+  padding: 1rem !important;
+}

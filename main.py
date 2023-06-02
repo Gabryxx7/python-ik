@@ -39,22 +39,23 @@ info_panel = html.Div("", className="info-panel")
 main_plot_page = html.Div([
                     html.Div([
                             # dcc.Checklist(robots_show_options.copy(), [robots_show_options[0]], style={'display': 'flex', 'padding': '0.5rem', 'place-content': 'space-evenly'}, id='show-robots-checklist'),
-                            dbc.Tabs([
-                                dbc.Tab(plane_page_layout, label="Plane"),
-                                # dbc.Tab(test_arm_widgets, label="Test Arm"),
-                                dbc.Tab(arm_page_layout, label="Test Arm"),
-                                dbc.Tab(html.Label(dcc.Markdown(f"** QUATERNION **")), label="Nothing")],
-                                ),
+                            dcc.Tabs([
+                                dcc.Tab(plane_page_layout, label="Plane", value=plane_page.id),
+                                # dcc.Tab(test_arm_widgets, label="Test Arm"),
+                                dcc.Tab(arm_page_layout, label="Test Arm", value=arm_page.id),
+                                dcc.Tab(html.Label(dcc.Markdown(f"** QUATERNION **")), label="Nothing")],
+                            value=plane_page.id,
+                            id="view-panel-tabs")
                         ],
                         className="sidebar"
                     ),
                     html.Div([plot3d, info_panel], className="view-panel")
                 ], className="main-container")
 tabs = []
-tabs.append(dbc.Tab(main_plot_page,
+tabs.append(dcc.Tab(main_plot_page,
                 style={'position': 'relative', 'width': '100%'},
                 label="Home"))
-tabs.append(dbc.Tab([cheatsheet], label="Cheatsheet"))
+tabs.append(dcc.Tab([cheatsheet], label="Cheatsheet"))
 
 app.layout = dmc.MantineProvider(
     inherit=True,
@@ -64,7 +65,7 @@ app.layout = dmc.MantineProvider(
                 dbc.Row([
                     root.header,
                     dbc.Col(
-                        dbc.Tabs(tabs, style={'flex-direction': 'column'}),
+                        dcc.Tabs(tabs, style={'flex-direction': 'column'}),
                         className="d-flex align-items-start justify-items-start flex-row")
                 ])
             ],
@@ -74,10 +75,20 @@ app.layout = dmc.MantineProvider(
         )
     ])
 
-    
+
+def switch_model_visibility(tab, fig_data):
+    print(f"Switching visibility: {tab}")
+    if tab == plane_page.id:
+        plane_page.plane.set_visibility(True)
+        arm_page.model.set_visibility(False)
+    if tab == arm_page.id:
+        plane_page.plane.set_visibility(False)
+        arm_page.model.set_visibility(True)
+
 def update_graph(*callback_data):
     inputs = callback_data[0]
     states = callback_data[1]
+    switch_model_visibility(inputs['tab-id'], states['figure']['data'])
     for i in range(0, len(plane.arms)):
         states['figure']['data'] = plane.arms[i].draw(states['figure']['data'])
     for i in range(0, len(plane.pistons)):
@@ -110,7 +121,7 @@ def update_graph(*callback_data):
 graph_out = Output(GRAPH_ID, 'figure')
 graph_state = {'figure': State(GRAPH_ID, "figure"), 'relayout': State(GRAPH_ID, "relayoutData")}
 print("******* PLANE TRIGGER *******")
-triggers = {'arm': arm_page.trigger.input, 'plane':plane_page.trigger.input}
+triggers = {'arm': arm_page.trigger.input, 'plane':plane_page.trigger.input, 'tab-id': Input('view-panel-tabs', 'value')}
 # triggers = {'arm': arm_page.trigger.input}
 # triggers = {'plane':plane_page.trigger.input}
 app.callback(graph_out, triggers, graph_state)(update_graph)

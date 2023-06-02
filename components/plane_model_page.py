@@ -17,6 +17,7 @@ class PlaneModelPage:
     self.joints_widgets = []
     self.pistons_widgets = []
     self.trigger = None
+    self.id = f"tab-plane-{self.plane.uuid}"
   
   def get_page(self):
     if self.page is None:

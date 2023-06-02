@@ -57,10 +57,10 @@ class IModel:
     
   # I know this is conceputally not right here since this is about the 3D model and joints and not the actual front end
   # but look, it's much easier this way!
-  def set_visibility(self, vis, fig_data):
+  def set_visibility(self, vis):
     warnings.warn(f"set_visibility(vis, fig_data) not implemented, using IModel default")
     for j in self.joints:
-      fig_data = j.set_visibility(vis)
+      j.set_visibility(vis)
   
   def draw(self, fig_data):
     warnings.warn(f"draw(fig_data) not implemented, using IModel default")

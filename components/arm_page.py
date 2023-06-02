@@ -13,6 +13,7 @@ class ArmPage:
     self.page = None
     self.joints_widgets = []
     self.trigger = None
+    self.id = f"tab-plane-{self.model.uuid}"
   
   def get_page(self):
     if self.page is None:
