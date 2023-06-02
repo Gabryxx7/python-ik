@@ -39,7 +39,8 @@ class TransformWidget:
     tf_matrix_div = html.Div(matrix_data, className="transform-matrix-view")
     tf_extras = []
     tf_extras.append(html.Div(f"\n\nOrigin: {np.round(self.joint._origin, 2)}"))
-    tf_extras.append(html.Div(f"\nPosition: {np.round(self.joint.absolute_pos, 2)}"))
+    tf_extras.append(html.Div(f"\nAbs. Pos.: {np.round(self.joint.absolute_pos, 2)}"))
+    tf_extras.append(html.Div(f"\nRel. Pos.: {np.round(self.joint.relative_pos, 2)}"))
     tf_extras.append(html.Div(f"\nDistance from prev: {np.round(self.joint.get_joint_length(), 2)}"))
     tf_extras.append(html.Div(f"\nQuaternion: {self.joint.quaternion}"))
     tf_extras_div = html.Div(tf_extras, className="transform-extras")
