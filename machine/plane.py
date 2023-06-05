@@ -6,6 +6,7 @@ from pytransform3d import transformations as pt
 from pytransform3d.transform_manager import TransformManager
 from machine.joint import *
 from machine.IModel import IModel
+from machine.circle import Circle
 import math
 
 from copy import deepcopy
@@ -44,7 +45,6 @@ DEFAULT_PLANE_TRACE = {
   "z": []
 }
 
-
 class Plane(IModel):
   def __init__(self, _name, _origin):
     self.name = _name
@@ -59,7 +59,10 @@ class Plane(IModel):
     self.joints = []
     self.color = "#ff6348"
     self.ik_res = None
-        
+    self.circles = []
+    self.circles.append(Circle(f"{self.name}_Radius1", self.absolute_pos, 200))
+    # self.circles.append(Circle(f"{self.name}_Radius2", self.absolute_pos, 30))
+  
   def add_joint(self, joint):
     joint.link_to(self.origin)
     self.joints.append(joint)
@@ -79,6 +82,9 @@ class Plane(IModel):
     self.visible = vis
     for v in self.joints:
       v.set_visibility(vis)
+      
+    for c in self.circles:
+      c.set_visibility(vis)
   
   def draw(self, figure_data):
     trace = self.get_trace(figure_data)
@@ -89,6 +95,8 @@ class Plane(IModel):
     trace['visible'] = self.visible
     trace['color'] = self.color
     # for v in self.joints:
+    for c in self.circles:
+      c.draw(figure_data)
     figure_data = self.origin.draw(figure_data)
     return figure_data
     
@@ -107,8 +115,14 @@ class Plane(IModel):
   """  
   def Inverse_Kinematics(self, zT, alpha, beta):
     print(f"IK Plane. Roll: {alpha}\tPitch: {beta}")
-    Rbig = 22.645  # outer radius
-    Rsmall = 15  # inner radius
+    # Rbig = 22.645  # outer radius
+    # Rsmall = 15  # inner radius
+    # l = 25
+    
+    Rbig = 226
+    Rsmall = 150
+    l = 200
+    
     gamma = -np.arctan(np.sin(alpha) * np.sin(beta) / (np.cos(alpha) + np.cos(beta)))
     xT = Rbig / 2 + Rsmall / 2 * (
                 np.cos(beta) * np.cos(gamma) + np.sin(alpha) * np.sin(beta) * np.sin(gamma) - np.cos(alpha) * np.cos(
@@ -139,10 +153,15 @@ class Plane(IModel):
     b20 = np.matmul(Txyz, b2)
     b30 = np.matmul(Txyz, b3)
     
-    l = 25
     
-    H1 = b10[2][0] - math.sqrt(l ** 2 - (R1[0] - b10[0][0]) ** 2 - (R1[1] - b10[1][0]) ** 2)
-    H2 = b20[2][0] - math.sqrt(l ** 2 - (R2[0] - b20[0][0]) ** 2 - (R2[1] - b20[1][0]) ** 2)
-    H3 = b30[2][0] - math.sqrt(l ** 2 - (R3[0] - b30[0][0]) ** 2 - (R3[1] - b30[1][0]) ** 2)
+    h1_before = l ** 2 - (R1[0] - b10[0][0]) ** 2 - (R1[1] - b10[1][0]) ** 2
+    h2_before = l ** 2 - (R2[0] - b20[0][0]) ** 2 - (R2[1] - b20[1][0]) ** 2
+    h3_before = l ** 2 - (R3[0] - b30[0][0]) ** 2 - (R3[1] - b30[1][0]) ** 2
+    print(h1_before)
+    print(h2_before)
+    print(h3_before)
+    H1 = b10[2][0] - math.sqrt(h1_before)
+    H2 = b20[2][0] - math.sqrt(h2_before)
+    H3 = b30[2][0] - math.sqrt(h3_before)
     
     return H1, H2, H3, xT, yT, gamma
