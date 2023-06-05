@@ -45,7 +45,7 @@ DEFAULT_PLANE_TRACE = {
 }
 
 class Circle(IModel):
-  def __init__(self, _name, _origin, radius=20):
+  def __init__(self, _name, _origin, radius=20, color="#ff6348"):
     self.name = _name
     self.next = None
     self.radius = radius
@@ -53,7 +53,7 @@ class Circle(IModel):
     self.absolute_pos = deepcopy(_origin)
     self.trace = None
     self.visible = False
-    self.color = "#ff6348"
+    self.color = color
         
   def get_boundary_circle(self, nt=100):
     """

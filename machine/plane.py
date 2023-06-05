@@ -50,17 +50,25 @@ class Plane(IModel):
     self.name = _name
     self.next = None
     self.uuid = f"Plane_{str(uuid.uuid4())}"
+    self.origin_pos = deepcopy(_origin)
     self.absolute_pos = deepcopy(_origin)
     self.tm = TransformManager()
-    self.origin = Joint("Origin", self.absolute_pos)
-    self.origin.transform = pt.transform_from_pq(np.hstack((np.array(self.absolute_pos), pr.q_id)))
     self.trace = None
     self.visible = False
     self.joints = []
     self.color = "#ff6348"
     self.ik_res = None
+    # self.Rbig = 22.645  # outer radius
+    # self.Rsmall = 15  # inner radius
+    # self.l = 25
+    self.Rbig = 130  # outer radius
+    self.Rsmall = 70  # inner radius
+    self.l = 80
+    self.origin = Joint(f"{self.name}_Origin", self.absolute_pos)
+    self.origin.transform = pt.transform_from_pq(np.hstack((np.array(self.absolute_pos), pr.q_id)))
     self.circles = []
-    self.circles.append(Circle(f"{self.name}_Radius1", self.absolute_pos, 200))
+    self.circles.append(Circle(f"{self.name}_Radius1", self.absolute_pos, self.Rbig, "#CEFF33"))
+    self.circles.append(Circle(f"{self.name}_Radius1", self.absolute_pos, self.Rsmall, "#33E6FF"))
     # self.circles.append(Circle(f"{self.name}_Radius2", self.absolute_pos, 30))
   
   def add_joint(self, joint):
@@ -75,7 +83,7 @@ class Plane(IModel):
   
   def forward_kinematics(self):
     self.origin.update()
-    self.ik_res = self.Inverse_Kinematics(self.absolute_pos[2], self.origin.quaternion[2], self.origin.quaternion[1])
+    self.ik_res = self.Inverse_Kinematics(self.origin_pos[2], self.origin.quaternion[2], self.origin.quaternion[1])
     print(self.ik_res)
         
   def set_visibility(self, vis):
@@ -85,6 +93,7 @@ class Plane(IModel):
       
     for c in self.circles:
       c.set_visibility(vis)
+    self.origin.set_visibility(vis)
   
   def draw(self, figure_data):
     trace = self.get_trace(figure_data)
@@ -95,8 +104,8 @@ class Plane(IModel):
     trace['visible'] = self.visible
     trace['color'] = self.color
     # for v in self.joints:
-    for c in self.circles:
-      c.draw(figure_data)
+    # for c in self.circles:
+    #   c.draw(figure_data)
     figure_data = self.origin.draw(figure_data)
     return figure_data
     
@@ -115,19 +124,12 @@ class Plane(IModel):
   """  
   def Inverse_Kinematics(self, zT, alpha, beta):
     print(f"IK Plane. Roll: {alpha}\tPitch: {beta}")
-    # Rbig = 22.645  # outer radius
-    # Rsmall = 15  # inner radius
-    # l = 25
-    
-    Rbig = 226
-    Rsmall = 150
-    l = 200
     
     gamma = -np.arctan(np.sin(alpha) * np.sin(beta) / (np.cos(alpha) + np.cos(beta)))
-    xT = Rbig / 2 + Rsmall / 2 * (
+    xT = self.Rbig / 2 + self.Rsmall / 2 * (
                 np.cos(beta) * np.cos(gamma) + np.sin(alpha) * np.sin(beta) * np.sin(gamma) - np.cos(alpha) * np.cos(
             gamma))
-    yT = -Rsmall * (np.cos(alpha) * np.sin(gamma) + np.sin(alpha) * np.sin(beta) * np.cos(gamma))
+    yT = -self.Rsmall * (np.cos(alpha) * np.sin(gamma) + np.sin(alpha) * np.sin(beta) * np.cos(gamma))
     
     Rx = np.array([[1, 0, 0], [0, np.cos(alpha), -np.sin(alpha)], [0, np.sin(alpha), np.cos(alpha)]])
     Ry = np.array([[np.cos(beta), 0, np.sin(beta)], [0, 1, 0], [-np.sin(beta), 0, np.cos(beta)]])
@@ -141,22 +143,22 @@ class Plane(IModel):
     for i in range(4):
       Txyz[i][3] += v[i]
       
-    R1 = np.array([3 / 2 * Rbig, 0, 1])
-    R2 = np.array([0, math.sqrt(3) / 2 * Rbig, 1])
-    R3 = np.array([0, -math.sqrt(3) / 2 * Rbig, 1])
+    R1 = np.array([3 / 2 * self.Rbig, 0, 1])
+    R2 = np.array([0, math.sqrt(3) / 2 * self.Rbig, 1])
+    R3 = np.array([0, -math.sqrt(3) / 2 * self.Rbig, 1])
     
-    b1 = np.array([[Rsmall], [0], [0], [1]])
-    b2 = np.array([[-Rsmall / 2], [math.sqrt(3) / 2 * Rsmall], [0], [1]])
-    b3 = np.array([[-Rsmall / 2], [-math.sqrt(3) / 2 * Rsmall], [0], [1]])
+    b1 = np.array([[self.Rsmall], [0], [0], [1]])
+    b2 = np.array([[-self.Rsmall / 2], [math.sqrt(3) / 2 * self.Rsmall], [0], [1]])
+    b3 = np.array([[-self.Rsmall / 2], [-math.sqrt(3) / 2 * self.Rsmall], [0], [1]])
     
     b10 = np.matmul(Txyz, b1)
     b20 = np.matmul(Txyz, b2)
     b30 = np.matmul(Txyz, b3)
     
     
-    h1_before = l ** 2 - (R1[0] - b10[0][0]) ** 2 - (R1[1] - b10[1][0]) ** 2
-    h2_before = l ** 2 - (R2[0] - b20[0][0]) ** 2 - (R2[1] - b20[1][0]) ** 2
-    h3_before = l ** 2 - (R3[0] - b30[0][0]) ** 2 - (R3[1] - b30[1][0]) ** 2
+    h1_before = self.l ** 2 - (R1[0] - b10[0][0]) ** 2 - (R1[1] - b10[1][0]) ** 2
+    h2_before = self.l ** 2 - (R2[0] - b20[0][0]) ** 2 - (R2[1] - b20[1][0]) ** 2
+    h3_before = self.l ** 2 - (R3[0] - b30[0][0]) ** 2 - (R3[1] - b30[1][0]) ** 2
     print(h1_before)
     print(h2_before)
     print(h3_before)

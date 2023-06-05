@@ -127,7 +127,8 @@ class Joint:
     if self.parent is not None:
       dbg += f"Using parent ({self.parent.name}) transform"
       self.transform = np.dot(np.matrix(self.parent.transform), np.matrix(self.transform))
-    self.absolute_pos = np.array(self.transform@self._origin).flatten()
+    # Remember that the accumulated transform should always be applied to a hypothetical starting point 0, and the last component should always be 1 (the 4th dimension used to apply transforms)
+    self.absolute_pos = np.array(self.transform@np.array([0,0,0,1])).flatten()
     for child in self.children:
       child.update(dbg_prefix=dbg_prefix)
       
