@@ -14,9 +14,10 @@ from components.example_tabs import controls, colors, buttons, graph
 from machine.arm import Arm
 from machine.joint import Joint
 import json
-from model import arm_test, plane
+from model import arm_test, plane, triangle
 from components.arm_page import ArmPage
-from components.plane_model_page import PlaneModelPage
+from components.compound_model_page import CompoundModelPage
+from components.plane_page import PlanePage
 
 BASE_PLOTTER = MachinePlotter()
 
@@ -30,10 +31,14 @@ robots_show_options = ['Plane', 'Test Arm']
 arm_page = ArmPage(arm_test, app)
 arm_page_layout = arm_page.get_page()
 arm_page.add_callback()
-plane_page = PlaneModelPage(plane, app)
+plane_page = CompoundModelPage(plane, app)
 plane_page_layout = plane_page.get_page()
 plane_page.add_callback()
-IK_point = Joint("IK_Point", [ 300, 200, 100], color="#555555")
+IK_point = Joint("IK_Point", [300, 200, 100], color="#555555")
+
+triangle_page = PlanePage(triangle, app)
+triangle_page_layout = triangle_page.get_page()
+triangle_page.add_callback()
 
 info_panel = html.Div("", className="info-panel")
 
@@ -42,6 +47,7 @@ main_plot_page = html.Div([
                             # dcc.Checklist(robots_show_options.copy(), [robots_show_options[0]], style={'display': 'flex', 'padding': '0.5rem', 'place-content': 'space-evenly'}, id='show-robots-checklist'),
                             dcc.Tabs([
                                 dcc.Tab(plane_page_layout, label="Plane", value=plane_page.id),
+                                dcc.Tab(triangle_page_layout, label="Triangle", value=triangle_page.id),
                                 # dcc.Tab(test_arm_widgets, label="Test Arm"),
                                 dcc.Tab(arm_page_layout, label="Test Arm", value=arm_page.id),
                                 dcc.Tab(html.Label(dcc.Markdown(f"** QUATERNION **")), label="Nothing")],
@@ -78,15 +84,23 @@ app.layout = dmc.MantineProvider(
 
 def switch_model_visibility(tab, fig_data):
     if tab == plane_page.id:
-        if not plane_page.plane.visible:
-            print(f"Showing plane tab {plane_page.plane.name}")
-            plane_page.plane.set_visibility(True)
+        if not plane_page.model.visible:
+            print(f"Showing plane tab {plane_page.model.name}")
+            plane_page.model.set_visibility(True)
+            triangle_page.model.set_visibility(False)
             arm_page.model.set_visibility(False)
     elif tab == arm_page.id:
         if not arm_page.model.visible:
             print(f"Showing arm tab {arm_page.model.name}")
-            plane_page.plane.set_visibility(False)
+            plane_page.model.set_visibility(False)
+            triangle_page.model.set_visibility(False)
             arm_page.model.set_visibility(True)
+    elif tab == triangle_page.id:
+        if not triangle_page.model.visible:
+            print(f"Showing triangle tab {triangle_page.model.name}")
+            plane_page.model.set_visibility(False)
+            triangle_page.model.set_visibility(True)
+            arm_page.model.set_visibility(False)
 
 def update_graph(*callback_data):
     inputs = callback_data[0]
@@ -98,8 +112,11 @@ def update_graph(*callback_data):
     #     states['figure']['data'] = plane.pistons[i].draw(states['figure']['data'])
     states['figure']['data'] = arm_test.draw(states['figure']['data'])
     states['figure']['data'] = plane.draw(states['figure']['data'])
+    states['figure']['data'] = triangle.draw(states['figure']['data'])
+    
     states['figure']['data'] = IK_point.draw(states['figure']['data'])
     
+    triangle.forward_kinematics()
     BASE_PLOTTER.change_camera_view(states['figure'], states['relayout'])
     BASE_PLOTTER._draw_scene(states['figure'])
     return states['figure']
@@ -108,7 +125,7 @@ def update_graph(*callback_data):
 graph_out = Output(GRAPH_ID, 'figure')
 graph_state = {'figure': State(GRAPH_ID, "figure"), 'relayout': State(GRAPH_ID, "relayoutData")}
 print("******* PLANE TRIGGER *******")
-triggers = {'arm': arm_page.trigger.input, 'plane':plane_page.trigger.input, 'tab-id': Input('view-panel-tabs', 'value')}
+triggers = {'arm': arm_page.trigger.input, 'plane':plane_page.trigger.input, 'triangle':triangle_page.trigger.input, 'tab-id': Input('view-panel-tabs', 'value')}
 # triggers = {'arm': arm_page.trigger.input}
 # triggers = {'plane':plane_page.trigger.input}
 app.callback(graph_out, triggers, graph_state)(update_graph)

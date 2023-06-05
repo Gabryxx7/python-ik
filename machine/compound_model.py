@@ -44,8 +44,7 @@ DEFAULT_PLANE_TRACE = {
   "z": []
 }
 
-
-class Plane(IModel):
+class CompoundModel(IModel):
   def __init__(self, _name, _origin):
     self.name = _name
     self.next = None
@@ -56,12 +55,23 @@ class Plane(IModel):
     self.origin.transform = pt.transform_from_pq(np.hstack((np.array(self.absolute_pos), pr.q_id)))
     self.trace = None
     self.visible = False
+    self.arms = []
     self.joints = []
+    self.pistons = []
+    self.planes = []
     self.color = "#ff6348"
-        
+    
+  def add_arm(self, arm):
+    self.arms.append(arm)
+    
+  def add_piston(self, piston):
+    self.pistons.append(piston)
+    
   def add_joint(self, joint):
-    joint.link_to(self.origin)
     self.joints.append(joint)
+    
+  def add_plane(self, plane):
+    self.planes.append(plane)
     
   def make_trace(self):
     trace = deepcopy(DEFAULT_PLANE_TRACE)
@@ -70,23 +80,35 @@ class Plane(IModel):
     return trace
   
   def forward_kinematics(self):
-    self.origin.update()
+    print("\n\nStarting Forward Kinematics:")
+    # for arm in self.arms:
+    #   arm.forward_kinematics()
+    for plane in self.planes:
+      plane.forward_kinematics()
+    # self.origin.update()
+    
         
   def set_visibility(self, vis):
     self.visible = vis
-    for v in self.joints:
-      v.set_visibility(vis)
+    for j in self.joints:
+      j.set_visibility(vis)
+    for a in self.arms:
+      a.set_visibility(vis)
+    for p in self.pistons:
+      p.set_visibility(vis)
+    for p in self.planes:
+      p.set_visibility(vis)
   
   def draw(self, figure_data):
     trace = self.get_trace(figure_data)
-    points = [x.absolute_pos for x in self.joints]
-    trace['x'] = [float(p[AXIS_ORDER_CONVENTION[0]]) for p in points]
-    trace['y'] = [float(p[AXIS_ORDER_CONVENTION[1]]) for p in points]
-    trace['z'] = [float(p[AXIS_ORDER_CONVENTION[2]]) for p in points]
-    trace['visible'] = self.visible
-    trace['color'] = self.color
-    # for v in self.joints:
-    figure_data = self.origin.draw(figure_data)
+    for j in self.joints:
+      figure_data = j.draw(figure_data)
+    for p in self.pistons:
+      figure_data = p.draw(figure_data)
+    for a in self.arms:
+      figure_data = a.draw(figure_data)
+    for p in self.planes:
+      figure_data = p.draw(figure_data)
     return figure_data
     
   """

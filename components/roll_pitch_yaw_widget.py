@@ -5,10 +5,16 @@ from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
 from components.trigger import Trigger
 
-quat_components = {
+quat_components_deg = {
   'Roll': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01},
   'Pitch': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01},
   'Yaw': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01}
+}
+
+quat_components = {
+  'Roll': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01},
+  'Pitch': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01},
+  'Yaw': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01}
 }
 
 class RollPitchYawWidget:
@@ -55,10 +61,11 @@ class RollPitchYawWidget:
       className="quaternion-widget-container")
     return self.widget
   
-  
   def update_plane_orientation(self, *inputs):
-    # print("JOINT UPDATE")
-    self.plane.update_plane_vertices(*inputs)
+    print("Plane RollPitchYaw UPDATE")
+    # self.plane.update_plane_vertices(*inputs)
+    inputs = [1.0, inputs[1], inputs[0], inputs[2] ]
+    self.plane.origin.rotate(quaternion=inputs)
     return ""
   
   def add_callback(self):

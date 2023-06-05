@@ -172,7 +172,9 @@ class Joint:
     return trace
       
   def get_joint_length(self):
-    return (np.linalg.norm(self.parent.absolute_pos - self.absolute_pos))
+    if self.parent is not None:
+      return (np.linalg.norm(self.parent.absolute_pos - self.absolute_pos))
+    return -1.0
   
   def draw(self, figure_data):
     trace = self.get_trace(figure_data)

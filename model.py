@@ -1,6 +1,7 @@
 from machine.joint import Joint
 from machine.arm import Arm
 from machine.plane import Plane
+from machine.compound_model import CompoundModel
 import numpy as np
 
 
@@ -37,7 +38,7 @@ arm_test.add_joint(Joint("EE", VTest_3, color="#33C1FF"))
 # arm.add_joint(Joint("TA_Joint4", VTest_4))
 
 
-plane = Plane("Plane", origin)
+plane = CompoundModel("Plane", origin)
   
 origin = [-200,-200,0]
 color="#90FF33"
@@ -84,6 +85,16 @@ plane.add_arm(arm3)
 
 
 
+triangle = Plane("Triangle", [0, 0, 200])
+t_joint1 = Joint("Triangle_joint1", [-100, 100, 0])
+t_joint2 = Joint("Triangle_joint2", [100, 100, 0])
+t_joint3 = Joint("Triangle_joint3", [0, -100, 0])
+# t_joint1.link_to(triangle.origin)
+# t_joint2.link_to(triangle.origin)
+# t_joint3.link_to(triangle.origin)
+triangle.add_joint(t_joint1)
+triangle.add_joint(t_joint2)
+triangle.add_joint(t_joint3)
 # arm2.joints[1].link_to(arm1.joints[1])
 # arm2.joints[-1].link_to(arm.joints[-1])
 # # arm3.joints[1].link_to(arm1.joints[1])
