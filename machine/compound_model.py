@@ -81,11 +81,13 @@ class CompoundModel(IModel):
   
   def forward_kinematics(self):
     print("\n\nStarting Forward Kinematics:")
-    # for arm in self.arms:
-    #   arm.forward_kinematics()
+    for arm in self.arms:
+      arm.forward_kinematics()
+    for piston in self.pistons:
+      piston.forward_kinematics()
     for plane in self.planes:
       plane.forward_kinematics()
-    # self.origin.update()
+    self.origin.update()
     
         
   def set_visibility(self, vis):

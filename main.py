@@ -110,6 +110,10 @@ def update_graph(*callback_data):
     #     states['figure']['data'] = plane.arms[i].draw(states['figure']['data'])
     # for i in range(0, len(plane.pistons)):
     #     states['figure']['data'] = plane.pistons[i].draw(states['figure']['data'])
+    if plane.planes[0].ik_res is not None:
+        for i in range(0,3):
+            plane.pistons[i].joints[-1]._origin[2] = plane.planes[0].ik_res[i]
+        plane.forward_kinematics()
     states['figure']['data'] = arm_test.draw(states['figure']['data'])
     states['figure']['data'] = plane.draw(states['figure']['data'])
     states['figure']['data'] = triangle.draw(states['figure']['data'])

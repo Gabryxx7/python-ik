@@ -36,11 +36,11 @@ class CompoundModelPage:
       for plane in self.model.planes:
         self.planes_widgets.append(RollPitchYawWidget(plane, self.app))
       self.trigger = Trigger(self.model.uuid)
-      self.page = html.Div([w.get_widget() for plw in self.planes_widgets] + [pw.get_widget() for pw in self.pistons_widgets] + [jw.get_widget() for jw in self.joints_widgets] + [self.trigger.component], className="model-sidebar")
+      self.page = html.Div([plw.get_widget() for plw in self.planes_widgets] + [pw.get_widget() for pw in self.pistons_widgets] + [jw.get_widget() for jw in self.joints_widgets] + [self.trigger.component], className="model-sidebar")
     return self.page
   
   def update_model(self, *joints_callbacks):
-    # self.model.forward_kinematics()
+    self.model.forward_kinematics()
     # self.model.update_plane_vertices()
     return ""
   

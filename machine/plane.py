@@ -58,6 +58,7 @@ class Plane(IModel):
     self.visible = False
     self.joints = []
     self.color = "#ff6348"
+    self.ik_res = None
         
   def add_joint(self, joint):
     joint.link_to(self.origin)
@@ -71,6 +72,8 @@ class Plane(IModel):
   
   def forward_kinematics(self):
     self.origin.update()
+    self.ik_res = self.Inverse_Kinematics(self.absolute_pos[2], self.origin.quaternion[2], self.origin.quaternion[1])
+    print(self.ik_res)
         
   def set_visibility(self, vis):
     self.visible = vis
@@ -102,7 +105,8 @@ class Plane(IModel):
     Actual output:
       H1, H2, H3 - heights of the legs
   """  
-  def Inverse_Kinematics(zT, alpha, beta):
+  def Inverse_Kinematics(self, zT, alpha, beta):
+    print(f"IK Plane. Roll: {alpha}\tPitch: {beta}")
     Rbig = 22.645  # outer radius
     Rsmall = 15  # inner radius
     gamma = -np.arctan(np.sin(alpha) * np.sin(beta) / (np.cos(alpha) + np.cos(beta)))
