@@ -3,7 +3,7 @@ from dash import dcc
 from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
-from components.trigger import Trigger
+from frontend.components.trigger import Trigger
 
 quat_components = {
   'w': {'value': 1, 'min': -1, 'max': 1, 'res': 0.01},
@@ -33,7 +33,7 @@ class QuaternionWidget:
   def make_widget(self):
     name = self.joint.name.upper()
     j_id = self.joint.uuid
-    color = "inherit" if self.joint.color is None else self.joint.color
+    color = self.joint.trace_params.get('color', "inherit")
     for key, data in quat_components.items():
       slider_id = f"quat_{j_id}_{key}"
       input_slider = dcc.Slider(data['min'], data['max'], data['res'], value=data['value'], id=slider_id, className="quat-comp-slider", marks=None, updatemode='drag', persistence=True, tooltip={"placement": "bottom", "always_visible": True})

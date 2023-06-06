@@ -4,58 +4,21 @@ from pyquaternion import Quaternion
 from pytransform3d import rotations as pr
 from pytransform3d import transformations as pt
 from pytransform3d.transform_manager import TransformManager
-from machine.joint import *
-from machine.IModel import IModel
-from machine.circle import Circle
+from models.basic.joint import Joint
+from models.basic.model import Model
 import math
-
 from copy import deepcopy
-from style_settings import (
-    BODY_MESH_COLOR,
-    BODY_MESH_OPACITY,
-    BODY_COLOR,
-    BODY_OUTLINE_WIDTH,
-    COG_COLOR,
-    COG_SIZE,
-    HEAD_SIZE,
-    LEG_COLOR,
-    LEG_OUTLINE_WIDTH,
-    SUPPORT_POLYGON_MESH_COLOR,
-    SUPPORT_POLYGON_MESH_OPACITY,
-    LEGENDS_BG_COLOR,
-    AXIS_ZERO_LINE_COLOR,
-    PAPER_BG_COLOR,
-    GROUND_COLOR,
-    LEGEND_FONT_COLOR,
-)
-MARKER_SIZE = 15
-X = 0
-Y = 1
-Z = 2 
-AXIS_ORDER_CONVENTION = [X, Y, Z]
-DEFAULT_PLANE_TRACE = {
-  "name": "Plane Triangle",
-  "showlegend": True,
-  "type": "mesh3d",
-  "mode": "lines+markers",
-  "opacity": 0.5,
-  "color": "#ff6348",
-  "x": [],
-  "y": [],
-  "z": []
-}
+from utils.trace_utils import TracesHelper
 
-class Plane(IModel):
-  def __init__(self, _name, _origin):
-    self.name = _name
-    self.next = None
-    self.uuid = f"Plane_{str(uuid.uuid4())}"
-    self.origin_pos = deepcopy(_origin)
-    self.absolute_pos = deepcopy(_origin)
-    self.tm = TransformManager()
-    self.trace = None
-    self.visible = False
-    self.joints = []
+class Plane(Model):
+  def __init__(self, _name="Plane", offset_pos=None, origin=None, trace_params=None):
+    super().__init__(_name, offset_pos, origin, trace_params)
+    self.origin = Model(f"{self.name}_Origin", self.origin_pos)
+    if self.origin is not None:
+      self.origin.transform = pt.transform_from_pq(np.hstack((np.array(self.origin_pos[:3]), pr.q_id)))
+    # self.constraints = constraints
+    # self.rotate(euler_rot, quaternion)
+    self.trace_type = "plane"
     self.color = "#ff6348"
     self.ik_res = None
     # self.Rbig = 22.645  # outer radius
@@ -64,50 +27,25 @@ class Plane(IModel):
     self.Rbig = 130  # outer radius
     self.Rsmall = 70  # inner radius
     self.l = 80
-    self.origin = Joint(f"{self.name}_Origin", self.absolute_pos)
-    self.origin.transform = pt.transform_from_pq(np.hstack((np.array(self.absolute_pos), pr.q_id)))
-    self.circles = []
-    self.circles.append(Circle(f"{self.name}_Radius1", self.absolute_pos, self.Rbig, "#CEFF33"))
-    self.circles.append(Circle(f"{self.name}_Radius1", self.absolute_pos, self.Rsmall, "#33E6FF"))
+    
+    # self.circles = []
+    # self.circles.append(Circle(f"{self.name}_Radius1", self.absolute_pos, self.Rbig, "#CEFF33"))
+    # self.circles.append(Circle(f"{self.name}_Radius1", self.absolute_pos, self.Rsmall, "#33E6FF"))
     # self.circles.append(Circle(f"{self.name}_Radius2", self.absolute_pos, 30))
   
-  def add_joint(self, joint):
-    joint.link_to(self.origin)
-    self.joints.append(joint)
-    
-  def make_trace(self):
-    trace = deepcopy(DEFAULT_PLANE_TRACE)
-    trace['name'] = self.name
-    trace['uuid'] = self.uuid
-    return trace
+  def add_vertex(self, offset_pos):
+    print(f"Adding vertex to {self.name}: {offset_pos}")
+    vertex = Joint(f"V_{len(self.children)+1}", offset_pos, trace_params={'color': "#888888", 'linewidth': 8, 'markersize': 8})
+    vertex.set_parent(self.origin)
+    self.children.append(vertex)
   
   def forward_kinematics(self):
     self.origin.update()
     self.ik_res = self.Inverse_Kinematics(self.origin_pos[2], self.origin.quaternion[2], self.origin.quaternion[1])
     print(self.ik_res)
-        
-  def set_visibility(self, vis):
-    self.visible = vis
-    for v in self.joints:
-      v.set_visibility(vis)
-      
-    for c in self.circles:
-      c.set_visibility(vis)
-    self.origin.set_visibility(vis)
   
-  def draw(self, figure_data):
-    trace = self.get_trace(figure_data)
-    points = [x.absolute_pos for x in self.joints]
-    trace['x'] = [float(p[AXIS_ORDER_CONVENTION[0]]) for p in points]
-    trace['y'] = [float(p[AXIS_ORDER_CONVENTION[1]]) for p in points]
-    trace['z'] = [float(p[AXIS_ORDER_CONVENTION[2]]) for p in points]
-    trace['visible'] = self.visible
-    trace['color'] = self.color
-    # for v in self.joints:
-    # for c in self.circles:
-    #   c.draw(figure_data)
-    figure_data = self.origin.draw(figure_data)
-    return figure_data
+  def get_trace_points(self):
+    return [x.absolute_pos for x in self.children]
     
   """
   http://ww2.me.ntu.edu.tw/~measlab/download/2003/sensitivity%20of%203-PRS%202003.pdf

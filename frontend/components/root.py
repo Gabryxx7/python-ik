@@ -3,8 +3,8 @@ from dash import Dash, dcc, html, dash_table, Input, Output, State, callback
 import dash
 import dash_bootstrap_components as dbc
 from dash_bootstrap_templates import ThemeSwitchAIO, ThemeChangerAIO, template_from_url
-from components.cheatsheets_tab import cheatsheet
-from components.navbar import Navbar, ham_menu
+from frontend.components.cheatsheets_tab import cheatsheet
+from frontend.components.navbar import Navbar, ham_menu
 
 # The Custom css is actually automatically loaded, everything in assets/css is automatically loadecd
 themes_map = {

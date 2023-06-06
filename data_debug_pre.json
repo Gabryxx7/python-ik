@@ -1,0 +1,150 @@
+{
+  "data": [
+    {
+      "line": {
+        "color": "#e64722",
+        "width": 2
+      },
+      "name": "x direction",
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        200
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        0
+      ]
+    },
+    {
+      "line": {
+        "color": "#4de622",
+        "width": 2
+      },
+      "name": "y direction",
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        200
+      ],
+      "z": [
+        0,
+        0
+      ]
+    },
+    {
+      "line": {
+        "color": "#2284e6",
+        "width": 2
+      },
+      "name": "z direction",
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        200
+      ]
+    }
+  ],
+  "layout": {
+    "paper_bgcolor": "#222f3e",
+    "hovermode": "closest",
+    "legend": {
+      "x": 0,
+      "y": 0,
+      "bgcolor": "rgba(44, 62, 80, 0.8)",
+      "font": {
+        "family": "courier",
+        "size": 12,
+        "color": "#2ecc71"
+      }
+    },
+    "margin": {
+      "b": 20,
+      "l": 10,
+      "r": 10,
+      "t": 20
+    },
+    "scene": {
+      "aspectmode": "manual",
+      "aspectratio": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "camera": {
+        "center": {
+          "x": 0.0348603742736399,
+          "y": 0.16963779995083,
+          "z": -0.394903376555686
+        },
+        "eye": {
+          "x": 0.193913968006015,
+          "y": 0.45997575676993,
+          "z": -0.111568465000231
+        },
+        "up": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        }
+      },
+      "xaxis": {
+        "nticks": 1,
+        "range": [
+          -100,
+          100
+        ],
+        "zerolinecolor": "#079992",
+        "showbackground": false,
+        "type": "linear"
+      },
+      "yaxis": {
+        "nticks": 1,
+        "range": [
+          -100,
+          100
+        ],
+        "zerolinecolor": "#079992",
+        "showbackground": false,
+        "type": "linear"
+      },
+      "zaxis": {
+        "nticks": 1,
+        "range": [
+          0,
+          200
+        ],
+        "zerolinecolor": "#079992",
+        "showbackground": true,
+        "backgroundcolor": "#0a3d62",
+        "type": "linear"
+      }
+    },
+    "autosize": true
+  }
+}

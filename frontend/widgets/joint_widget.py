@@ -4,10 +4,10 @@ from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
 import numpy as np
-from components.transform_widget import TransformWidget
-from components.quaternion_widget import QuaternionWidget
-from components.widget_interface import Widget
-from components.trigger import Trigger
+from frontend.widgets.transform_widget import TransformWidget
+from frontend.widgets.quaternion_widget import QuaternionWidget
+from frontend.components.widget_interface import Widget
+from frontend.components.trigger import Trigger
 
 class JointWidget:
   def __init__(self, joint, app):
@@ -22,7 +22,7 @@ class JointWidget:
     if self.widget is None:
       self.q_widget = QuaternionWidget(self.joint, self.app)
       self.tf_widget = TransformWidget(self.joint, self.app)
-      color = "inherit" if self.joint.color is None else self.joint.color
+      color = self.joint.trace_params.get('color', "inherit")
       title = dcc.Markdown(f"** JOINT {self.joint.name.upper()} **", style={'color': color})
       self.trigger = Trigger(self.joint.uuid)
       widget_container = html.Div([self.q_widget.get_widget(), self.tf_widget.get_widget(), self.trigger.component], className="joint-widget-container")

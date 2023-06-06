@@ -3,7 +3,7 @@ from dash import dcc
 from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
-from components.trigger import Trigger
+from frontend.components.trigger import Trigger
 
 quat_components_deg = {
   'Roll': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01},

@@ -3,8 +3,10 @@ from dash import dcc
 from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
-from components.trigger import Trigger
-from model import PISTON_HEIGHT
+from frontend.components.trigger import Trigger
+
+PISTON_HEIGHT = 200.0
+PLANE_INITIAL_HEIGHT = PISTON_HEIGHT*1.5
 
 DARKMODE = True
 
@@ -30,6 +32,7 @@ class PistonWidget:
     self.piston = piston
     self.widget = None
     self.slider_input = None
+    self.slider_output = None
     self.trigger = None
     
   def get_widget(self):
@@ -48,10 +51,11 @@ class PistonWidget:
     self.trigger = Trigger(self.piston.uuid)
     self.widget = dbc.Row([dbc.Col([self.trigger.component, label], width=2), dbc.Col([input_slider], width=10)], className="pistons-widget-container")
     self.slider_input = Input(slider_id, "value")
+    self.slider_output = Output(slider_id, "value")
     return self.widget
     
   def update_piston(self, *slider_input):
-    self.piston.joints[-1]._origin[2] = PISTON_HEIGHT * float(slider_input[0])
+    self.piston.joints[-1].origin_pos[2] = PISTON_HEIGHT * float(slider_input[0])
     return ""
     
   def add_callback(self):

@@ -3,15 +3,16 @@ from dash import dcc
 from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
-from components.joint_widget import JointWidget
-from components.piston_widget import PistonWidget
-from components.trigger import Trigger
-from components.roll_pitch_yaw_widget import RollPitchYawWidget
+from frontend.widgets.joint_widget import JointWidget
+from frontend.widgets.piston_widget import PistonWidget
+from frontend.widgets.roll_pitch_yaw_widget import RollPitchYawWidget
+from frontend.components.trigger import Trigger
 
 CONTAINER_STYLE = {'display': 'flex', 'flex-direction': 'column'}
 
 class PlanePage:  
-  def __init__(self, model, app):
+  def __init__(self, model, app, label="Plane"):
+    self.label = label
     self.app = app
     self.model = model
     self.page = None

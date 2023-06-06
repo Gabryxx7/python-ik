@@ -14,7 +14,8 @@ class ModelPage:
     widget = html.Div(j_widgets)
     return widget
   
-  def __init__(self, _id, _title, app, model):
+  def __init__(self, _id, _title, app, model, label="Model"):
+    self.label = label
     self.id = _id
     self.title = _title
     self.app = app

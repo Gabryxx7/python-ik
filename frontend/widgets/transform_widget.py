@@ -4,7 +4,7 @@ from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
 import numpy as np
-from components.widget_interface import Widget
+from frontend.components.widget_interface import Widget
 
 class TransformWidget:  
   def __init__(self, joint, app):
@@ -14,7 +14,7 @@ class TransformWidget:
     self.output = None
   
   def make_widget(self):
-    color = "inherit" if self.joint.color is None else self.joint.color
+    color = self.joint.trace_params.get('color', "inherit")
     tf_title = html.Div(f"{self.joint.name} Transform", className="transform-title", style={"color": color})
     tf_info = self.get_transform_info()
     tf_info_id = f"{self.joint.uuid}-tf-info"
@@ -39,7 +39,7 @@ class TransformWidget:
         matrix_data.append(html.Span(f"{col:.2f}"))
     tf_matrix_div = html.Div(matrix_data, className="transform-matrix-view")
     tf_extras = []
-    tf_extras.append(html.Div(f"\n\nOrigin: {np.round(self.joint._origin, 2)}"))
+    tf_extras.append(html.Div(f"\n\nOrigin: {np.round(self.joint.origin_pos, 2)}"))
     tf_extras.append(html.Div(f"\nAbs. Pos.: {np.round(self.joint.absolute_pos, 2)}"))
     tf_extras.append(html.Div(f"\nRel. Pos.: {np.round(self.joint.relative_pos, 2)}"))
     tf_extras.append(html.Div(f"\nDistance from prev: {np.round(self.joint.get_joint_length(), 2)}"))

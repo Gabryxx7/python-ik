@@ -3,22 +3,23 @@ from dash import dcc
 from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
-from components.joint_widget import JointWidget
-from components.trigger import Trigger
+from frontend.widgets.joint_widget import JointWidget
+from frontend.components.trigger import Trigger
 
 class ArmPage:  
-  def __init__(self, model, app):
+  def __init__(self, model, app, label="Arm"):
+    self.label = label
     self.app = app
     self.model = model
     self.page = None
     self.joints_widgets = []
     self.trigger = None
-    self.id = f"tab-plane-{self.model.uuid}"
+    self.id = f"tab-arm-{self.model.uuid}"
     self.ik_button = {'id': f"ik-run{self.model.uuid}", 'n_clicks': -1}
   
   def get_page(self):
     if self.page is None:
-      for joint in self.model.joints:
+      for joint in self.model.children:
         self.joints_widgets.append(JointWidget(joint, self.app))
       self.trigger = Trigger(self.model.uuid)
       ik_button = html.Button('Run IK', id=self.ik_button['id'])
