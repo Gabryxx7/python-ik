@@ -12,7 +12,7 @@ class TracesHelper:
         break
     if default_trace is None:
       print(f"No default trace of type {trace_type}")
-      raise Exception(f"No default trace of type {trace_type}")
+      # raise Exception(f"No default trace of type {trace_type}")
     trace = deepcopy(default_trace)
     trace['name'] = name
     trace['uuid'] = str(uuid.uuid4()) if uuid is None else uuid
@@ -28,7 +28,7 @@ class TracesHelper:
         if 'markersize' in params and params['markersize'] > 0:
           if 'marker' in trace:
             trace['marker']['size'] = params['markersize']
-    print(f"Appending trace: {trace['name']} ({trace['uuid']})")
+    # print(f"Appending trace: {trace['name']} ({trace['uuid']})")
     fig_data.append(trace)
     return fig_data, trace
   

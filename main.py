@@ -55,7 +55,6 @@ for page in pages:
     tabs.append(dcc.Tab(page_layout, label=page.label, value=page.id))
     triggers[page.id] = page.trigger.input
 
-print(triggers)
 main_plot_page = html.Div([
                     html.Div([
                             # dcc.Checklist(robots_show_options.copy(), [robots_show_options[0]], style={'display': 'flex', 'padding': '0.5rem', 'place-content': 'space-evenly'}, id='show-robots-checklist'),
@@ -95,7 +94,6 @@ prev_tab_id = initial_page.id
 initial_page.model.set_visibility(True)
 def switch_model_visibility(tab_id):
     global prev_tab_id
-    print(f"{tab_id} \t {prev_tab_id}")
     if tab_id == prev_tab_id:
         return
     prev_tab_id = tab_id
@@ -105,31 +103,28 @@ def switch_model_visibility(tab_id):
 def update_graph(*callback_data):
     inputs = callback_data[0]
     states = callback_data[1]
-    with open("data_debug_pre.json", "w") as f:
-      json.dump(states['figure'], f, indent=2)
-    try:
-        switch_model_visibility(inputs['tab-id'])
-        # for i in range(0, len(plane.arms)):
-        #     states['figure']['data'] = plane.arms[i].draw(states['figure']['data'])
-        # for i in range(0, len(plane.pistons)):
-        #     states['figure']['data'] = plane.pistons[i].draw(states['figure']['data'])
-        # if plane.planes[0].ik_res is not None:
-        #     for i in range(0,3):
-        #         plane.pistons[i].joints[-1].origin_pos[2] = plane.planes[0].ik_res[i]
-        #     plane.forward_kinematics()
-        # states['figure']['data'] = plane.draw(states['figure']['data'])
-        
-        plane_test.forward_kinematics()
-        for page in pages:
-            states['figure']['data'] = page.model.draw(states['figure']['data'])
-        states['figure']['data'] = IK_point.draw(states['figure']['data'])
-    except Exception as e:
-        print(f"EXCEPTION DRAWING: {e}")
+    # with open("data_debug_pre.json", "w") as f:
+    #     json.dump(states['figure'], f, indent=2)
+    switch_model_visibility(inputs['tab-id'])
+    # for i in range(0, len(plane.arms)):
+    #     states['figure']['data'] = plane.arms[i].draw(states['figure']['data'])
+    # for i in range(0, len(plane.pistons)):
+    #     states['figure']['data'] = plane.pistons[i].draw(states['figure']['data'])
+    # if plane.planes[0].ik_res is not None:
+    #     for i in range(0,3):
+    #         plane.pistons[i].joints[-1].origin_pos[2] = plane.planes[0].ik_res[i]
+    #     plane.forward_kinematics()
+    # states['figure']['data'] = plane.draw(states['figure']['data'])
+    
+    plane_test.forward_kinematics()
+    for page in pages:
+        states['figure']['data'] = page.model.draw(states['figure']['data'])
+    states['figure']['data'] = IK_point.draw(states['figure']['data'])
         
     BASE_PLOTTER.change_camera_view(states['figure'], states['relayout'])
     BASE_PLOTTER._draw_scene(states['figure'])
-    with open("data_debug_post.json", "w") as f:
-      json.dump(states['figure'], f, indent=2)
+    # with open("data_debug_post.json", "w") as f:
+    #   json.dump(states['figure'], f, indent=2)
     return states['figure']
 
 

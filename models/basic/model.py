@@ -20,8 +20,8 @@ class Model:
       self.origin_pos = np.append(self.origin_pos, [1.0])
     # self.origin = origin if origin is not None else Joint(f"{self.name}_Origin", self.origin_pos)
     self.origin = origin
-    if self.origin is not None:
-      self.origin.transform = pt.transform_from_pq(np.hstack((np.array(self.origin_pos[:3]), pr.q_id)))
+    # if self.origin is not None:
+    #   self.origin.transform = pt.transform_from_pq(np.hstack((np.array(self.origin_pos[:3]), pr.q_id)))
     self.relative_pos = deepcopy(self.origin_pos)
     self.absolute_pos = deepcopy(self.origin_pos)
     self.parent = None
@@ -84,12 +84,12 @@ class Model:
       child.set_visibility(vis)
       
   def set_parent(self, parent):
-    print(f"Attaching object {self.name} to {parent.name}")
+    # print(f"Attaching object {self.name} to {parent.name}")
     self.parent = parent
     parent.children.append(self)
     
   def add_child(self, child):
-    print(f"Attaching object {child.name} to {self.name}")
+    # print(f"Attaching object {child.name} to {self.name}")
     child.parent = self
     self.children.append(child)
     

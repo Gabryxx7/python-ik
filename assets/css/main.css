@@ -90,6 +90,9 @@
   gap: 0.25rem;
   font-size: 0.9rem;
 }
+.quat-comp-slider-container.disabled {
+  opacity: 0.6;
+}
 .quat-comp-slider{
   width: 100%;
   padding: 0.6rem;

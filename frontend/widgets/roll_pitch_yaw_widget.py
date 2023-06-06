@@ -6,19 +6,19 @@ import dash_bootstrap_components as dbc
 from frontend.components.trigger import Trigger
 
 quat_components_deg = {
-  'Roll': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01},
-  'Pitch': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01},
-  'Yaw': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01}
+  'Roll': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01, 'enabled': True},
+  'Pitch': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01, 'enabled': True},
+  'Yaw': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01, 'enabled': True}
 }
 
 quat_components = {
-  'Roll': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01},
-  'Pitch': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01},
-  'Yaw': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01}
+  'Roll': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01, 'enabled': True},
+  'Pitch': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01, 'enabled': True},
+  'Yaw': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01, 'enabled': True}
 }
 
 class RollPitchYawWidget:
-  def __init__(self, plane, app):
+  def __init__(self, plane, app, yaw_enabled=True):
     self.app = app
     self.plane = plane
     self.widget = None
@@ -29,6 +29,7 @@ class RollPitchYawWidget:
     self.component_label_states = []
     self.component_label_outputs = []
     self.trigger = None
+    self.yaw_enabled = yaw_enabled
     
   def get_widget(self):
     if self.widget is None:
@@ -40,15 +41,19 @@ class RollPitchYawWidget:
     j_id = self.plane.uuid
     color = "inherit" if self.plane.color is None else self.plane.color
     for key, data in quat_components.items():
+      if key == 'Yaw':
+        data['enabled'] = self.yaw_enabled
       slider_id = f"quat_{j_id}_{key}"
       input_slider = dcc.Slider(data['min'], data['max'], data['res'], value=data['value'], id=slider_id, className="quat-comp-slider", marks=None, updatemode='drag', persistence=True, tooltip={"placement": "bottom", "always_visible": True})
       label_id = slider_id +"_label"
       input_label = html.Div(key.upper(), id=label_id, **{'data-name': key.upper()})
-      self.sliders_inputs.append(Input(slider_id, 'value'))
+      if data['enabled']:
+        self.sliders_inputs.append(Input(slider_id, 'value'))
       self.sliders_outputs.append(Output(slider_id, 'value'))
       self.component_label_outputs.append(Output(label_id, 'children'))
       self.component_label_states.append(State(label_id, 'data-name'))
-      comp_widget = html.Div([input_label, input_slider], className="quat-comp-slider-container")
+      disabled_class = "disabled" if not data['enabled'] else ""
+      comp_widget = html.Div([input_label, input_slider], className=f"quat-comp-slider-container {disabled_class}")
       self.component_widgets.append(comp_widget)
       
     reset_button = html.Button('Reset', id=f"quat-reset-{j_id}")
@@ -58,14 +63,16 @@ class RollPitchYawWidget:
       html.Div([self.trigger.component] + self.component_widgets + [reset_button], className="quaternion-sliders-container"),
       html.Br()],
       style={"color":color},
-      className="quaternion-widget-container")
+      className="pistons-widget-container")
     return self.widget
   
   def update_plane_orientation(self, *inputs):
-    print("Plane RollPitchYaw UPDATE")
-    # self.plane.update_plane_vertices(*inputs)
-    inputs = [1.0, inputs[1], inputs[0], inputs[2] ]
-    self.plane.origin.rotate(quaternion=inputs)
+    w = 1.0
+    alpha = inputs[1]
+    beta = inputs[0]
+    gamma = inputs[2] if len(inputs) > 2 else 0
+    quat = [w, alpha, beta, gamma]
+    self.plane.rotate(quaternion=quat)
     return ""
   
   def add_callback(self):

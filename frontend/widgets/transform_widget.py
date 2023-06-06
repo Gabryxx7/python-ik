@@ -42,7 +42,10 @@ class TransformWidget:
     tf_extras.append(html.Div(f"\n\nOrigin: {np.round(self.joint.origin_pos, 2)}"))
     tf_extras.append(html.Div(f"\nAbs. Pos.: {np.round(self.joint.absolute_pos, 2)}"))
     tf_extras.append(html.Div(f"\nRel. Pos.: {np.round(self.joint.relative_pos, 2)}"))
-    tf_extras.append(html.Div(f"\nDistance from prev: {np.round(self.joint.get_joint_length(), 2)}"))
+    try:
+      tf_extras.append(html.Div(f"\nDistance from prev: {np.round(self.joint.get_joint_length(), 2)}"))
+    except Exception as e:
+      pass
     tf_extras.append(html.Div(f"\nQuaternion: {self.joint.quaternion}"))
     tf_extras_div = html.Div(tf_extras, className="transform-extras")
     tf_components = [tf_matrix_div, tf_extras_div]

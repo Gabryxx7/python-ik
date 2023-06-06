@@ -14,14 +14,15 @@ class ArmPage:
     self.page = None
     self.joints_widgets = []
     self.trigger = None
-    self.id = f"tab-arm-{self.model.uuid}"
+    self.id = f"tab-{self.model.uuid}"
     self.ik_button = {'id': f"ik-run{self.model.uuid}", 'n_clicks': -1}
   
   def get_page(self):
     if self.page is None:
+      self.joints_widgets.append(JointWidget(self.model, self.app))
       for joint in self.model.children:
         self.joints_widgets.append(JointWidget(joint, self.app))
-      self.trigger = Trigger(self.model.uuid)
+      self.trigger = Trigger(self.id)
       ik_button = html.Button('Run IK', id=self.ik_button['id'])
       self.page = html.Div([ik_button] + [jw.get_widget() for jw in self.joints_widgets]+[self.trigger.component], className="model-sidebar")
     return self.page
@@ -37,7 +38,6 @@ class ArmPage:
     return ""
   
   def add_callback(self):
-    print("Adding arm callbacks")
     inputs = {'joints': [], 'ik_button': None}
     for jw in self.joints_widgets:
       jw.add_callback()
