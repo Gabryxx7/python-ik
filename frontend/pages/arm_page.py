@@ -33,7 +33,10 @@ class ArmPage:
     #   self.ik_button['n_clicks'] += 1
     #   print("IK button pressed")
     # else:
-    self.model.forward_kinematics()
+    try:
+      self.model.forward_kinematics()
+    except Exception as e:
+      print(f"Exception updating arm from inputs: {e}")
     
     return ""
   

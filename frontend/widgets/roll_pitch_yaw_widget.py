@@ -71,7 +71,7 @@ class RollPitchYawWidget:
     alpha = inputs[1]
     beta = inputs[0]
     gamma = inputs[2] if len(inputs) > 2 else 0
-    quat = [w, alpha, beta, gamma]
+    quat = [alpha, beta, gamma, w]
     self.plane.rotate(quaternion=quat)
     return ""
   

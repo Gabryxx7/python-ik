@@ -1,13 +1,11 @@
 import warnings
 import uuid
 import numpy as np
-from pyquaternion import Quaternion
-from pytransform3d import rotations as pr
-from pytransform3d import transformations as pt
-from pytransform3d.transform_manager import TransformManager
 from copy import deepcopy
 from dash import Dash, dcc, html, dash_table, Input, Output, State, callback
 from utils.trace_utils import TracesHelper
+from utils.transforms import Transform
+from utils.quaternion import Quaternion
 
 IMPL_MISSING_MSG = "implementatiom missing (did you override it in your new model class?)"
 
@@ -18,19 +16,17 @@ class Model:
     self.origin_pos = np.array(deepcopy(offset_pos))
     if len(self.origin_pos) < 4:
       self.origin_pos = np.append(self.origin_pos, [1.0])
-    # self.origin = origin if origin is not None else Joint(f"{self.name}_Origin", self.origin_pos)
     self.origin = origin
-    # if self.origin is not None:
-    #   self.origin.transform = pt.transform_from_pq(np.hstack((np.array(self.origin_pos[:3]), pr.q_id)))
     self.relative_pos = deepcopy(self.origin_pos)
     self.absolute_pos = deepcopy(self.origin_pos)
+    self.absolute_pos_new = deepcopy(self.origin_pos)
     self.parent = None
     self.children = []
     self.trace_type = "joint"
     self.trace_params = trace_params if trace_params is not None else {}
     self.visible = False
-    self.quaternion = pr.q_id
-    self.transform = pt.transform_from_pq(np.hstack((np.array(self.origin_pos[:3]), self.quaternion)))
+    self.transform = Transform.make_transform(translation=self.origin_pos[:3])
+    self.quaternion = Quaternion()
   
   def get_trace(self, fig_data):
     trace = TracesHelper.find_trace(fig_data, self.uuid)
@@ -46,24 +42,28 @@ class Model:
     warnings.warn(f"inverse_kinematics() {IMPL_MISSING_MSG}")
     
   def update(self, dbg_prefix=""):
-    dbg = f"{dbg_prefix}- Updating {self.name} Transform "
-    self.transform = pt.transform_from_pq(np.hstack((self.origin_pos[:3], self.quaternion)))
-    if self.parent is not None:
-      dbg += f"Using parent ({self.parent.name}) transform"
-      self.transform = np.dot(np.matrix(self.parent.transform), np.matrix(self.transform))
-    # Remember that the accumulated transform should always be applied to a hypothetical starting point 0,
-    # and the last component should always be 1 (the 4th dimension used to apply transforms)
-    self.absolute_pos = np.array(self.transform@np.array([0,0,0,1])).flatten()
-    for child in self.children:
-      child.update(dbg_prefix=dbg_prefix)
+    try:
+      dbg = f"{dbg_prefix}- Updating {self.name} Transform "
+      self.transform = Transform.make_transform(translation=self.origin_pos[:3], quaternion=self.quaternion)
+      if self.parent is not None:
+        dbg += f"Using parent ({self.parent.name}) transform"
+        self.transform = Transform.combine(self.parent.transform, self.transform)
+      # Remember that the accumulated transform should always be applied to a hypothetical starting point 0 expressed in world coordinates,
+      # and the last component should always be 1 (the 4th dimension used to apply transforms)
+      self.absolute_pos = np.array(self.transform.mat@np.array([0,0,0,1])).flatten()
+      for child in self.children:
+        child.update(dbg_prefix=dbg_prefix)
+    except Exception as e:
+      print(f"Exception updating {self.name} transform {e}")
+      # print(f"Exception combining parent and child transform {e}")
       
   def rotate(self, euler_rot=None, quaternion=None):
     # print(f"Rotating {self.name} ({self.uuid}) with: {quaternion}")
     if quaternion is not None:
-      self.quaternion = quaternion
+      self.quaternion = Quaternion(quaternion)
       return
     if euler_rot is None:
-      self.quaternion = pr.q_id
+      self.quaternion = Quaternion.quaternion_from_angles(euler_rot)
       return
     self.quaternion = Quaternion(axis=[0, 0, 0], angle=0)
     for axis_idx in AXIS_ORDER_CONVENTION:

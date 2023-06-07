@@ -6,10 +6,10 @@ import dash_bootstrap_components as dbc
 from frontend.components.trigger import Trigger
 
 quat_components = {
-  'w': {'value': 1, 'min': -1, 'max': 1, 'res': 0.01},
   'x': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01},
   'y': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01},
-  'z': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01}
+  'z': {'value': 0, 'min': -1, 'max': 1, 'res': 0.01},
+  'w': {'value': 1, 'min': -1, 'max': 1, 'res': 0.01}
 }
 
 class QuaternionWidget:

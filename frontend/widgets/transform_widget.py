@@ -29,11 +29,16 @@ class TransformWidget:
     return self.widget
   
   def update_transform_data(self, *joint_widget_out_in):
-    return self.get_transform_info()
+    info = ""
+    try:
+      info = self.get_transform_info()
+    except Exception as e:
+      print(f"Exception updating transform info for joint {self.joint.name}: {e}")
+    return info
   
   def get_transform_info(self):
     matrix_data = []
-    tf = np.array(self.joint.transform)
+    tf = np.array(self.joint.transform.mat)
     for row in tf:
       for col in row:
         matrix_data.append(html.Span(f"{col:.2f}"))

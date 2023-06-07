@@ -1,9 +1,5 @@
 import uuid
 import numpy as np
-from pyquaternion import Quaternion
-from pytransform3d import rotations as pr
-from pytransform3d import transformations as pt
-from pytransform3d.transform_manager import TransformManager
 from models.basic.joint import Joint
 from models.basic.model import Model
 import math
@@ -43,14 +39,14 @@ class CompoundModel(Model):
     # print("\n\nStarting Forward Kinematics:")
     for plane in self.planes:
       plane.update()
-      self.ik_res = self.Inverse_Kinematics(plane.origin_pos[2], plane.quaternion[2], plane.quaternion[1])
+      self.ik_res = self.Inverse_Kinematics(plane.origin_pos[2], plane.quaternion.y, plane.quaternion.x)
       if self.ik_res is not None:
         for i in range(0,3):
           self.arms[i].children[0].origin_pos[2] = self.ik_res[i]
         # plane.forward_kinematics()
         yaw = self.ik_res[5]
         q = plane.quaternion
-        q[3] = yaw
+        q.z = yaw
         # plane.rotate(q)
         print(f"Plane quat: {plane.quaternion}")
     for arm in self.arms:

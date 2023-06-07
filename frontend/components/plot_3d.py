@@ -3,10 +3,6 @@ from dash import dcc
 from dash import html
 from copy import deepcopy
 from style_settings import NUMBER_INPUT_STYLE
-from pyquaternion import Quaternion
-from pytransform3d import rotations as pr
-from pytransform3d import transformations as pt
-from pytransform3d.transform_manager import TransformManager
 import numpy as np
 import matplotlib.pyplot as plt
 import json

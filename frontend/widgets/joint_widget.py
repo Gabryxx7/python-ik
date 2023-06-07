@@ -30,7 +30,10 @@ class JointWidget:
     return self.widget
   
   def update_joint(self, *q_input):
-    self.joint.rotate(quaternion=q_input)
+    try:
+      self.joint.rotate(quaternion=q_input)
+    except Exception as e:
+      print(f"Exception rotating joint {self.joint.name}: {e}")
     return ""
   
   def add_callback(self):

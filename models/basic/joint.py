@@ -3,10 +3,6 @@ import numpy as np
 from dash import dcc
 from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
-from pyquaternion import Quaternion
-from pytransform3d import rotations as pr
-from pytransform3d import transformations as pt
-from pytransform3d.transform_manager import TransformManager
 from copy import deepcopy
 from models.basic.model import Model
 DEFAULT_CONSTRAINTS = {'angles': {'max': [], 'min': [0]}, 
@@ -27,7 +23,6 @@ class Joint(Model):
     super().__init__(_name, offset_pos, origin, trace_params)
     # self.constraints = constraints
     self.trace_type = "joint"
-    # self.rotate(euler_rot, quaternion)
   
   def force_update(self, override_transform):
     self.absolute_pos = override_transform@self.origin_pos

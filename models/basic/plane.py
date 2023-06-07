@@ -1,9 +1,5 @@
 import uuid
 import numpy as np
-from pyquaternion import Quaternion
-from pytransform3d import rotations as pr
-from pytransform3d import transformations as pt
-from pytransform3d.transform_manager import TransformManager
 from models.basic.joint import Joint
 from models.basic.model import Model
 import math
@@ -13,8 +9,6 @@ from utils.trace_utils import TracesHelper
 class Plane(Model):
   def __init__(self, _name="Plane", offset_pos=None, origin=None, trace_params=None):
     super().__init__(_name, offset_pos, origin, trace_params)
-    # self.constraints = constraints
-    # self.rotate(euler_rot, quaternion)
     self.trace_type = "plane"
     self.color = "#ff6348"
     # self.Rbig = 22.645  # outer radius

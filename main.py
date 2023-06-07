@@ -9,8 +9,6 @@ from frontend.components.cheatsheets_tab import cheatsheet
 from style_settings import EXTERNAL_STYLESHEETS, GLOBAL_PAGE_STYLE
 from frontend.components.plot_3d import plot3d, GRAPH_ID, MachinePlotter
 from frontend.components.example_tabs import controls, colors, buttons, graph
-# from frontend.components.quaternion_widget import  make_quaternion_widget
-# from frontend.components.piston_widget import make_piston_widget, add_piston_slider_listener
 from models.arm import Arm
 from models.basic.joint import Joint
 import json
