@@ -19,8 +19,8 @@ class JointConstraints:
     return True
     
 class Joint(Model):
-  def __init__(self, _name="Joint", offset_pos=None, origin=None, trace_params=None):
-    super().__init__(_name, offset_pos, origin, trace_params)
+  def __init__(self, _name="Joint", offset_pos=None, trace_params=None):
+    super().__init__(_name, offset_pos, trace_params)
     # self.constraints = constraints
     self.trace_type = "joint"
   

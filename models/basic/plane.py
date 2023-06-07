@@ -7,21 +7,10 @@ from copy import deepcopy
 from utils.trace_utils import TracesHelper
 
 class Plane(Model):
-  def __init__(self, _name="Plane", offset_pos=None, origin=None, trace_params=None):
-    super().__init__(_name, offset_pos, origin, trace_params)
+  def __init__(self, _name="Plane", offset_pos=None, trace_params=None):
+    super().__init__(_name, offset_pos, trace_params)
     self.trace_type = "plane"
     self.color = "#ff6348"
-    # self.Rbig = 22.645  # outer radius
-    # self.Rsmall = 15  # inner radius
-    # self.l = 25
-    self.Rbig = 130  # outer radius
-    self.Rsmall = 70  # inner radius
-    self.l = 80
-    
-    # self.circles = []
-    # self.circles.append(Circle(f"{self.name}_Radius1", self.absolute_pos, self.Rbig, "#CEFF33"))
-    # self.circles.append(Circle(f"{self.name}_Radius1", self.absolute_pos, self.Rsmall, "#33E6FF"))
-    # self.circles.append(Circle(f"{self.name}_Radius2", self.absolute_pos, 30))
   
   def add_vertex(self, offset_pos):
     # print(f"Adding vertex to {self.name}: {offset_pos}")

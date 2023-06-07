@@ -5,8 +5,8 @@ from models.basic.joint import Joint
 from models.basic.model import Model
 
 class Arm(Model):
-  def __init__(self, _name="Arm", offset_pos=None, origin=None, trace_params=None):
-    super().__init__(_name, offset_pos, origin, trace_params)
+  def __init__(self, _name="Arm", offset_pos=None, trace_params=None):
+    super().__init__(_name, offset_pos, trace_params)
     self.page = None
   
   def add_joint(self, joint):

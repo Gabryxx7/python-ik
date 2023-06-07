@@ -23,10 +23,6 @@ class PlanePage:
   
   def get_page(self):
     if self.page is None:        
-      # self.joints_widgets.append(JointWidget(self.model.origin, self.app))
-      # for joint in self.model.joints:
-      #   self.joints_widgets.append(JointWidget(joint, self.app))
-        
       self.plane_widget = RollPitchYawWidget(self.model, self.app)
       self.trigger = Trigger(self.id)
       self.page = html.Div([self.plane_widget.get_widget()] + [jw.get_widget() for jw in self.joints_widgets] + [self.trigger.component], className="model-sidebar")

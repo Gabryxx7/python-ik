@@ -17,6 +17,8 @@ class TracesHelper:
     trace['name'] = name
     trace['uuid'] = str(uuid.uuid4()) if uuid is None else uuid
     if params is not None:
+        if 'opacity' in params:
+          trace['opacity'] = params['opacity']
         if 'color' in params:
           if 'scatter' in trace['type']:
             trace['line']['color'] = params['color'] 

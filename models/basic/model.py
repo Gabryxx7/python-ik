@@ -10,13 +10,14 @@ from utils.quaternion import Quaternion
 IMPL_MISSING_MSG = "implementatiom missing (did you override it in your new model class?)"
 
 class Model:
-  def __init__(self, _name="Model", offset_pos=None, origin=None, trace_params=None):
+  def __init__(self, _name="Model", offset_pos=None, trace_params=None):
     self.name = _name
     self.uuid = f"{self.name.replace(' ', '_')}_{str(uuid.uuid4())}"
+    if offset_pos is None:
+      offset_pos = np.array([0,0,0,1.0])
     self.origin_pos = np.array(deepcopy(offset_pos))
     if len(self.origin_pos) < 4:
       self.origin_pos = np.append(self.origin_pos, [1.0])
-    self.origin = origin
     self.relative_pos = deepcopy(self.origin_pos)
     self.absolute_pos = deepcopy(self.origin_pos)
     self.absolute_pos_new = deepcopy(self.origin_pos)
@@ -76,12 +77,11 @@ class Model:
     
   # I know this is conceputally not right here since this is about the 3D model and joints and not the actual front end
   # but look, it's much easier this way!
-  def set_visibility(self, vis):
+  def set_visibility(self, vis, propagate=True):
     self.visible = vis
-    if self.origin is not None:
-      self.origin.set_visibility(vis)
-    for child in self.children:
-      child.set_visibility(vis)
+    if propagate:
+      for child in self.children:
+        child.set_visibility(vis)
       
   def set_parent(self, parent):
     # print(f"Attaching object {self.name} to {parent.name}")
@@ -108,8 +108,6 @@ class Model:
       trace['y'] = y
       trace['z'] = z
     dbg_prefix += "  "
-    if self.origin is not None:
-      fig_data = self.origin.draw(fig_data, draw_children=False, dbg_prefix=dbg_prefix)
     if draw_children:
       for child in self.children:
         fig_data = child.draw(fig_data, draw_children=False, dbg_prefix=dbg_prefix)

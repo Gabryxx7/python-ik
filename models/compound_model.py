@@ -2,6 +2,7 @@ import uuid
 import numpy as np
 from models.basic.joint import Joint
 from models.basic.model import Model
+from models.circle import Circle
 import math
 
 PISTON_HEIGHT = 200.0
@@ -11,8 +12,8 @@ PISTON_START_HEIGHT = PISTON_HEIGHT * PISTON_START_HEIGHT_RATIO
 PLANE_INITIAL_HEIGHT = PISTON_HEIGHT*1.5
 
 class CompoundModel(Model):
-  def __init__(self, _name="Compound", offset_pos=None, origin=None, trace_params=None):
-    super().__init__(_name, offset_pos, origin, trace_params)
+  def __init__(self, _name="Compound", offset_pos=None, trace_params=None):
+    super().__init__(_name, offset_pos, trace_params)
     self.arms = []
     self.children = []
     self.planes = []
@@ -34,6 +35,19 @@ class CompoundModel(Model):
     
   def add_plane(self, plane):
     self.planes.append(plane)
+    try:
+      self.Rsmall = abs(np.linalg.norm(plane.origin_pos[:2] - plane.children[0].origin_pos[:2]))
+      self.Rbig = self.Rsmall*1.5
+      self.l = (self.Rsmall*1.2)
+      print(self.Rbig)
+      print(self.Rsmall)
+      print(self.l)
+      circle_big = Circle("Circle_Big", radius=self.Rbig, trace_params={'color': '#9999ff', 'opacity': 0.3})
+      circle_small = Circle("Circle_Small", radius=self.Rsmall, trace_params={'color': '#00ffcc', 'opacity': 0.3})
+      circle_big.set_parent(plane)
+      circle_small.set_parent(plane)
+    except Exception as e:
+      print(f"Exception adding circles as children {e}")
     
   def forward_kinematics(self):
     # print("\n\nStarting Forward Kinematics:")
@@ -83,7 +97,8 @@ class CompoundModel(Model):
   """  
   def Inverse_Kinematics(self, zT, alpha, beta):
     gamma = -np.arctan(np.sin(alpha) * np.sin(beta) / (np.cos(alpha) + np.cos(beta)))
-    print(f"IK Plane. Roll: {alpha}\tPitch: {beta}\tYaw (calc): {gamma}")
+    zT *= 1.5
+    print(f"IK Plan:\n\tzT: {zT}\tRbig: {self.Rbig:.2f}\tRsmall: {self.Rsmall:.2f}\t l: {self.l:.2f}\n\tRoll: {alpha}\t\tPitch: {beta}\tYaw (calc): {gamma}")
     
     xT = self.Rbig / 2 + self.Rsmall / 2 * (
                 np.cos(beta) * np.cos(gamma) + np.sin(alpha) * np.sin(beta) * np.sin(gamma) - np.cos(alpha) * np.cos(

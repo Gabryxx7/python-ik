@@ -6,8 +6,8 @@ import math
 from models.basic.plane import Plane
 
 class Circle(Plane):
-  def __init__(self, _name="Circle", offset_pos=None, origin=None, trace_params=None, radius=20):
-    super().__init__(_name, offset_pos, origin, trace_params)
+  def __init__(self, _name="Circle", offset_pos=None, trace_params=None, radius=20):
+    super().__init__(_name, offset_pos, trace_params)
     self.radius = radius
     x,y,z = self.get_boundary_circle()
     for p in zip(x,y,z):
@@ -28,6 +28,6 @@ class Circle(Plane):
     z = h*np.ones(theta.shape)
     return x, y, z
   
-  def draw(self, fig_data):
-    fig_data = super().draw(fig_data, draw_children=False)
+  def draw(self, fig_data, draw_children=False, dbg_prefix=""):
+    fig_data = super().draw(fig_data, draw_children=False, dbg_prefix=dbg_prefix)
     return fig_data

@@ -104,16 +104,6 @@ def update_graph(*callback_data):
     # with open("data_debug_pre.json", "w") as f:
     #     json.dump(states['figure'], f, indent=2)
     switch_model_visibility(inputs['tab-id'])
-    # for i in range(0, len(plane.arms)):
-    #     states['figure']['data'] = plane.arms[i].draw(states['figure']['data'])
-    # for i in range(0, len(plane.pistons)):
-    #     states['figure']['data'] = plane.pistons[i].draw(states['figure']['data'])
-    # if plane.planes[0].ik_res is not None:
-    #     for i in range(0,3):
-    #         plane.pistons[i].joints[-1].origin_pos[2] = plane.planes[0].ik_res[i]
-    #     plane.forward_kinematics()
-    # states['figure']['data'] = plane.draw(states['figure']['data'])
-    
     plane_test.forward_kinematics()
     for page in pages:
         states['figure']['data'] = page.model.draw(states['figure']['data'])
