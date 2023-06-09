@@ -97,7 +97,7 @@ class Model:
     points = [self.absolute_pos]
     return points
   
-  def draw(self, fig_data, draw_children=True, dbg_prefix=""):
+  def draw_plotly(self, fig_data, draw_children=True, dbg_prefix=""):
     fig_data, trace = self.get_trace(fig_data)
     trace['visible'] = self.visible
     # print(f"{dbg_prefix}Drawing {self.name}")
@@ -110,6 +110,6 @@ class Model:
     dbg_prefix += "  "
     if draw_children:
       for child in self.children:
-        fig_data = child.draw(fig_data, draw_children=False, dbg_prefix=dbg_prefix)
+        fig_data = child.draw_plotly(fig_data, draw_children=False, dbg_prefix=dbg_prefix)
     return fig_data
   

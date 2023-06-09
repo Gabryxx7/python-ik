@@ -7,9 +7,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import json
 
-GRAPH_ID = "graph-kinematics"
 # BASE_FIGURE = deepcopy(HEXAPOD_FIGURE)
 BASE_FIGURE = HEXAPOD_FIGURE
+GRAPH_ID = "graph-kinematics"
 plot3d = dcc.Graph(id=GRAPH_ID, figure=BASE_FIGURE, className="plotly-graph")
 
 class Point():
@@ -31,7 +31,7 @@ class MachinePlotter:
   
   @staticmethod
   def _draw_arm(fig, arm):
-    fig['data'] = arm.draw(fig['data'])
+    fig['data'] = arm.draw_plotly(fig['data'])
     # with open("data_debug2.json", "w") as f:
     #   json.dump(fig, f)
     MachinePlotter._draw_scene(fig)

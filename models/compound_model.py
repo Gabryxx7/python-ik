@@ -73,12 +73,12 @@ class CompoundModel(Model):
     for p in self.planes:
       p.set_visibility(vis)
   
-  def draw(self, fig_data):
-    super().draw(fig_data)
+  def draw_plotly(self, fig_data):
+    super().draw_plotly(fig_data)
     for a in self.arms:
-      fig_data = a.draw(fig_data)
+      fig_data = a.draw_plotly(fig_data)
     for p in self.planes:
-      fig_data = p.draw(fig_data)
+      fig_data = p.draw_plotly(fig_data)
     return fig_data
   
   

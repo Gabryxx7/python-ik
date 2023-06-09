@@ -28,6 +28,6 @@ class Circle(Plane):
     z = h*np.ones(theta.shape)
     return x, y, z
   
-  def draw(self, fig_data, draw_children=False, dbg_prefix=""):
-    fig_data = super().draw(fig_data, draw_children=False, dbg_prefix=dbg_prefix)
+  def draw_plotly(self, fig_data, draw_children=False, dbg_prefix=""):
+    fig_data = super().draw_plotly(fig_data, draw_children=False, dbg_prefix=dbg_prefix)
     return fig_data
