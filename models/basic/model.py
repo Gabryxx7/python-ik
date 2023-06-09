@@ -9,6 +9,10 @@ from utils.quaternion import Quaternion
 
 IMPL_MISSING_MSG = "implementatiom missing (did you override it in your new model class?)"
 
+def hex_to_rgb(h):
+  h = h.lstrip('#')
+  return list(float(int(h[i:i+2], 16)/255) for i in (0, 2, 4))
+
 class Model:
   def __init__(self, _name="Model", offset_pos=None, trace_params=None):
     self.name = _name
@@ -96,6 +100,47 @@ class Model:
   def get_trace_points(self):
     points = [self.absolute_pos]
     return points
+  
+  def get_vtk_model_data(self, draw_children=True, dbg_prefix=""):
+    points = self.get_trace_points()
+    color =  hex_to_rgb(self.trace_params.get('color', "#FFFFFF"))
+    model_data = []
+    model_data.append({
+      'id': self.uuid+"point",
+      'vtkClass': 'vtkSphereSource',
+      'color': color,
+      'origin': list(self.absolute_pos[0:3]),
+      'pointSize': 20,
+      'state': {
+        "radius": 3,
+        'resolution': 600
+      }
+    })
+    if len(points) > 1:
+      model_data.append({
+        'id': self.uuid+"line",
+        'vtkClass': 'vtkLineSource',
+        'color': color,
+        'pointSize': 10,
+        'origin': [0,0,0],
+        'state': {
+          'point1': list(points[0][0:3]),
+          'point2': list(points[1][0:3]),
+          'resolution': 600
+        }
+      })
+    
+    if not draw_children:
+      return model_data
+    
+    dbg_prefix += "  "
+    for child in self.children:
+      child_model = child.get_vtk_model_data(draw_children=False, dbg_prefix=dbg_prefix)
+      if child_model is not None and len(child_model) > 0:
+        model_data += child_model
+    # print(f"Model data for {self.name}")
+    # print(model_data)
+    return model_data
   
   def draw_plotly(self, fig_data, draw_children=True, dbg_prefix=""):
     fig_data, trace = self.get_trace(fig_data)

@@ -18,7 +18,9 @@ from frontend.pages.arm_page import ArmPage
 from frontend.pages.compound_model_page import CompoundModelPage
 from frontend.pages.plane_page import PlanePage
 from utils.plotly_plotter import PlotlyPlotter, BASE_FIGURE
-from utils.vtk_view import VTK_ID, VTK_ALG_ID, vtk_view, VTK_SLIDER_ID, VTK_CHECKLIST_ID, vtk_controls
+# from utils.vtk_view import vtk_view
+from utils.vtk_view import get_vtk_view
+from utils.vtk_view import VTK_ID, VTK_ALG_ID, VTK_SLIDER_ID, VTK_CHECKLIST_ID
 import random
 
 
@@ -62,9 +64,13 @@ for page in pages:
     machine_tabs.append(dcc.Tab(page_layout, label=page.label, value=page.id))
     triggers[page.id] = page.trigger.input
 
+arm_test.update()
+vtk_view = get_vtk_view(arm_test.get_vtk_model_data())
+
 plots_tabs = []
 plots_tabs.append(dcc.Tab(plotly_graph, label="Plotly", value='plotly'))
-plots_tabs.append(dcc.Tab([vtk_view, vtk_controls], label="VTK", value='vtk'))
+# plots_tabs.append(dcc.Tab([vtk_view, vtk_controls], label="VTK", value='vtk'))
+plots_tabs.append(dcc.Tab(vtk_view, label="VTK", value='vtk'))
 
 main_plot_page = html.Div([
                     html.Div([
@@ -138,11 +144,11 @@ graph_state = {'figure': State(GRAPH_ID, "figure"), 'relayout': State(GRAPH_ID, 
 app.callback(graph_out, triggers, graph_state)(plot_plotly)
 # app.callback(graph_out, triggers, graph_state)(plot_plotly)
 
-# def update_cone(*callback_data):
-#     slider_val = callback_data[0]
-#     checked_values = callback_data[1]
-#     new_state = {"resolution": slider_val, "capping": "capping" in checked_values}
-#     return new_state, random.random()
+def update_cone(*callback_data):
+    slider_val = callback_data[0]
+    checked_values = callback_data[1]
+    new_state = {"resolution": slider_val, "capping": "capping" in checked_values}
+    return new_state, random.random()
 
 # vtk_outputs = [Output(VTK_ALG_ID, "state"), Output(VTK_ID, "triggerResetCamera")]
 # vtk_inputs = [Input(VTK_SLIDER_ID, "value"), Input(VTK_CHECKLIST_ID, "value")]
