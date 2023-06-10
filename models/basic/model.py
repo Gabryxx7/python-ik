@@ -25,21 +25,21 @@ class Model:
       self.origin_pos = np.append(self.origin_pos, [1.0])
     self.relative_pos = deepcopy(self.origin_pos)
     self.absolute_pos = deepcopy(self.origin_pos)
-    self.absolute_pos_new = deepcopy(self.origin_pos)
     self.parent = None
     self.children = []
     self.trace_type = "joint"
     self.trace_params = trace_params if trace_params is not None else {}
     self.visible = False
     self.transform = Transform.make_transform(translation=self.origin_pos[:3])
-    self.quaternion = Quaternion()
+    self.rotations = [0,0,0]
+    self.quaternion = Quaternion(self.rotations[0], self.rotations[1], self.rotations[2])
   
-  def get_trace(self, fig_data):
-    trace = TracesHelper.find_trace(fig_data, self.uuid)
-    if trace is None:
-      fig_data, trace = TracesHelper.add_trace(fig_data, self.trace_type, self.name, uuid=self.uuid, params=self.trace_params)
+  def get_model_traces(self, fig_data):
+    traces = TracesHelper.find_model_traces(fig_data, self.uuid)
+    if len(traces) <= 0:
+      fig_data, traces = TracesHelper.add_model_traces(fig_data, self.trace_type, self.name, uuid=self.uuid, params=self.trace_params)
     # print(f"Updating trace {trace['uuid']}")
-    return fig_data, trace
+    return fig_data, traces
     
   def forward_kinematics(self):
     warnings.warn(f"forward_kinematics() {IMPL_MISSING_MSG}")
@@ -50,9 +50,11 @@ class Model:
   def update(self, dbg_prefix=""):
     try:
       dbg = f"{dbg_prefix}- Updating {self.name} Transform "
-      self.transform = Transform.make_transform(translation=self.origin_pos[:3], quaternion=self.quaternion)
+      self.transform = Transform.make_transform(translation=self.origin_pos[:3], rotation=self.rotations)
+      # print(f"New transform for: {self.name}: {self.transform.mat}")
       if self.parent is not None:
         dbg += f"Using parent ({self.parent.name}) transform"
+        self.relative_pos = np.array(self.parent.transform.mat@np.array(self.origin_pos)).flatten()
         self.transform = Transform.combine(self.parent.transform, self.transform)
       # Remember that the accumulated transform should always be applied to a hypothetical starting point 0 expressed in world coordinates,
       # and the last component should always be 1 (the 4th dimension used to apply transforms)
@@ -63,22 +65,11 @@ class Model:
       print(f"Exception updating {self.name} transform {e}")
       # print(f"Exception combining parent and child transform {e}")
       
-  def rotate(self, euler_rot=None, quaternion=None):
-    # print(f"Rotating {self.name} ({self.uuid}) with: {quaternion}")
-    if quaternion is not None:
-      self.quaternion = Quaternion(quaternion)
-      return
-    if euler_rot is None:
-      self.quaternion = Quaternion.quaternion_from_angles(euler_rot)
-      return
-    self.quaternion = Quaternion(axis=[0, 0, 0], angle=0)
-    for axis_idx in AXIS_ORDER_CONVENTION:
-      axis = [0,0,0]
-      axis[axis_idx] = 1
-      self.quaternion = self.quaternion * Quaternion(axis=axis, angle=euler_rot[axis_idx])
-    # print(self.quaternion)
-    # print(self.transform)
-    # print("\n")
+  def rotate(self, euler_angles):
+    # print(f"Rotating {self.name} ({self.uuid}) with: {euler_angles}")
+    self.rotations = [euler_angles[0], euler_angles[1], euler_angles[2]]
+    self.quaternion = Quaternion(self.rotations[0], self.rotations[1], self.rotations[2])
+    # self.quaternion = Quaternion(euler_angles[0], euler_angles[1], euler_angles[2])
     
   # I know this is conceputally not right here since this is about the 3D model and joints and not the actual front end
   # but look, it's much easier this way!
@@ -112,10 +103,13 @@ class Model:
     points = self.get_trace_points()
     color =  hex_to_rgb(self.trace_params.get('color', "#FFFFFF"))
     angles = Transform.rotation_angles(self.transform)
-    # angles = self.quaternion.rpy
+    # angles = self.rotations
+    print(f"Angles {angles}")
     model_data = []
     p1 = list(points[0][0:3])
-    model_data.append({
+    orientation = [angles[0], angles[1], angles[2]]
+    # I really don't get why the orientation does not work, everything seems ok except for the orientation of these stupid cubes
+    joint_origin_point ={
       'id': self.uuid+"point",
       'vtkClass': 'vtkSphereSource',
       'property': {
@@ -124,7 +118,8 @@ class Model:
         },
       'actor': {
         'origin': p1,
-        'orientation': angles,
+        'position': [0,0,0],
+        'orientation': orientation,
       },
       'state': {
         "lineWidth": 10,
@@ -132,11 +127,13 @@ class Model:
         "radius": radius,
         'resolution': 600
       }
-    })
+    }
+    model_data.append(joint_origin_point)
+    
     if len(points) > 1:
       p2 = list(points[1][0:3])
       length = v_dist(p1, p2)
-      model_data.append({
+      joint_line = {
         'id': self.uuid+"line",
         'vtkClass': 'vtkLineSource',
         'property': {
@@ -144,8 +141,6 @@ class Model:
           'pointSize': 10,
           },
         'actor': {
-          # 'origin': [0,0,0],
-          # 'orientation': self.quaternion.rpy,
         },
         'state': {
           "lineWidth": 10,
@@ -153,10 +148,9 @@ class Model:
           'point2': p2,
           'resolution': 600
         }
-      })
-      cube_center = [p1[0], p1[1], p1[2]+length*0.5]
-      cube_origin = p1
-      model_data.append({
+      }
+      model_data.append(joint_line)
+      joint_cube = {
         'id': self.uuid+"cube",
         'vtkClass': 'vtkCubeSource',
         'property': {
@@ -164,36 +158,19 @@ class Model:
           # 'pointSize': 10,
           },
         'actor': {
-          'origin': cube_origin,
-          'orientation': [angles[0], angles[1], angles[2]],
+          'origin': p1,
+          'position': [0,0,0],
+          'orientation': orientation,
         },
         'state': {
-          'center': cube_center,
+          'center': [p1[0], p1[1], p1[2]+length*0.5],
           'zLength': length,
           'xLength': thickness,
           'yLength': thickness,
           'resolution': 600
         }
-      })
-      # model_data.append({
-      #   'id': self.uuid+"point2",
-      #   'vtkClass': 'vtkSphereSource',
-      #   'property': {
-      #     'color': color,
-      #     'pointSize': 20,
-      #     },
-      #   'actor': {
-      #     'origin': cube_origin,
-      #     'orientation': angles,
-      #   },
-      #   'state': {
-      #     "lineWidth": 10,
-      #     "center": cube_origin,
-      #     "radius": radius*2,
-      #     'resolution': 600
-      #   }
-      # })
-    
+      }
+      model_data.append(joint_cube)
     if not draw_children:
       return model_data
     
@@ -207,15 +184,33 @@ class Model:
     return model_data
   
   def draw_plotly(self, fig_data, draw_children=True, dbg_prefix=""):
-    fig_data, trace = self.get_trace(fig_data)
-    trace['visible'] = self.visible
+    fig_data, traces = self.get_model_traces(fig_data)
+    print(f"Traces found for {self.name}: {[t['name'] for t in traces]}")
+    for i in range(0, len(traces)):
+      traces[i]['visible'] = self.visible
     # print(f"{dbg_prefix}Drawing {self.name}")
     if self.visible:
       points = self.get_trace_points()
       x, y, z = TracesHelper().points_to_trace(points)
-      trace['x'] = x
-      trace['y'] = y
-      trace['z'] = z
+      traces[0]['x'] = x
+      traces[0]['y'] = y
+      traces[0]['z'] = z
+      if len(traces) > 1:
+        # How to get axes lines
+        # 1. You obviously need the updated transport of your joint that includes translation and rotation
+        # 2. Given that transform, apply it to the origin (absolute pos) and then to an offset origin depending on which axes you're plotting
+        # For instance, if you want the UP vector (x axis) you'll need to apply the transform to [0,0,0] and then [0,1,0]
+        # Get the normalized difference between the new point and the origin. That will give you the direction from the origin to the new point
+        # Since it's normalized you can just multiply it by whatever distance you want to get a greater length
+        # Add this vector to the calculated position of the point (absolute pos) et voila you got a line that matches the axis direction no matter what the rotation is
+        for i in range(0, 3):
+          direction = [0,0,0]
+          direction[i] = 1
+          offset_point =  self.transform.get_direction_vector(direction) * 25
+          print(offset_point)
+          traces[i+1]['x'] = [x[0], x[0]+offset_point[0]]
+          traces[i+1]['y'] = [y[0], y[0]+offset_point[1]]
+          traces[i+1]['z'] = [z[0], z[0]+offset_point[2]]
     dbg_prefix += "  "
     if draw_children:
       for child in self.children:

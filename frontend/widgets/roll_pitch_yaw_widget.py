@@ -6,9 +6,9 @@ import dash_bootstrap_components as dbc
 from frontend.components.trigger import Trigger
 
 quat_components_deg = {
-  'Roll': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01, 'enabled': True},
-  'Pitch': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01, 'enabled': True},
-  'Yaw': {'value': 90, 'min': 0, 'max': 180, 'res': 0.01, 'enabled': True}
+  'Roll': {'value': 0, 'min': -90, 'max': 90, 'res': 0.01, 'enabled': True},
+  'Pitch': {'value': 0, 'min': -90, 'max': 90, 'res': 0.01, 'enabled': True},
+  'Yaw': {'value': 0, 'min': -90, 'max': 90, 'res': 0.01, 'enabled': True}
 }
 
 quat_components = {
@@ -40,7 +40,7 @@ class RollPitchYawWidget:
     name = self.plane.name.upper()
     j_id = self.plane.uuid
     color = "inherit" if self.plane.color is None else self.plane.color
-    for key, data in quat_components.items():
+    for key, data in quat_components_deg.items():
       if key == 'Yaw':
         data['enabled'] = self.yaw_enabled
       slider_id = f"quat_{j_id}_{key}"
@@ -67,12 +67,12 @@ class RollPitchYawWidget:
     return self.widget
   
   def update_plane_orientation(self, *inputs):
-    w = 1.0
+    w = 0.0
     alpha = inputs[1]
     beta = inputs[0]
     gamma = inputs[2] if len(inputs) > 2 else 0
-    quat = [alpha, beta, gamma, w]
-    self.plane.rotate(quaternion=quat)
+    quat = [alpha, beta, gamma]
+    self.plane.rotate(quat)
     return ""
   
   def add_callback(self):

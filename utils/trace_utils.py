@@ -3,7 +3,7 @@ from copy import deepcopy
 
 class TracesHelper:
   @staticmethod
-  def add_trace(fig_data, trace_type, name, uuid=None, params=None):
+  def add_model_traces(fig_data, trace_type, name, uuid=None, params=None):
     default_trace = None
     trace_type = trace_type.lower()
     for key in config.default_traces.keys():
@@ -13,9 +13,10 @@ class TracesHelper:
     if default_trace is None:
       print(f"No default trace of type {trace_type}")
       # raise Exception(f"No default trace of type {trace_type}")
+    trace_uuid = str(uuid.uuid4()) if uuid is None else uuid
     trace = deepcopy(default_trace)
     trace['name'] = name
-    trace['uuid'] = str(uuid.uuid4()) if uuid is None else uuid
+    trace['uuid'] = f"model_{trace_uuid}"
     if params is not None:
         if 'opacity' in params:
           trace['opacity'] = params['opacity']
@@ -31,16 +32,35 @@ class TracesHelper:
           if 'marker' in trace:
             trace['marker']['size'] = params['markersize']
     # print(f"Appending trace: {trace['name']} ({trace['uuid']})")
+    x_ax_trace = deepcopy(config.default_traces['x_axis'])
+    x_ax_trace['uuid'] = f"x_axis_{trace_uuid}"
+    y_ax_trace = deepcopy(config.default_traces['y_axis'])
+    y_ax_trace['uuid'] = f"y_axis_{trace_uuid}"
+    z_ax_trace = deepcopy(config.default_traces['z_axis'])
+    z_ax_trace['uuid'] = f"z_axis_{trace_uuid}"
+    
+    trace["legendgroup"] = name
+    x_ax_trace["legendgroup"] = name
+    y_ax_trace["legendgroup"] = name
+    z_ax_trace["legendgroup"] = name
     fig_data.append(trace)
-    return fig_data, trace
+    fig_data.append(x_ax_trace)
+    fig_data.append(y_ax_trace)
+    fig_data.append(z_ax_trace)
+    traces = [trace, x_ax_trace, y_ax_trace, z_ax_trace]
+    return fig_data, traces
   
   @staticmethod
-  def find_trace(fig_data, uuid):
+  def find_model_traces(fig_data, uuid):
+    to_find = [f"model_{uuid}", f"x_axis_{uuid}", f"y_axis_{uuid}", f"z_axis_{uuid}"]
+    found = []
     for i in range(0,len(fig_data)):
       t = fig_data[i]
-      if 'uuid' in t and t['uuid'] == uuid:
-        return t
-    return None
+      if 'uuid' in t and t['uuid'] in to_find:
+        found.append(t)
+      if len(found) >= len(to_find):
+        return found
+    return found
   
   @staticmethod
   def points_to_trace(points):

@@ -55,7 +55,7 @@ class TransformWidget:
       pass
     tf_extras.append(html.Div(f"\nQuaternion: {self.joint.quaternion}"))
     # rpy_str = [round(angle,2) for angle in self.joint.quaternion.rpy]
-    angles = angles = Transform.rotation_angles(self.joint.transform)
+    angles = Transform.rotation_angles(self.joint.transform)
     rpy_str = [round(angle,2) for angle in angles]
     tf_extras.append(html.Div(f"\nRPY: {rpy_str}"))
     

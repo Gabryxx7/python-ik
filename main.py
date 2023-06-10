@@ -117,7 +117,7 @@ def plot_plotly(*callback_data):
     global prev_tab_id
     inputs = callback_data[0]
     states = callback_data[1]
-    # PlotlyPlotter.export_trace(states['figure'], postfix="pre")
+    PlotlyPlotter.export_trace(states['figure'], postfix="pre")
     # Switch tab visibility
     if inputs['tab-id'] != prev_tab_id:
         prev_tab_id = inputs['tab-id']
