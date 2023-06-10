@@ -73,31 +73,30 @@ default_geom_objs = [
 ]
 
 bounds = 500
+orientation = [45,0,45]
 
 def get_vtk_view(geom_objs):
   # geom_objs = default_geom_objs
   geoms = []
   for geom_obj in geom_objs:
-    print(f"Appending geom {geom_obj}")
+    actor = geom_obj.get('actor', {})
+    properties = geom_obj.get('property', {})
+    state = geom_obj.get('state', {})
+    properties["edgeVisibility"] = True
+    properties["lineWidth"] = 10
+    # print(f"Appending geom {geom_obj}")
     geom_alg = dash_vtk.Algorithm(
                 id=geom_obj['id'],
                 vtkClass=geom_obj['vtkClass'],
                 # state={'point1': geom_obj['state']['point1'], 'point2': geom_obj['state']['point2'], 'resolution': geom_obj['state']['resolution']},
-                state=geom_obj['state'].copy(),
+                state=state,
             )
     # geoms.append(geom_alg)
     geom_container = dash_vtk.GeometryRepresentation(
           id="repr_"+geom_obj['id'],
           children=[geom_alg],
-            actor={
-              'position': geom_obj['origin']
-            },
-          property={
-            "edgeVisibility": True,
-            "color": geom_obj['color'],
-            "representation": 0,
-            "pointSize": geom_obj['pointSize']
-          }
+          actor=actor,
+          property=properties
         )
     geoms.append(geom_container)
 
@@ -105,14 +104,19 @@ def get_vtk_view(geom_objs):
   axis_geom_placeholder = dash_vtk.Algorithm(
                 id="test",
                 vtkClass="vtkCubeSource",
-                state={ 'xLength': bounds, 'yLength': bounds, 'zLength': bounds })
+                state={
+                  'xLength': bounds,
+                  'yLength': bounds,
+                  'zLength': bounds,
+                  'center':  [0,0,bounds/2]})
   geoms.append(dash_vtk.GeometryRepresentation(
             id="vtk-axis",
             children=[axis_geom_placeholder],
             mapper={'scalarRange': [-bounds,bounds]},
             actor={
-              'position': [0,0,-bounds/2],
-              'origin': [0,0, -bounds/2]
+              # 'orientation': orientation
+              # 'position': [0,-bounds/2,0],
+              # 'origin': [0,-bounds/2, 0]
             },
             property={
               'opacity': 0
@@ -143,6 +147,8 @@ def get_vtk_view(geom_objs):
       background=[34/255, 47/255, 62/255], 
       pickingModes=["click"],
       children=geoms,
+      cameraPosition=[0.9,0.9,0.25],
+      cameraViewUp=[0,0,1],
       interactorSettings=interactorSettings
   )
 

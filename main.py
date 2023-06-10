@@ -65,7 +65,8 @@ for page in pages:
     triggers[page.id] = page.trigger.input
 
 arm_test.update()
-vtk_view = get_vtk_view(arm_test.get_vtk_model_data())
+arm_model_data = arm_test.get_vtk_model_data()
+vtk_view = get_vtk_view(arm_model_data)
 
 plots_tabs = []
 plots_tabs.append(dcc.Tab(plotly_graph, label="Plotly", value='plotly'))
@@ -133,26 +134,30 @@ def plot_plotly(*callback_data):
     return states['figure']
     # PlotlyPlotter.export_trace(states['figure'], postfix="post")
 
-def plot_vtk(*callback_data):
-    inputs = callback_data[0]
-    states = callback_data[1]
-    pass
+
+def update_vtk_models(*callback_data):
+    # inputs = callback_data[0]
+    # states = callback_data[1]
+    # print(f"VTK Callbakc update {callback_data}")
+    arm_test.update()
+    updated_vtk_models = arm_test.get_vtk_model_data()
+    new_states = [model['state'] for model in updated_vtk_models]
+    new_actor = [model['actor'] for model in updated_vtk_models]
+    outputs = []
+    outputs.append(new_states)
+    outputs.append(new_actor)
+    return outputs
 
 graph_out = Output(GRAPH_ID, 'figure')
 graph_state = {'figure': State(GRAPH_ID, "figure"), 'relayout': State(GRAPH_ID, "relayoutData")}
 # triggers['machine'] = machine_page.trigger.input,
 app.callback(graph_out, triggers, graph_state)(plot_plotly)
 # app.callback(graph_out, triggers, graph_state)(plot_plotly)
-
-def update_cone(*callback_data):
-    slider_val = callback_data[0]
-    checked_values = callback_data[1]
-    new_state = {"resolution": slider_val, "capping": "capping" in checked_values}
-    return new_state, random.random()
-
-# vtk_outputs = [Output(VTK_ALG_ID, "state"), Output(VTK_ID, "triggerResetCamera")]
-# vtk_inputs = [Input(VTK_SLIDER_ID, "value"), Input(VTK_CHECKLIST_ID, "value")]
-# app.callback(vtk_outputs, vtk_inputs)(update_cone)
+vtk_outputs = []
+vtk_outputs.append([Output(model['id'], 'state') for model in arm_model_data])
+vtk_outputs.append([Output("repr_"+model['id'], 'actor') for model in arm_model_data])
+vtk_inputs = triggers
+app.callback(vtk_outputs, vtk_inputs, graph_state)(update_vtk_models)
 
 
 if __name__ == "__main__":

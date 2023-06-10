@@ -5,6 +5,8 @@ from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
 import numpy as np
 from frontend.components.widget_interface import Widget
+from utils.quaternion import Quaternion
+from utils.transforms import Transform
 
 class TransformWidget:  
   def __init__(self, joint, app):
@@ -52,6 +54,11 @@ class TransformWidget:
     except Exception as e:
       pass
     tf_extras.append(html.Div(f"\nQuaternion: {self.joint.quaternion}"))
+    # rpy_str = [round(angle,2) for angle in self.joint.quaternion.rpy]
+    angles = angles = Transform.rotation_angles(self.joint.transform)
+    rpy_str = [round(angle,2) for angle in angles]
+    tf_extras.append(html.Div(f"\nRPY: {rpy_str}"))
+    
     tf_extras_div = html.Div(tf_extras, className="transform-extras")
     tf_components = [tf_matrix_div, tf_extras_div]
     return tf_components

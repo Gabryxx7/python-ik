@@ -27,28 +27,32 @@ class Quaternion:
     y = cr * sp * cy + sr * cp * sy;
     z = cr * cp * sy - sr * sp * cy;
     return Quaternion([z, y, -x, w])
-  
-  
+    
   @staticmethod
-  def quaternion_to_rpt(q):
-    # q = [w, x, y, z]
-    w, x, y, z = 0, 1, 2, 3
-    # roll (x-axis rotation)
-    sinp = math.sqrt(1 + 2 * (q.w * q.y - q.x * q.z));
-    cosp = math.sqrt(1 - 2 * (q.w * q.y - q.x * q.z));
-    roll = 2 * math.atan2(sinp, cosp) - math.pi / 2;
+  def euler_from_quaternion(q):
+    """
+    Convert a quaternion into euler angles (roll, pitch, yaw)
+    roll is rotation around x in radians (counterclockwise)
+    pitch is rotation around y in radians (counterclockwise)
+    yaw is rotation around z in radians (counterclockwise)
+    """
+    w, x, y, z = q.w, q.x, q.y, q.z
+    t0 = +2.0 * (w * x + y * z)
+    t1 = +1.0 - 2.0 * (x * x + y * y)
+    roll_x = math.atan2(t0, t1)
 
-    # pitch (y-axis rotation)
-    sinr_cosp = 2 * (q.w * q.x + q.y * q.z);
-    cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y);
-    pitch = math.atan2(sinr_cosp, cosr_cosp);
+    t2 = +2.0 * (w * y - z * x)
+    t2 = +1.0 if t2 > +1.0 else t2
+    t2 = -1.0 if t2 < -1.0 else t2
+    pitch_y = math.asin(t2)
 
-    # yaw (z-axis rotation)
-    siny_cosp = 2 * (q.w * q.z + q.x * q.y);
-    cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z);
-    yaw = math.atan2(siny_cosp, cosy_cosp);
+    t3 = +2.0 * (w * z + x * y)
+    t4 = +1.0 - 2.0 * (y * y + z * z)
+    yaw_z = math.atan2(t3, t4)
 
-    return [-math.degrees(roll), math.degrees(pitch), math.degrees(yaw)]
+    return [math.degrees(roll_x), math.degrees(pitch_y), math.degrees(yaw_z)] # in radians
+    # return [roll_x, pitch_y, yaw_z] # in radians
+  
 
   def to_string(self):
     return f"[ x: {self.x}, y: {self.y}, z: {self.z}, w: {self.w} ]"
@@ -74,6 +78,10 @@ class Quaternion:
     self.y = comp[1]
     self.z = comp[2]
     self.w = comp[3]
+    self.rpy = Quaternion.euler_from_quaternion(self)
+    self.roll = self.rpy[0]
+    self.pitch = self.rpy[1]
+    self.yaw = self.rpy[2]
     
 
 if __name__ == '__main__':

@@ -5,12 +5,107 @@ try:
   from utils.quaternion import Quaternion
 except Exception as e:
   from quaternion import Quaternion
+from scipy.spatial.transform import Rotation   
+
   
 
 X, Y, Z = 0,1,2
 AXIS_ORDER = [X, Y, Z]
 
 class Transform:
+  @staticmethod
+  def rotation_angles(transform, order="xyz"):
+    """
+    https://programming-surgeon.com/en/euler-angle-python-en/
+    input
+        matrix = 3x3 rotation matrix (numpy array)
+        oreder(str) = rotation order of x, y, z : e.g, rotation XZY -- 'xzy'
+    output
+        theta1, theta2, theta3 = rotation angles in rotation order
+    """
+    matrix = transform.mat[0:3, 0:3]
+    print(np.array(matrix))
+    matrix = np.array(matrix)
+    r11, r12, r13 = matrix[0]
+    r21, r22, r23 = matrix[1]
+    r31, r32, r33 = matrix[2]
+
+    if order == 'xzx':
+        theta1 = np.arctan(r31 / r21)
+        theta2 = np.arctan(r21 / (r11 * np.cos(theta1)))
+        theta3 = np.arctan(-r13 / r12)
+
+    elif order == 'xyx':
+        theta1 = np.arctan(-r21 / r31)
+        theta2 = np.arctan(-r31 / (r11 *np.cos(theta1)))
+        theta3 = np.arctan(r12 / r13)
+
+    elif order == 'yxy':
+        theta1 = np.arctan(r12 / r32)
+        theta2 = np.arctan(r32 / (r22 *np.cos(theta1)))
+        theta3 = np.arctan(-r21 / r23)
+
+    elif order == 'yzy':
+        theta1 = np.arctan(-r32 / r12)
+        theta2 = np.arctan(-r12 / (r22 *np.cos(theta1)))
+        theta3 = np.arctan(r23 / r21)
+
+    elif order == 'zyz':
+        theta1 = np.arctan(r23 / r13)
+        theta2 = np.arctan(r13 / (r33 *np.cos(theta1)))
+        theta3 = np.arctan(-r32 / r31)
+
+    elif order == 'zxz':
+        theta1 = np.arctan(-r13 / r23)
+        theta2 = np.arctan(-r23 / (r33 *np.cos(theta1)))
+        theta3 = np.arctan(r31 / r32)
+
+    elif order == 'xzy':
+        theta1 = np.arctan(r32 / r22)
+        theta2 = np.arctan(-r12 * np.cos(theta1) / r22)
+        theta3 = np.arctan(r13 / r11)
+
+    elif order == 'xyz':
+        theta1 = np.arctan(-r23 / r33)
+        theta2 = np.arctan(r13 * np.cos(theta1) / r33)
+        theta3 = np.arctan(-r12 / r11)
+
+    elif order == 'yxz':
+        theta1 = np.arctan(r13 / r33)
+        theta2 = np.arctan(-r23 * np.cos(theta1) / r33)
+        theta3 = np.arctan(r21 / r22)
+
+    elif order == 'yzx':
+        theta1 = np.arctan(-r31 / r11)
+        theta2 = np.arctan(r21 * np.cos(theta1) / r11)
+        theta3 = np.arctan(-r23 / r22)
+
+    elif order == 'zyx':
+        theta1 = np.arctan(r21 / r11)
+        theta2 = np.arctan(-r31 * np.cos(theta1) / r11)
+        theta3 = np.arctan(r32 / r33)
+
+    elif order == 'zxy':
+        theta1 = np.arctan(-r12 / r22)
+        theta2 = np.arctan(r32 * np.cos(theta1) / r22)
+        theta3 = np.arctan(-r31 / r33)
+
+    # theta1 = theta1 * 180 / np.pi
+    # theta2 = theta2 * 180 / np.pi
+    # theta3 = theta3 * 180 / np.pi
+
+    theta1 = math.degrees(theta1)
+    theta2 = math.degrees(theta2)
+    theta3 = math.degrees(theta3)
+    angles = [theta1, theta2, theta3]
+    ### first transform the matrix to euler angles
+    r =  Rotation.from_matrix(matrix)
+    angles_scipy = r.as_euler("xyz",degrees=True)
+    print(f"Angles: {angles}")
+    print(f"Angles Scipy: {angles_scipy}")
+    
+    return angles_scipy
+  
   @staticmethod
   def rotation_from_quaternion(Q):
     """
@@ -49,7 +144,7 @@ class Transform:
     rot_matrix = np.matrix([[r00,   r01,    r02],
                             [r10,   r11,    r12],
                             [r20,   r21,    r22]])
-    return Transform.process_rotation_matrix(rot_matrix)
+    return rot_matrix
   
   @staticmethod
   def process_rotation_matrix(R):
@@ -135,7 +230,7 @@ class Transform:
                     [       0.0,             0.0,            1.0,           ]])
     rotations = [Rx, Ry, Rz]
     rotation_matrix = rotations[AXIS_ORDER[0]] @ rotations[AXIS_ORDER[1]] @ rotations[AXIS_ORDER[2]]
-    return Transform.process_rotation_matrix(rotation_matrix)
+    return rotation_matrix
   
   @staticmethod
   def scale_matrix(X, Y, Z):
@@ -183,7 +278,9 @@ class Transform:
       else:
         t.quaternion = quaternion.copy() if quaternion is not None else Quaternion()
         t.rotation_matrix = Transform.rotation_from_quaternion(t.quaternion)
-      t.mat = t.translation_matrix @ t.rotation_matrix @ t.scale_matrix
+        
+      t.rotation_matrix_normalized = Transform.process_rotation_matrix(t.rotation_matrix)
+      t.mat = t.translation_matrix @ t.rotation_matrix_normalized @ t.scale_matrix
     except Exception as e:
       print(f"Error making Transform rotation: {e}")
     return t
@@ -196,7 +293,8 @@ class Transform:
     self.quaternion = Quaternion()
     self.rotation = [0,0,0]
     self.rotation_matrix = Transform.rotation_from_angles(self.rotation[0], self.rotation[1], self.rotation[2])
-    self.mat = self.translation_matrix @ self.rotation_matrix @ self.scale_matrix
+    self.rotation_matrix_normalized = Transform.process_rotation_matrix(self.rotation_matrix)
+    self.mat = self.translation_matrix @ self.rotation_matrix_normalized @ self.scale_matrix
     
 
 if __name__ == '__main__':
@@ -212,4 +310,4 @@ if __name__ == '__main__':
   print("\n Rot Matrix from Quat Scipy: ")
   print(R.from_quat(t.quaternion.to_list()).as_matrix())
   print("\n Angles from Quat:")
-  print(Quaternion.quaternion_to_rpt(t.quaternion))
+  print(t.quaternion.rpy)

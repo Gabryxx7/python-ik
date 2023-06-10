@@ -9,6 +9,7 @@ from utils.quaternion import Quaternion
 
 IMPL_MISSING_MSG = "implementatiom missing (did you override it in your new model class?)"
 
+v_dist = lambda p, orig=[0,0,0]: (np.linalg.norm(np.array(orig) - np.array(p)))
 def hex_to_rgb(h):
   h = h.lstrip('#')
   return list(float(int(h[i:i+2], 16)/255) for i in (0, 2, 4))
@@ -99,36 +100,99 @@ class Model:
     
   def get_trace_points(self):
     points = [self.absolute_pos]
+    # if self.parent is not None:
+    #   points = [self.parent.absolute_pos] + points
+    if len(self.children) > 0 is not None:
+      points = points + [self.children[0].absolute_pos] 
     return points
   
   def get_vtk_model_data(self, draw_children=True, dbg_prefix=""):
+    thickness = 8
+    radius = 10
     points = self.get_trace_points()
     color =  hex_to_rgb(self.trace_params.get('color', "#FFFFFF"))
+    angles = Transform.rotation_angles(self.transform)
+    # angles = self.quaternion.rpy
     model_data = []
+    p1 = list(points[0][0:3])
     model_data.append({
       'id': self.uuid+"point",
       'vtkClass': 'vtkSphereSource',
-      'color': color,
-      'origin': list(self.absolute_pos[0:3]),
-      'pointSize': 20,
+      'property': {
+        'color': color,
+        'pointSize': 20,
+        },
+      'actor': {
+        'origin': p1,
+        'orientation': angles,
+      },
       'state': {
-        "radius": 3,
+        "lineWidth": 10,
+        "center": p1,
+        "radius": radius,
         'resolution': 600
       }
     })
     if len(points) > 1:
+      p2 = list(points[1][0:3])
+      length = v_dist(p1, p2)
       model_data.append({
         'id': self.uuid+"line",
         'vtkClass': 'vtkLineSource',
-        'color': color,
-        'pointSize': 10,
-        'origin': [0,0,0],
+        'property': {
+          'color': color,
+          'pointSize': 10,
+          },
+        'actor': {
+          # 'origin': [0,0,0],
+          # 'orientation': self.quaternion.rpy,
+        },
         'state': {
-          'point1': list(points[0][0:3]),
-          'point2': list(points[1][0:3]),
+          "lineWidth": 10,
+          'point1': p1,
+          'point2': p2,
           'resolution': 600
         }
       })
+      cube_center = [p1[0], p1[1], p1[2]+length*0.5]
+      cube_origin = p1
+      model_data.append({
+        'id': self.uuid+"cube",
+        'vtkClass': 'vtkCubeSource',
+        'property': {
+          'color': color,
+          # 'pointSize': 10,
+          },
+        'actor': {
+          'origin': cube_origin,
+          'orientation': [angles[0], angles[1], angles[2]],
+        },
+        'state': {
+          'center': cube_center,
+          'zLength': length,
+          'xLength': thickness,
+          'yLength': thickness,
+          'resolution': 600
+        }
+      })
+      # model_data.append({
+      #   'id': self.uuid+"point2",
+      #   'vtkClass': 'vtkSphereSource',
+      #   'property': {
+      #     'color': color,
+      #     'pointSize': 20,
+      #     },
+      #   'actor': {
+      #     'origin': cube_origin,
+      #     'orientation': angles,
+      #   },
+      #   'state': {
+      #     "lineWidth": 10,
+      #     "center": cube_origin,
+      #     "radius": radius*2,
+      #     'resolution': 600
+      #   }
+      # })
     
     if not draw_children:
       return model_data

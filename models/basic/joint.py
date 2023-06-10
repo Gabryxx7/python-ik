@@ -32,8 +32,3 @@ class Joint(Model):
       return (np.linalg.norm(self.parent.absolute_pos - self.absolute_pos))
     return -1.0
   
-  def get_trace_points(self):
-    points = [self.absolute_pos]
-    if self.parent is not None:
-      points = [self.parent.absolute_pos] + points
-    return points
