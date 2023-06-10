@@ -90,7 +90,7 @@
       "z": [
         0
       ],
-      "uuid": "model_Machine_7e298285-bcd5-49ad-8b66-0ff2f2698591",
+      "uuid": "model_Machine_780af03f-abe7-48b8-b460-a8d8345c9bdd",
       "legendgroup": "Machine",
       "visible": false
     },
@@ -116,7 +116,7 @@
         0,
         0
       ],
-      "uuid": "x_axis_Machine_7e298285-bcd5-49ad-8b66-0ff2f2698591",
+      "uuid": "x_axis_Machine_780af03f-abe7-48b8-b460-a8d8345c9bdd",
       "legendgroup": "Machine",
       "visible": false
     },
@@ -142,7 +142,7 @@
         0,
         0
       ],
-      "uuid": "y_axis_Machine_7e298285-bcd5-49ad-8b66-0ff2f2698591",
+      "uuid": "y_axis_Machine_780af03f-abe7-48b8-b460-a8d8345c9bdd",
       "legendgroup": "Machine",
       "visible": false
     },
@@ -168,14 +168,14 @@
         0,
         25
       ],
-      "uuid": "z_axis_Machine_7e298285-bcd5-49ad-8b66-0ff2f2698591",
+      "uuid": "z_axis_Machine_780af03f-abe7-48b8-b460-a8d8345c9bdd",
       "legendgroup": "Machine",
       "visible": false
     },
     {
       "name": "Arm1_Piston",
       "line": {
-        "color": "#2284e6",
+        "color": "#22DAE6",
         "width": 15
       },
       "marker": {
@@ -196,7 +196,7 @@
         0,
         145.72751379458487
       ],
-      "uuid": "model_Arm1_Piston_2197197c-c50e-41fc-899e-361591275ec2",
+      "uuid": "model_Arm1_Piston_d136c995-9ca8-45e1-a9a5-e8532b3f2bef",
       "legendgroup": "Arm1_Piston",
       "visible": false
     },
@@ -222,7 +222,7 @@
         0,
         0
       ],
-      "uuid": "x_axis_Arm1_Piston_2197197c-c50e-41fc-899e-361591275ec2",
+      "uuid": "x_axis_Arm1_Piston_d136c995-9ca8-45e1-a9a5-e8532b3f2bef",
       "legendgroup": "Arm1_Piston",
       "visible": false
     },
@@ -248,7 +248,7 @@
         0,
         0
       ],
-      "uuid": "y_axis_Arm1_Piston_2197197c-c50e-41fc-899e-361591275ec2",
+      "uuid": "y_axis_Arm1_Piston_d136c995-9ca8-45e1-a9a5-e8532b3f2bef",
       "legendgroup": "Arm1_Piston",
       "visible": false
     },
@@ -274,7 +274,7 @@
         0,
         25
       ],
-      "uuid": "z_axis_Arm1_Piston_2197197c-c50e-41fc-899e-361591275ec2",
+      "uuid": "z_axis_Arm1_Piston_d136c995-9ca8-45e1-a9a5-e8532b3f2bef",
       "legendgroup": "Arm1_Piston",
       "visible": false
     },
@@ -302,7 +302,7 @@
         145.72751379458487,
         195.72751379458487
       ],
-      "uuid": "model_Arm1_Joint0_58a0bdb1-e130-4e34-b606-7e5ab7d72d64",
+      "uuid": "model_Arm1_Joint0_e9f3bf43-c1bb-4bfb-a06b-2c633c623822",
       "legendgroup": "Arm1_Joint0",
       "visible": false
     },
@@ -328,7 +328,7 @@
         145.72751379458487,
         145.72751379458487
       ],
-      "uuid": "x_axis_Arm1_Joint0_58a0bdb1-e130-4e34-b606-7e5ab7d72d64",
+      "uuid": "x_axis_Arm1_Joint0_e9f3bf43-c1bb-4bfb-a06b-2c633c623822",
       "legendgroup": "Arm1_Joint0",
       "visible": false
     },
@@ -354,7 +354,7 @@
         145.72751379458487,
         145.72751379458487
       ],
-      "uuid": "y_axis_Arm1_Joint0_58a0bdb1-e130-4e34-b606-7e5ab7d72d64",
+      "uuid": "y_axis_Arm1_Joint0_e9f3bf43-c1bb-4bfb-a06b-2c633c623822",
       "legendgroup": "Arm1_Joint0",
       "visible": false
     },
@@ -380,7 +380,7 @@
         145.72751379458487,
         170.72751379458487
       ],
-      "uuid": "z_axis_Arm1_Joint0_58a0bdb1-e130-4e34-b606-7e5ab7d72d64",
+      "uuid": "z_axis_Arm1_Joint0_e9f3bf43-c1bb-4bfb-a06b-2c633c623822",
       "legendgroup": "Arm1_Joint0",
       "visible": false
     },
@@ -405,7 +405,7 @@
       "z": [
         195.72751379458487
       ],
-      "uuid": "model_Arm1_EE_eeebcab8-445c-4a62-9322-13e6311a18bf",
+      "uuid": "model_Arm1_EE_28816b23-2721-4155-af4b-2234da97d176",
       "legendgroup": "Arm1_EE",
       "visible": false
     },
@@ -431,7 +431,7 @@
         195.72751379458487,
         195.72751379458487
       ],
-      "uuid": "x_axis_Arm1_EE_eeebcab8-445c-4a62-9322-13e6311a18bf",
+      "uuid": "x_axis_Arm1_EE_28816b23-2721-4155-af4b-2234da97d176",
       "legendgroup": "Arm1_EE",
       "visible": false
     },
@@ -457,7 +457,7 @@
         195.72751379458487,
         195.72751379458487
       ],
-      "uuid": "y_axis_Arm1_EE_eeebcab8-445c-4a62-9322-13e6311a18bf",
+      "uuid": "y_axis_Arm1_EE_28816b23-2721-4155-af4b-2234da97d176",
       "legendgroup": "Arm1_EE",
       "visible": false
     },
@@ -483,14 +483,14 @@
         195.72751379458487,
         220.72751379458487
       ],
-      "uuid": "z_axis_Arm1_EE_eeebcab8-445c-4a62-9322-13e6311a18bf",
+      "uuid": "z_axis_Arm1_EE_28816b23-2721-4155-af4b-2234da97d176",
       "legendgroup": "Arm1_EE",
       "visible": false
     },
     {
       "name": "Arm3_Piston",
       "line": {
-        "color": "#2284e6",
+        "color": "#22DAE6",
         "width": 15
       },
       "marker": {
@@ -511,7 +511,7 @@
         0,
         145.72751379458487
       ],
-      "uuid": "model_Arm3_Piston_dfeba889-267f-46e6-ada9-fb162d1b3f9f",
+      "uuid": "model_Arm3_Piston_01b3dea0-4905-41aa-9b06-d2d528200a2b",
       "legendgroup": "Arm3_Piston",
       "visible": false
     },
@@ -537,7 +537,7 @@
         0,
         0
       ],
-      "uuid": "x_axis_Arm3_Piston_dfeba889-267f-46e6-ada9-fb162d1b3f9f",
+      "uuid": "x_axis_Arm3_Piston_01b3dea0-4905-41aa-9b06-d2d528200a2b",
       "legendgroup": "Arm3_Piston",
       "visible": false
     },
@@ -563,7 +563,7 @@
         0,
         0
       ],
-      "uuid": "y_axis_Arm3_Piston_dfeba889-267f-46e6-ada9-fb162d1b3f9f",
+      "uuid": "y_axis_Arm3_Piston_01b3dea0-4905-41aa-9b06-d2d528200a2b",
       "legendgroup": "Arm3_Piston",
       "visible": false
     },
@@ -589,7 +589,7 @@
         0,
         25
       ],
-      "uuid": "z_axis_Arm3_Piston_dfeba889-267f-46e6-ada9-fb162d1b3f9f",
+      "uuid": "z_axis_Arm3_Piston_01b3dea0-4905-41aa-9b06-d2d528200a2b",
       "legendgroup": "Arm3_Piston",
       "visible": false
     },
@@ -617,7 +617,7 @@
         145.72751379458487,
         195.72751379458487
       ],
-      "uuid": "model_Arm3_Joint0_776450ac-65e8-4873-a702-c59e27da4300",
+      "uuid": "model_Arm3_Joint0_a82920f7-29c8-457a-823c-1be397bdefa2",
       "legendgroup": "Arm3_Joint0",
       "visible": false
     },
@@ -643,7 +643,7 @@
         145.72751379458487,
         145.72751379458487
       ],
-      "uuid": "x_axis_Arm3_Joint0_776450ac-65e8-4873-a702-c59e27da4300",
+      "uuid": "x_axis_Arm3_Joint0_a82920f7-29c8-457a-823c-1be397bdefa2",
       "legendgroup": "Arm3_Joint0",
       "visible": false
     },
@@ -669,7 +669,7 @@
         145.72751379458487,
         145.72751379458487
       ],
-      "uuid": "y_axis_Arm3_Joint0_776450ac-65e8-4873-a702-c59e27da4300",
+      "uuid": "y_axis_Arm3_Joint0_a82920f7-29c8-457a-823c-1be397bdefa2",
       "legendgroup": "Arm3_Joint0",
       "visible": false
     },
@@ -695,7 +695,7 @@
         145.72751379458487,
         170.72751379458487
       ],
-      "uuid": "z_axis_Arm3_Joint0_776450ac-65e8-4873-a702-c59e27da4300",
+      "uuid": "z_axis_Arm3_Joint0_a82920f7-29c8-457a-823c-1be397bdefa2",
       "legendgroup": "Arm3_Joint0",
       "visible": false
     },
@@ -720,7 +720,7 @@
       "z": [
         195.72751379458487
       ],
-      "uuid": "model_Arm3_EE_25616bb4-e68a-4a61-b401-c3d429e55fc4",
+      "uuid": "model_Arm3_EE_5df05635-3c35-4362-b5b7-621ecf76f5df",
       "legendgroup": "Arm3_EE",
       "visible": false
     },
@@ -746,7 +746,7 @@
         195.72751379458487,
         195.72751379458487
       ],
-      "uuid": "x_axis_Arm3_EE_25616bb4-e68a-4a61-b401-c3d429e55fc4",
+      "uuid": "x_axis_Arm3_EE_5df05635-3c35-4362-b5b7-621ecf76f5df",
       "legendgroup": "Arm3_EE",
       "visible": false
     },
@@ -772,7 +772,7 @@
         195.72751379458487,
         195.72751379458487
       ],
-      "uuid": "y_axis_Arm3_EE_25616bb4-e68a-4a61-b401-c3d429e55fc4",
+      "uuid": "y_axis_Arm3_EE_5df05635-3c35-4362-b5b7-621ecf76f5df",
       "legendgroup": "Arm3_EE",
       "visible": false
     },
@@ -798,14 +798,14 @@
         195.72751379458487,
         220.72751379458487
       ],
-      "uuid": "z_axis_Arm3_EE_25616bb4-e68a-4a61-b401-c3d429e55fc4",
+      "uuid": "z_axis_Arm3_EE_5df05635-3c35-4362-b5b7-621ecf76f5df",
       "legendgroup": "Arm3_EE",
       "visible": false
     },
     {
       "name": "Arm2_Piston",
       "line": {
-        "color": "#2284e6",
+        "color": "#22DAE6",
         "width": 15
       },
       "marker": {
@@ -826,7 +826,7 @@
         0,
         145.72751379458487
       ],
-      "uuid": "model_Arm2_Piston_8cdde21f-faf9-4b46-9541-9b7f532574e1",
+      "uuid": "model_Arm2_Piston_b5799a9a-2268-41ef-8625-291057ade1ca",
       "legendgroup": "Arm2_Piston",
       "visible": false
     },
@@ -852,7 +852,7 @@
         0,
         0
       ],
-      "uuid": "x_axis_Arm2_Piston_8cdde21f-faf9-4b46-9541-9b7f532574e1",
+      "uuid": "x_axis_Arm2_Piston_b5799a9a-2268-41ef-8625-291057ade1ca",
       "legendgroup": "Arm2_Piston",
       "visible": false
     },
@@ -878,7 +878,7 @@
         0,
         0
       ],
-      "uuid": "y_axis_Arm2_Piston_8cdde21f-faf9-4b46-9541-9b7f532574e1",
+      "uuid": "y_axis_Arm2_Piston_b5799a9a-2268-41ef-8625-291057ade1ca",
       "legendgroup": "Arm2_Piston",
       "visible": false
     },
@@ -904,7 +904,7 @@
         0,
         25
       ],
-      "uuid": "z_axis_Arm2_Piston_8cdde21f-faf9-4b46-9541-9b7f532574e1",
+      "uuid": "z_axis_Arm2_Piston_b5799a9a-2268-41ef-8625-291057ade1ca",
       "legendgroup": "Arm2_Piston",
       "visible": false
     },
@@ -932,7 +932,7 @@
         145.72751379458487,
         195.72751379458487
       ],
-      "uuid": "model_Arm2_Joint0_607bd3e4-e779-4697-bf0e-43862e8066b0",
+      "uuid": "model_Arm2_Joint0_76980bf7-a6e1-4f91-8fc2-042017a1f7a6",
       "legendgroup": "Arm2_Joint0",
       "visible": false
     },
@@ -958,7 +958,7 @@
         145.72751379458487,
         145.72751379458487
       ],
-      "uuid": "x_axis_Arm2_Joint0_607bd3e4-e779-4697-bf0e-43862e8066b0",
+      "uuid": "x_axis_Arm2_Joint0_76980bf7-a6e1-4f91-8fc2-042017a1f7a6",
       "legendgroup": "Arm2_Joint0",
       "visible": false
     },
@@ -984,7 +984,7 @@
         145.72751379458487,
         145.72751379458487
       ],
-      "uuid": "y_axis_Arm2_Joint0_607bd3e4-e779-4697-bf0e-43862e8066b0",
+      "uuid": "y_axis_Arm2_Joint0_76980bf7-a6e1-4f91-8fc2-042017a1f7a6",
       "legendgroup": "Arm2_Joint0",
       "visible": false
     },
@@ -1010,7 +1010,7 @@
         145.72751379458487,
         170.72751379458487
       ],
-      "uuid": "z_axis_Arm2_Joint0_607bd3e4-e779-4697-bf0e-43862e8066b0",
+      "uuid": "z_axis_Arm2_Joint0_76980bf7-a6e1-4f91-8fc2-042017a1f7a6",
       "legendgroup": "Arm2_Joint0",
       "visible": false
     },
@@ -1035,7 +1035,7 @@
       "z": [
         195.72751379458487
       ],
-      "uuid": "model_Arm2_EE_42d5af48-938d-4255-b7ca-2569e5394973",
+      "uuid": "model_Arm2_EE_46afb6bd-c486-4d29-8d90-d7d2db9394dd",
       "legendgroup": "Arm2_EE",
       "visible": false
     },
@@ -1061,7 +1061,7 @@
         195.72751379458487,
         195.72751379458487
       ],
-      "uuid": "x_axis_Arm2_EE_42d5af48-938d-4255-b7ca-2569e5394973",
+      "uuid": "x_axis_Arm2_EE_46afb6bd-c486-4d29-8d90-d7d2db9394dd",
       "legendgroup": "Arm2_EE",
       "visible": false
     },
@@ -1087,7 +1087,7 @@
         195.72751379458487,
         195.72751379458487
       ],
-      "uuid": "y_axis_Arm2_EE_42d5af48-938d-4255-b7ca-2569e5394973",
+      "uuid": "y_axis_Arm2_EE_46afb6bd-c486-4d29-8d90-d7d2db9394dd",
       "legendgroup": "Arm2_EE",
       "visible": false
     },
@@ -1113,7 +1113,7 @@
         195.72751379458487,
         220.72751379458487
       ],
-      "uuid": "z_axis_Arm2_EE_42d5af48-938d-4255-b7ca-2569e5394973",
+      "uuid": "z_axis_Arm2_EE_46afb6bd-c486-4d29-8d90-d7d2db9394dd",
       "legendgroup": "Arm2_EE",
       "visible": false
     },
@@ -1154,7 +1154,7 @@
         200,
         200
       ],
-      "uuid": "model_PTriangle_c5f08254-4cbd-451b-8abe-a9ed052e2a93",
+      "uuid": "model_PTriangle_8d7e90e1-640c-432d-a80a-57d339b2f096",
       "legendgroup": "PTriangle",
       "visible": false
     },
@@ -1180,7 +1180,7 @@
         200,
         200
       ],
-      "uuid": "x_axis_PTriangle_c5f08254-4cbd-451b-8abe-a9ed052e2a93",
+      "uuid": "x_axis_PTriangle_8d7e90e1-640c-432d-a80a-57d339b2f096",
       "legendgroup": "PTriangle",
       "visible": false
     },
@@ -1206,7 +1206,7 @@
         200,
         200
       ],
-      "uuid": "y_axis_PTriangle_c5f08254-4cbd-451b-8abe-a9ed052e2a93",
+      "uuid": "y_axis_PTriangle_8d7e90e1-640c-432d-a80a-57d339b2f096",
       "legendgroup": "PTriangle",
       "visible": false
     },
@@ -1232,7 +1232,7 @@
         200,
         225
       ],
-      "uuid": "z_axis_PTriangle_c5f08254-4cbd-451b-8abe-a9ed052e2a93",
+      "uuid": "z_axis_PTriangle_8d7e90e1-640c-432d-a80a-57d339b2f096",
       "legendgroup": "PTriangle",
       "visible": false
     },
@@ -1257,7 +1257,7 @@
       "z": [
         200
       ],
-      "uuid": "model_V_1_847f1d03-6d72-48a1-a1cb-68e38c7bb372",
+      "uuid": "model_V_1_4f5e3ee5-b075-4d99-9717-6aad03725c7e",
       "legendgroup": "V_1",
       "visible": false
     },
@@ -1283,7 +1283,7 @@
         200,
         200
       ],
-      "uuid": "x_axis_V_1_847f1d03-6d72-48a1-a1cb-68e38c7bb372",
+      "uuid": "x_axis_V_1_4f5e3ee5-b075-4d99-9717-6aad03725c7e",
       "legendgroup": "V_1",
       "visible": false
     },
@@ -1309,7 +1309,7 @@
         200,
         200
       ],
-      "uuid": "y_axis_V_1_847f1d03-6d72-48a1-a1cb-68e38c7bb372",
+      "uuid": "y_axis_V_1_4f5e3ee5-b075-4d99-9717-6aad03725c7e",
       "legendgroup": "V_1",
       "visible": false
     },
@@ -1335,7 +1335,7 @@
         200,
         225
       ],
-      "uuid": "z_axis_V_1_847f1d03-6d72-48a1-a1cb-68e38c7bb372",
+      "uuid": "z_axis_V_1_4f5e3ee5-b075-4d99-9717-6aad03725c7e",
       "legendgroup": "V_1",
       "visible": false
     },
@@ -1360,7 +1360,7 @@
       "z": [
         200
       ],
-      "uuid": "model_V_3_65f47b7a-473f-4c5f-a54f-1c1d9852467b",
+      "uuid": "model_V_3_86fea16c-231b-45b8-b88b-4c197f830188",
       "legendgroup": "V_3",
       "visible": false
     },
@@ -1386,7 +1386,7 @@
         200,
         200
       ],
-      "uuid": "x_axis_V_3_65f47b7a-473f-4c5f-a54f-1c1d9852467b",
+      "uuid": "x_axis_V_3_86fea16c-231b-45b8-b88b-4c197f830188",
       "legendgroup": "V_3",
       "visible": false
     },
@@ -1412,7 +1412,7 @@
         200,
         200
       ],
-      "uuid": "y_axis_V_3_65f47b7a-473f-4c5f-a54f-1c1d9852467b",
+      "uuid": "y_axis_V_3_86fea16c-231b-45b8-b88b-4c197f830188",
       "legendgroup": "V_3",
       "visible": false
     },
@@ -1438,7 +1438,7 @@
         200,
         225
       ],
-      "uuid": "z_axis_V_3_65f47b7a-473f-4c5f-a54f-1c1d9852467b",
+      "uuid": "z_axis_V_3_86fea16c-231b-45b8-b88b-4c197f830188",
       "legendgroup": "V_3",
       "visible": false
     },
@@ -1463,7 +1463,7 @@
       "z": [
         200
       ],
-      "uuid": "model_V_5_42b09ab3-5525-4983-919a-2a73b7d270d4",
+      "uuid": "model_V_5_e4113778-e5e7-4208-80aa-2909ea7b87c7",
       "legendgroup": "V_5",
       "visible": false
     },
@@ -1489,7 +1489,7 @@
         200,
         200
       ],
-      "uuid": "x_axis_V_5_42b09ab3-5525-4983-919a-2a73b7d270d4",
+      "uuid": "x_axis_V_5_e4113778-e5e7-4208-80aa-2909ea7b87c7",
       "legendgroup": "V_5",
       "visible": false
     },
@@ -1515,7 +1515,7 @@
         200,
         200
       ],
-      "uuid": "y_axis_V_5_42b09ab3-5525-4983-919a-2a73b7d270d4",
+      "uuid": "y_axis_V_5_e4113778-e5e7-4208-80aa-2909ea7b87c7",
       "legendgroup": "V_5",
       "visible": false
     },
@@ -1541,7 +1541,7 @@
         200,
         225
       ],
-      "uuid": "z_axis_V_5_42b09ab3-5525-4983-919a-2a73b7d270d4",
+      "uuid": "z_axis_V_5_e4113778-e5e7-4208-80aa-2909ea7b87c7",
       "legendgroup": "V_5",
       "visible": false
     },
@@ -2158,7 +2158,7 @@
         200,
         200
       ],
-      "uuid": "model_Circle_Big_ebf9dd32-dc38-4e77-af21-539568c5e806",
+      "uuid": "model_Circle_Big_2300d8a8-5fc9-4e2c-93fd-47d2adabba8a",
       "legendgroup": "Circle_Big",
       "visible": false
     },
@@ -2184,7 +2184,7 @@
         200,
         200
       ],
-      "uuid": "x_axis_Circle_Big_ebf9dd32-dc38-4e77-af21-539568c5e806",
+      "uuid": "x_axis_Circle_Big_2300d8a8-5fc9-4e2c-93fd-47d2adabba8a",
       "legendgroup": "Circle_Big",
       "visible": false
     },
@@ -2210,7 +2210,7 @@
         200,
         200
       ],
-      "uuid": "y_axis_Circle_Big_ebf9dd32-dc38-4e77-af21-539568c5e806",
+      "uuid": "y_axis_Circle_Big_2300d8a8-5fc9-4e2c-93fd-47d2adabba8a",
       "legendgroup": "Circle_Big",
       "visible": false
     },
@@ -2236,7 +2236,7 @@
         200,
         225
       ],
-      "uuid": "z_axis_Circle_Big_ebf9dd32-dc38-4e77-af21-539568c5e806",
+      "uuid": "z_axis_Circle_Big_2300d8a8-5fc9-4e2c-93fd-47d2adabba8a",
       "legendgroup": "Circle_Big",
       "visible": false
     },
@@ -2853,7 +2853,7 @@
         200,
         200
       ],
-      "uuid": "model_Circle_Small_96415801-7b6c-41b0-9d78-43923e20740e",
+      "uuid": "model_Circle_Small_71bbc02d-707d-4956-8a31-ffe2f3fb726a",
       "legendgroup": "Circle_Small",
       "visible": false
     },
@@ -2879,7 +2879,7 @@
         200,
         200
       ],
-      "uuid": "x_axis_Circle_Small_96415801-7b6c-41b0-9d78-43923e20740e",
+      "uuid": "x_axis_Circle_Small_71bbc02d-707d-4956-8a31-ffe2f3fb726a",
       "legendgroup": "Circle_Small",
       "visible": false
     },
@@ -2905,7 +2905,7 @@
         200,
         200
       ],
-      "uuid": "y_axis_Circle_Small_96415801-7b6c-41b0-9d78-43923e20740e",
+      "uuid": "y_axis_Circle_Small_71bbc02d-707d-4956-8a31-ffe2f3fb726a",
       "legendgroup": "Circle_Small",
       "visible": false
     },
@@ -2931,14 +2931,14 @@
         200,
         225
       ],
-      "uuid": "z_axis_Circle_Small_96415801-7b6c-41b0-9d78-43923e20740e",
+      "uuid": "z_axis_Circle_Small_71bbc02d-707d-4956-8a31-ffe2f3fb726a",
       "legendgroup": "Circle_Small",
       "visible": false
     },
     {
       "name": "Test_Arm",
       "line": {
-        "color": "#2284e6",
+        "color": "#22DAE6",
         "width": 15
       },
       "marker": {
@@ -2949,17 +2949,17 @@
       "type": "scatter3d",
       "x": [
         0,
-        0
+        -5.399431607911723
       ],
       "y": [
         0,
-        56.775496607870146
+        -75.05626377639078
       ],
       "z": [
         0,
-        56.36082846205977
+        27.15517273449634
       ],
-      "uuid": "model_Test_Arm_5177b7dc-e931-494f-a9cf-f482f73f6e79",
+      "uuid": "model_Test_Arm_c2e6a34c-0044-4455-b97a-f6aa2fb84130",
       "legendgroup": "Test_Arm",
       "visible": true
     },
@@ -2975,17 +2975,17 @@
       "type": "scatter3d",
       "x": [
         0,
-        13.203548887748862
+        24.397929608972706
       ],
       "y": [
         0,
-        14.955981576912588
+        -3.320366031839524
       ],
       "z": [
         0,
-        -15.06601844681856
+        -4.326222394909824
       ],
-      "uuid": "x_axis_Test_Arm_5177b7dc-e931-494f-a9cf-f482f73f6e79",
+      "uuid": "x_axis_Test_Arm_c2e6a34c-0044-4455-b97a-f6aa2fb84130",
       "legendgroup": "Test_Arm",
       "visible": true
     },
@@ -3001,17 +3001,17 @@
       "type": "scatter3d",
       "x": [
         0,
-        -21.228902391994406
+        5.185940029550466
       ],
       "y": [
         0,
-        9.302036924410421
+        7.989635636922561
       ],
       "z": [
         0,
-        -9.370475563602913
+        23.114319120387762
       ],
-      "uuid": "y_axis_Test_Arm_5177b7dc-e931-494f-a9cf-f482f73f6e79",
+      "uuid": "y_axis_Test_Arm_c2e6a34c-0044-4455-b97a-f6aa2fb84130",
       "legendgroup": "Test_Arm",
       "visible": true
     },
@@ -3027,17 +3027,17 @@
       "type": "scatter3d",
       "x": [
         0,
-        0
+        -1.687322377472413
       ],
       "y": [
         0,
-        17.74234268995942
+        -23.455082430122122
       ],
       "z": [
         0,
-        17.61275889439368
+        8.485991479530105
       ],
-      "uuid": "z_axis_Test_Arm_5177b7dc-e931-494f-a9cf-f482f73f6e79",
+      "uuid": "z_axis_Test_Arm_c2e6a34c-0044-4455-b97a-f6aa2fb84130",
       "legendgroup": "Test_Arm",
       "visible": true
     },
@@ -3054,18 +3054,18 @@
       "showlegend": true,
       "type": "scatter3d",
       "x": [
-        0,
-        -57.50330117380002
+        -5.399431607911723,
+        -83.47280635662439
       ],
       "y": [
-        56.775496607870146,
-        66.33048923623456
+        -75.05626377639078,
+        -64.4310924745043
       ],
       "z": [
-        56.36082846205977,
-        111.1519999223156
+        27.15517273449634,
+        40.999084398207785
       ],
-      "uuid": "model_First_7ec67cf2-852a-414a-89b5-fb4e873bb56c",
+      "uuid": "model_First_367a4032-4c46-44ab-8eb8-7009cb766b0a",
       "legendgroup": "First",
       "visible": true
     },
@@ -3080,18 +3080,18 @@
       "opacity": 1,
       "type": "scatter3d",
       "x": [
-        0,
-        -16.66801246211484
+        -5.399431607911723,
+        -4.524983459805146
       ],
       "y": [
-        56.775496607870146,
-        60.79488362300501
+        -75.05626377639078,
+        -92.24998836229456
       ],
       "z": [
-        56.36082846205977,
-        38.16682152061475
+        27.15517273449634,
+        45.28280841321521
       ],
-      "uuid": "x_axis_First_7ec67cf2-852a-414a-89b5-fb4e873bb56c",
+      "uuid": "x_axis_First_367a4032-4c46-44ab-8eb8-7009cb766b0a",
       "legendgroup": "First",
       "visible": true
     },
@@ -3106,18 +3106,18 @@
       "opacity": 1,
       "type": "scatter3d",
       "x": [
-        0,
-        -4.925881566466229
+        -5.399431607911723,
+        -0.01646112388654064
       ],
       "y": [
-        56.775496607870146,
-        32.28205424005094
+        -75.05626377639078,
+        -57.213870319270406
       ],
       "z": [
-        56.36082846205977,
-        55.46251238880516
+        27.15517273449634,
+        43.81868450391103
       ],
-      "uuid": "y_axis_First_7ec67cf2-852a-414a-89b5-fb4e873bb56c",
+      "uuid": "y_axis_First_367a4032-4c46-44ab-8eb8-7009cb766b0a",
       "legendgroup": "First",
       "visible": true
     },
@@ -3132,25 +3132,25 @@
       "opacity": 1,
       "type": "scatter3d",
       "x": [
-        0,
-        -17.969781616812476
+        -5.399431607911723,
+        -29.797361216884426
       ],
       "y": [
-        56.775496607870146,
-        59.761431804234014
+        -75.05626377639078,
+        -71.7358977445512
       ],
       "z": [
-        56.36082846205977,
-        73.48306954338975
+        27.15517273449634,
+        31.481395129406124
       ],
-      "uuid": "z_axis_First_7ec67cf2-852a-414a-89b5-fb4e873bb56c",
+      "uuid": "z_axis_First_367a4032-4c46-44ab-8eb8-7009cb766b0a",
       "legendgroup": "First",
       "visible": true
     },
     {
       "name": "Second",
       "line": {
-        "color": "#33FFEC",
+        "color": "#FF3F33",
         "width": 15
       },
       "marker": {
@@ -3160,18 +3160,18 @@
       "showlegend": true,
       "type": "scatter3d",
       "x": [
-        -57.50330117380002,
-        -20.236833394913177
+        -83.47280635662439,
+        -114.6587163791426
       ],
       "y": [
-        66.33048923623456,
-        87.73686082645128
+        -64.4310924745043,
+        7.005037664419774
       ],
       "z": [
-        111.1519999223156,
-        178.62775582491184
+        40.999084398207785,
+        59.007924639658825
       ],
-      "uuid": "model_Second_3510136a-c26a-4dd3-a394-e14e494b7af2",
+      "uuid": "model_Second_01ded7c2-42a3-48c3-bde5-af54fdfbc357",
       "legendgroup": "Second",
       "visible": true
     },
@@ -3186,18 +3186,18 @@
       "opacity": 1,
       "type": "scatter3d",
       "x": [
-        -57.50330117380002,
-        -59.623526077651164
+        -83.47280635662439,
+        -68.26634480740856
       ],
       "y": [
-        66.33048923623456,
-        90.38789298681095
+        -64.4310924745043,
+        -62.77769943925271
       ],
       "z": [
-        111.1519999223156,
-        104.69088770081359
+        40.999084398207785,
+        60.77355831341479
       ],
-      "uuid": "x_axis_Second_3510136a-c26a-4dd3-a394-e14e494b7af2",
+      "uuid": "x_axis_Second_01ded7c2-42a3-48c3-bde5-af54fdfbc357",
       "legendgroup": "Second",
       "visible": true
     },
@@ -3212,18 +3212,18 @@
       "opacity": 1,
       "type": "scatter3d",
       "x": [
-        -57.50330117380002,
-        -79.5233070765957
+        -83.47280635662439,
+        -66.1873538440331
       ],
       "y": [
-        66.33048923623456,
-        67.55197739057849
+        -64.4310924745043,
+        -53.29939621275585
       ],
       "z": [
-        111.1519999223156,
-        122.92600972058062
+        40.999084398207785,
+        26.775917740563386
       ],
-      "uuid": "y_axis_Second_3510136a-c26a-4dd3-a394-e14e494b7af2",
+      "uuid": "y_axis_Second_01ded7c2-42a3-48c3-bde5-af54fdfbc357",
       "legendgroup": "Second",
       "visible": true
     },
@@ -3238,18 +3238,18 @@
       "opacity": 1,
       "type": "scatter3d",
       "x": [
-        -57.50330117380002,
-        -45.85752999289796
+        -83.47280635662439,
+        -93.21840323866132
       ],
       "y": [
-        66.33048923623456,
-        73.01998035817736
+        -64.4310924745043,
+        -42.10730180609052
       ],
       "z": [
-        111.1519999223156,
-        132.23817364187693
+        40.999084398207785,
+        46.62684697366117
       ],
-      "uuid": "z_axis_Second_3510136a-c26a-4dd3-a394-e14e494b7af2",
+      "uuid": "z_axis_Second_01ded7c2-42a3-48c3-bde5-af54fdfbc357",
       "legendgroup": "Second",
       "visible": true
     },
@@ -3266,15 +3266,15 @@
       "showlegend": true,
       "type": "scatter3d",
       "x": [
-        -20.236833394913177
+        -114.6587163791426
       ],
       "y": [
-        87.73686082645128
+        7.005037664419774
       ],
       "z": [
-        178.62775582491184
+        59.007924639658825
       ],
-      "uuid": "model_EE_1532708e-a809-4112-a483-738999934d70",
+      "uuid": "model_EE_a6dcef14-7bde-4c82-bd5d-fed857fcbbbd",
       "legendgroup": "EE",
       "visible": true
     },
@@ -3289,18 +3289,18 @@
       "opacity": 1,
       "type": "scatter3d",
       "x": [
-        -20.236833394913177,
-        -22.35705829876423
+        -114.6587163791426,
+        -99.45225482992677
       ],
       "y": [
-        87.73686082645128,
-        111.79426457702768
+        7.005037664419774,
+        8.658430699671472
       ],
       "z": [
-        178.62775582491184,
-        172.16664360340985
+        59.007924639658825,
+        78.78239855486582
       ],
-      "uuid": "x_axis_EE_1532708e-a809-4112-a483-738999934d70",
+      "uuid": "x_axis_EE_a6dcef14-7bde-4c82-bd5d-fed857fcbbbd",
       "legendgroup": "EE",
       "visible": true
     },
@@ -3315,18 +3315,18 @@
       "opacity": 1,
       "type": "scatter3d",
       "x": [
-        -20.236833394913177,
-        -42.25683929770898
+        -114.6587163791426,
+        -97.3732638665513
       ],
       "y": [
-        87.73686082645128,
-        88.95834898079521
+        7.005037664419774,
+        18.136733926168183
       ],
       "z": [
-        178.62775582491184,
-        190.40176562317663
+        59.007924639658825,
+        44.78475798201441
       ],
-      "uuid": "y_axis_EE_1532708e-a809-4112-a483-738999934d70",
+      "uuid": "y_axis_EE_a6dcef14-7bde-4c82-bd5d-fed857fcbbbd",
       "legendgroup": "EE",
       "visible": true
     },
@@ -3341,18 +3341,18 @@
       "opacity": 1,
       "type": "scatter3d",
       "x": [
-        -20.236833394913177,
-        -8.591062214011115
+        -114.6587163791426,
+        -124.40431326117958
       ],
       "y": [
-        87.73686082645128,
-        94.42635194839409
+        7.005037664419774,
+        29.328828332833535
       ],
       "z": [
-        178.62775582491184,
-        199.7139295444732
+        59.007924639658825,
+        64.63568721511223
       ],
-      "uuid": "z_axis_EE_1532708e-a809-4112-a483-738999934d70",
+      "uuid": "z_axis_EE_a6dcef14-7bde-4c82-bd5d-fed857fcbbbd",
       "legendgroup": "EE",
       "visible": true
     },
@@ -3366,7 +3366,7 @@
       "x": [],
       "y": [],
       "z": [],
-      "uuid": "model_circle_test_ff3faf9f-6341-48c2-b34b-093a1b838867",
+      "uuid": "model_circle_test_0c611c74-37ee-4a0f-b4c3-e119f603897c",
       "legendgroup": "circle_test",
       "visible": false
     },
@@ -3392,7 +3392,7 @@
         0,
         0
       ],
-      "uuid": "x_axis_circle_test_ff3faf9f-6341-48c2-b34b-093a1b838867",
+      "uuid": "x_axis_circle_test_0c611c74-37ee-4a0f-b4c3-e119f603897c",
       "legendgroup": "circle_test",
       "visible": false
     },
@@ -3418,7 +3418,7 @@
         0,
         0
       ],
-      "uuid": "y_axis_circle_test_ff3faf9f-6341-48c2-b34b-093a1b838867",
+      "uuid": "y_axis_circle_test_0c611c74-37ee-4a0f-b4c3-e119f603897c",
       "legendgroup": "circle_test",
       "visible": false
     },
@@ -3444,7 +3444,7 @@
         0,
         1
       ],
-      "uuid": "z_axis_circle_test_ff3faf9f-6341-48c2-b34b-093a1b838867",
+      "uuid": "z_axis_circle_test_0c611c74-37ee-4a0f-b4c3-e119f603897c",
       "legendgroup": "circle_test",
       "visible": false
     },
@@ -3458,7 +3458,7 @@
       "x": [],
       "y": [],
       "z": [],
-      "uuid": "model_Plane_Test_d5d29972-eeec-4f83-add8-19ebc0e45313",
+      "uuid": "model_Plane_Test_e5acbb6d-c89e-4c9a-b964-58b8c977ab04",
       "legendgroup": "Plane_Test",
       "visible": false
     },
@@ -3484,7 +3484,7 @@
         0,
         0
       ],
-      "uuid": "x_axis_Plane_Test_d5d29972-eeec-4f83-add8-19ebc0e45313",
+      "uuid": "x_axis_Plane_Test_e5acbb6d-c89e-4c9a-b964-58b8c977ab04",
       "legendgroup": "Plane_Test",
       "visible": false
     },
@@ -3510,7 +3510,7 @@
         0,
         0
       ],
-      "uuid": "y_axis_Plane_Test_d5d29972-eeec-4f83-add8-19ebc0e45313",
+      "uuid": "y_axis_Plane_Test_e5acbb6d-c89e-4c9a-b964-58b8c977ab04",
       "legendgroup": "Plane_Test",
       "visible": false
     },
@@ -3536,7 +3536,7 @@
         0,
         1
       ],
-      "uuid": "z_axis_Plane_Test_d5d29972-eeec-4f83-add8-19ebc0e45313",
+      "uuid": "z_axis_Plane_Test_e5acbb6d-c89e-4c9a-b964-58b8c977ab04",
       "legendgroup": "Plane_Test",
       "visible": false
     },
@@ -3561,7 +3561,7 @@
       "z": [
         0
       ],
-      "uuid": "model_V_1_ce54ba71-27af-44a0-8110-50c9570754da",
+      "uuid": "model_V_1_fd47b2a3-2728-42e7-8bc1-ed42d918997c",
       "legendgroup": "V_1",
       "visible": false
     },
@@ -3587,7 +3587,7 @@
         0,
         0
       ],
-      "uuid": "x_axis_V_1_ce54ba71-27af-44a0-8110-50c9570754da",
+      "uuid": "x_axis_V_1_fd47b2a3-2728-42e7-8bc1-ed42d918997c",
       "legendgroup": "V_1",
       "visible": false
     },
@@ -3613,7 +3613,7 @@
         0,
         0
       ],
-      "uuid": "y_axis_V_1_ce54ba71-27af-44a0-8110-50c9570754da",
+      "uuid": "y_axis_V_1_fd47b2a3-2728-42e7-8bc1-ed42d918997c",
       "legendgroup": "V_1",
       "visible": false
     },
@@ -3639,7 +3639,7 @@
         0,
         1
       ],
-      "uuid": "z_axis_V_1_ce54ba71-27af-44a0-8110-50c9570754da",
+      "uuid": "z_axis_V_1_fd47b2a3-2728-42e7-8bc1-ed42d918997c",
       "legendgroup": "V_1",
       "visible": false
     },
@@ -3664,7 +3664,7 @@
       "z": [
         0
       ],
-      "uuid": "model_V_3_b23005bd-1b0e-4db6-9227-edd5c5cb5213",
+      "uuid": "model_V_3_88e29ec0-0ba0-4623-ae6b-bf016ebd1f5c",
       "legendgroup": "V_3",
       "visible": false
     },
@@ -3690,7 +3690,7 @@
         0,
         0
       ],
-      "uuid": "x_axis_V_3_b23005bd-1b0e-4db6-9227-edd5c5cb5213",
+      "uuid": "x_axis_V_3_88e29ec0-0ba0-4623-ae6b-bf016ebd1f5c",
       "legendgroup": "V_3",
       "visible": false
     },
@@ -3716,7 +3716,7 @@
         0,
         0
       ],
-      "uuid": "y_axis_V_3_b23005bd-1b0e-4db6-9227-edd5c5cb5213",
+      "uuid": "y_axis_V_3_88e29ec0-0ba0-4623-ae6b-bf016ebd1f5c",
       "legendgroup": "V_3",
       "visible": false
     },
@@ -3742,7 +3742,7 @@
         0,
         1
       ],
-      "uuid": "z_axis_V_3_b23005bd-1b0e-4db6-9227-edd5c5cb5213",
+      "uuid": "z_axis_V_3_88e29ec0-0ba0-4623-ae6b-bf016ebd1f5c",
       "legendgroup": "V_3",
       "visible": false
     },
@@ -3767,7 +3767,7 @@
       "z": [
         0
       ],
-      "uuid": "model_V_5_199beeff-8ef4-4955-9d20-07940c426af9",
+      "uuid": "model_V_5_61211eb0-3eaf-4f13-b296-450b2a21cce4",
       "legendgroup": "V_5",
       "visible": false
     },
@@ -3793,7 +3793,7 @@
         0,
         0
       ],
-      "uuid": "x_axis_V_5_199beeff-8ef4-4955-9d20-07940c426af9",
+      "uuid": "x_axis_V_5_61211eb0-3eaf-4f13-b296-450b2a21cce4",
       "legendgroup": "V_5",
       "visible": false
     },
@@ -3819,7 +3819,7 @@
         0,
         0
       ],
-      "uuid": "y_axis_V_5_199beeff-8ef4-4955-9d20-07940c426af9",
+      "uuid": "y_axis_V_5_61211eb0-3eaf-4f13-b296-450b2a21cce4",
       "legendgroup": "V_5",
       "visible": false
     },
@@ -3845,7 +3845,7 @@
         0,
         1
       ],
-      "uuid": "z_axis_V_5_199beeff-8ef4-4955-9d20-07940c426af9",
+      "uuid": "z_axis_V_5_61211eb0-3eaf-4f13-b296-450b2a21cce4",
       "legendgroup": "V_5",
       "visible": false
     },
@@ -3870,7 +3870,7 @@
       "z": [
         0
       ],
-      "uuid": "model_IK_Point_902f2c82-86a2-44cf-aec8-1977c7224dc7",
+      "uuid": "model_IK_Point_fbb1ebc5-8b7b-4c4a-886d-a5326a4fd9a6",
       "legendgroup": "IK_Point",
       "visible": false
     },
@@ -3896,7 +3896,7 @@
         0,
         0
       ],
-      "uuid": "x_axis_IK_Point_902f2c82-86a2-44cf-aec8-1977c7224dc7",
+      "uuid": "x_axis_IK_Point_fbb1ebc5-8b7b-4c4a-886d-a5326a4fd9a6",
       "legendgroup": "IK_Point",
       "visible": false
     },
@@ -3922,7 +3922,7 @@
         0,
         0
       ],
-      "uuid": "y_axis_IK_Point_902f2c82-86a2-44cf-aec8-1977c7224dc7",
+      "uuid": "y_axis_IK_Point_fbb1ebc5-8b7b-4c4a-886d-a5326a4fd9a6",
       "legendgroup": "IK_Point",
       "visible": false
     },
@@ -3948,7 +3948,7 @@
         0,
         1
       ],
-      "uuid": "z_axis_IK_Point_902f2c82-86a2-44cf-aec8-1977c7224dc7",
+      "uuid": "z_axis_IK_Point_fbb1ebc5-8b7b-4c4a-886d-a5326a4fd9a6",
       "legendgroup": "IK_Point",
       "visible": false
     }

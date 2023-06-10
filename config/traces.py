@@ -60,7 +60,7 @@ default_traces = {
   },
   "joint": {
     "name": "Joint",
-    "line": {"color": "#2284e6", "width": LEG_OUTLINE_WIDTH},
+    "line": {"color": "#22DAE6", "width": LEG_OUTLINE_WIDTH},
     "marker": {"size": MARKER_SIZE},
     "mode": "lines+markers",
     "showlegend": True,

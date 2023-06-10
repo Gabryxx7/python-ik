@@ -21,9 +21,9 @@ VTest_2 = [VTest_1[0], VTest_1[1]+50, VTest_1[2]+50]
 VTest_3 = [VTest_2[0]+25, VTest_2[1]+25, VTest_2[2]+25]
 VTest_4 = [VTest_3[0]+50, VTest_3[1]+25, VTest_3[2]+25]
 
-arm_test = Arm("Test_Arm", [0,0,0])
+arm_test = Arm("Test_Arm", [0,0,0], trace_params={'color':"#22DAE6"})
 arm_test.add_joint(Joint("First", [0.0, 0.0, 80], trace_params={'color':"#33FF74"})) # Offset from origin
-arm_test.add_joint(Joint("Second", [0.0, 0.0, 80], trace_params={'color':"#33FFEC"})) # Offset from First
+arm_test.add_joint(Joint("Second", [0.0, 0.0, 80], trace_params={'color':"#FF3F33"})) # Offset from First
 arm_test.add_joint(Joint("EE", [0.0, 0.0, 80], trace_params={'color':"#33C1FF"})) # Offset from Second
 
 # ***************************************

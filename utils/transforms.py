@@ -37,9 +37,14 @@ class Transform:
         roll = np.arctan2(r21,r11)
     
     # # elif order == 'yxz':
-    # pitch = np.arctan2(r13, r33)
-    # yaw = np.arctan2(-r23 * np.cos(pitch), r33)
-    # roll = np.arctan2(r21, r22)
+    pitch = np.arctan2(r13, r33)
+    yaw = np.arctan2(-r23 * np.cos(pitch), r33)
+    roll = np.arctan2(r21, r22)
+    
+    # # elif order == 'xyz':
+    # pitch = np.arctan2(-r23, r33)
+    # yaw = np.arctan2(r13 * np.cos(pitch), r33)
+    # roll = np.arctan2(-r12, r11)
     
     pitch = pitch*180/np.pi
     yaw = yaw*180/np.pi
