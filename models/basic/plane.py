@@ -22,5 +22,5 @@ class Plane(Model):
     self.update()
   
   def get_trace_points(self):
-    return [x.absolute_pos for x in self.children]
+    return [x.absolute_position for x in self.children]
     

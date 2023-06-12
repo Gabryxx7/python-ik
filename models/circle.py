@@ -20,7 +20,7 @@ class Circle(Plane):
     returns the circle parameterization
     """
     r = self.radius
-    # h = self.absolute_pos[2]
+    # h = self.absolute_position[2]
     h = 0
     theta = np.linspace(0, 2*np.pi, nt)
     x = r*np.cos(theta)

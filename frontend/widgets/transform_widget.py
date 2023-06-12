@@ -38,6 +38,7 @@ class TransformWidget:
       print(f"Exception updating transform info for joint {self.joint.name}: {e}")
     return info
   
+  
   def get_transform_info(self):
     matrix_data = []
     tf = np.array(self.joint.transform.mat)
@@ -46,18 +47,30 @@ class TransformWidget:
         matrix_data.append(html.Span(f"{col:.2f}"))
     tf_matrix_div = html.Div(matrix_data, className="transform-matrix-view")
     tf_extras = []
-    tf_extras.append(html.Div(f"\n\nOrigin: {np.round(self.joint.origin_pos, 2)}"))
-    tf_extras.append(html.Div(f"\nAbs. Pos.: {np.round(self.joint.absolute_pos, 2)}"))
-    tf_extras.append(html.Div(f"\nRel. Pos.: {np.round(self.joint.relative_pos, 2)}"))
+    tf_extras.append(html.Div(f"\nAbs. Pos.: {np.round(self.joint.absolute_position, 2)}"))
+    tf_extras.append(html.Div(f"\nRel. Pos.: {np.round(self.joint.local_position, 2)}"))
     try:
       tf_extras.append(html.Div(f"\nDistance from prev: {np.round(self.joint.get_joint_length(), 2)}"))
     except Exception as e:
       pass
-    tf_extras.append(html.Div(f"\nQuaternion: {self.joint.quaternion}"))
-    # rpy_str = [round(angle,2) for angle in self.joint.quaternion.rpy]
-    angles = Transform.rotation_angles(self.joint.transform)
-    rpy_str = [round(angle,2) for angle in angles]
-    tf_extras.append(html.Div(f"\nRPY: {rpy_str}"))
+    
+    tf_extras.append(html.Div(f"\nAbs Quaternion: {self.joint.absolute_quaternion}"))
+    calc_abs_quat = Quaternion.quaternion_from_rotation_matrix(self.joint.transform)
+    tf_extras.append(html.Div(f"\nQuat from Abs Transf: {calc_abs_quat}"))
+    
+    tf_extras.append(html.Div(f"\nRel Quaternion: {self.joint.local_quaternion}"))
+    calc_rel_quat = Quaternion.quaternion_from_rotation_matrix(self.joint.local_transform)
+    tf_extras.append(html.Div(f"\nQuat from Local Transf: {calc_rel_quat}"))
+    
+    angles_str = [round(angle,2) for angle in self.joint.absolute_rotation]
+    tf_extras.append(html.Div(f"\nAbs. Rotation: {angles_str}"))
+    angles_str = [round(angle,2) for angle in Transform.rotation_to_angles(self.joint.transform, order="zyx")]
+    tf_extras.append(html.Div(f"\nRotation from Abs Transf: {angles_str}"))
+    
+    angles_str = [round(angle,2) for angle in self.joint.local_rotation]
+    tf_extras.append(html.Div(f"\nRel. Rotation: {angles_str}"))
+    angles_str = [round(angle,2) for angle in Transform.rotation_to_angles(self.joint.transform, order="zyx")]
+    tf_extras.append(html.Div(f"\nRotation from Local Transf: {angles_str}"))
     
     tf_extras_div = html.Div(tf_extras, className="transform-extras")
     tf_components = [tf_matrix_div, tf_extras_div]

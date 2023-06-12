@@ -13,7 +13,7 @@
 .view-panel{
   position: absolute;
   top: 0vh;
-  left: 30vw;
+  left: 35vw;
   margin-left: 0.1rem;
   width: 60vw;
 }
@@ -34,7 +34,7 @@
   width: 100%;
 }
 .sidebar{
-  width: 30vw;
+  width: 35vw;
 }
 .model-sidebar{
   display: flex;

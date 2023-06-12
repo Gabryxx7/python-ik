@@ -39,9 +39,9 @@ class CompoundModel(Model):
       self.Rsmall = abs(np.linalg.norm(plane.origin_pos[:2] - plane.children[0].origin_pos[:2]))
       self.Rbig = self.Rsmall*1.5
       self.l = (self.Rsmall*1.2)
-      print(self.Rbig)
-      print(self.Rsmall)
-      print(self.l)
+      # print(self.Rbig)
+      # print(self.Rsmall)
+      # print(self.l)
       circle_big = Circle("Circle_Big", radius=self.Rbig, trace_params={'color': '#9999ff', 'opacity': 0.3})
       circle_small = Circle("Circle_Small", radius=self.Rsmall, trace_params={'color': '#00ffcc', 'opacity': 0.3})
       circle_big.set_parent(plane)
@@ -53,16 +53,16 @@ class CompoundModel(Model):
     # print("\n\nStarting Forward Kinematics:")
     for plane in self.planes:
       plane.update()
-      self.ik_res = self.Inverse_Kinematics(plane.origin_pos[2], plane.quaternion.y, plane.quaternion.x)
+      self.ik_res = self.Inverse_Kinematics(plane.origin_pos[2], plane.local_quaternion.y, plane.local_quaternion.x)
       if self.ik_res is not None:
         for i in range(0,3):
           self.arms[i].children[0].origin_pos[2] = self.ik_res[i]
         # plane.forward_kinematics()
         yaw = self.ik_res[5]
-        q = plane.quaternion
+        q = plane.local_quaternion
         q.z = yaw
         # plane.rotate(q)
-        print(f"Plane quat: {plane.quaternion}")
+        print(f"Plane quat: {plane.local_quaternion}")
     for arm in self.arms:
       arm.forward_kinematics()
         

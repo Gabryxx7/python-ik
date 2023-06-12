@@ -10,6 +10,54 @@ Conversions Notes: https://www.euclideanspace.com/maths/geometry/rotations/conve
 """
 
 class Quaternion:
+  
+  @staticmethod
+  def convert_angles(angles):
+    return angles
+    # return [360.0+angle if angle < 0 else angle for angle in angles]
+  
+  def quaternion_from_rotation_matrix(transform):
+    quat = Quaternion()
+    try:
+      matrix = transform.mat[0:3, 0:3]
+      matrix = np.array(matrix)
+      m00, m01, m02 = matrix[0]
+      m10, m11, m12 = matrix[1]
+      m20, m21, m22 = matrix[2]
+      tr = m00 + m11 + m22
+
+      if tr > 0:
+        S = math.sqrt(tr+1.0) * 2 # S=4*qw 
+        qw = 0.25 * S
+        qx = (m21 - m12) / S
+        qy = (m02 - m20) / S 
+        qz = (m10 - m01) / S 
+      elif (m00 > m11) and (m00 > m22):
+        S = math.sqrt(1.0 + m00 - m11 - m22) * 2 # S=4*qx 
+        qw = (m21 - m12) / S
+        qx = 0.25 * S
+        qy = (m01 + m10) / S 
+        qz = (m02 + m20) / S 
+      elif m11 > m22:
+        S = math.sqrt(1.0 + m11 - m00 - m22) * 2 # S=4*qy
+        qw = (m02 - m20) / S
+        qx = (m01 + m10) / S 
+        qy = 0.25 * S
+        qz = (m12 + m21) / S 
+      else:
+        S = math.sqrt(1.0 + m22 - m00 - m11) * 2 # S=4*qz
+        qw = (m10 - m01) / S
+        qx = (m02 + m20) / S
+        qy = (m12 + m21) / S
+        qz = 0.25 * S
+      quat.x = qx
+      quat.y = qy
+      quat.z = qz
+      quat.w = qw
+    except Exception as e:
+      print(f"EXCEPTION getting Quaternion from rotation matrix: {e}")
+    return quat
+      
   @staticmethod
   def quaternion_from_angles(alpha, beta, gamma):
     return Quaternion.quaternion_from_rpt(math.radians(alpha), math.radians(beta), math.radians(gamma))
@@ -20,21 +68,21 @@ class Quaternion:
   
   @staticmethod
   def quaternion_from_rpt(roll, pitch, yaw):
-    cr = math.cos(roll * 0.5);
-    sr = math.sin(roll * 0.5);
-    cp = math.cos(pitch * 0.5);
-    sp = math.sin(pitch * 0.5);
-    cy = math.cos(yaw * 0.5);
-    sy = math.sin(yaw * 0.5);
-    w = cr * cp * cy + sr * sp * sy;
-    x = sr * cp * cy - cr * sp * sy;
-    y = cr * sp * cy + sr * cp * sy;
-    z = cr * cp * sy - sr * sp * cy;
+    cr = math.cos(roll * 0.5)
+    sr = math.sin(roll * 0.5)
+    cp = math.cos(pitch * 0.5)
+    sp = math.sin(pitch * 0.5)
+    cy = math.cos(yaw * 0.5)
+    sy = math.sin(yaw * 0.5)
+    w = cr * cp * cy + sr * sp * sy
+    x = sr * cp * cy - cr * sp * sy
+    y = cr * sp * cy - sr * cp * sy
+    z = cr * cp * sy - sr * sp * cy
     return [x, y, z, w]
     
   
   @staticmethod
-  def quaternion_to_euler_angle_vectorized1(q):
+  def euler_from_quaternion(q):
     w, x, y, z = q.w, q.x, q.y, q.z
     ysqr = y * y
 
@@ -54,10 +102,10 @@ class Quaternion:
     t4 = +1.0 - 2.0 * (ysqr + z * z)
     Z = np.degrees(np.arctan2(t3, t4))
 
-    return [X, Y, Z ]
+    return Quaternion.convert_angles([X, Y, Z ])
   
   @staticmethod
-  def euler_from_quaternion(q):
+  def euler_from_quaternion_old(q):
     """
     Convert a quaternion into euler angles (roll, pitch, yaw)
     roll is rotation around x in radians (counterclockwise)
@@ -81,7 +129,7 @@ class Quaternion:
     roll_x = math.degrees(roll_x)
     pitch_y = math.degrees(pitch_y)
     yaw_z = math.degrees(yaw_z)
-    return [roll_x, pitch_y, yaw_z] # in radians
+    return Quaternion.convert_angles([roll_x, pitch_y, yaw_z]) # in radians
     # return [roll_x, pitch_y, yaw_z] # in radians
   
 
@@ -118,7 +166,7 @@ class Quaternion:
     # self.y = comp[1]
     # self.z = comp[2]
     # self.w = comp[3]
-    # self.rpy = Quaternion.quaternion_to_euler_angle_vectorized1(self)
+    # self.rpy = Quaternion.quaternion_to_euler_angle_vectorized(self)
     
 
 if __name__ == '__main__':

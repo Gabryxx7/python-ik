@@ -23,16 +23,20 @@ class Model:
     self.origin_pos = np.array(deepcopy(offset_pos))
     if len(self.origin_pos) < 4:
       self.origin_pos = np.append(self.origin_pos, [1.0])
-    self.relative_pos = deepcopy(self.origin_pos)
-    self.absolute_pos = deepcopy(self.origin_pos)
+    self.local_position = deepcopy(self.origin_pos)
+    self.local_rotation = [0,0,0]
+    self.local_quaternion = Quaternion(self.local_rotation[0], self.local_rotation[1], self.local_rotation[2])
+    self.absolute_position = deepcopy(self.origin_pos)
+    self.absolute_rotation = [0,0,0]
+    self.absolute_quaternion = Quaternion(self.absolute_rotation[0], self.absolute_rotation[1], self.absolute_rotation[2])
     self.parent = None
+    self.origin_transform = Transform.make_transform(translation=np.array([0,0,0]))
     self.children = []
     self.trace_type = "joint"
     self.trace_params = trace_params if trace_params is not None else {}
     self.visible = False
     self.transform = Transform.make_transform(translation=self.origin_pos[:3])
-    self.rotations = [0,0,0]
-    self.quaternion = Quaternion(self.rotations[0], self.rotations[1], self.rotations[2])
+    self.local_transform = Transform.make_transform(translation=self.origin_pos[:3])
   
   def get_model_traces(self, fig_data):
     traces = TracesHelper.find_model_traces(fig_data, self.uuid)
@@ -50,15 +54,21 @@ class Model:
   def update(self, dbg_prefix=""):
     try:
       dbg = f"{dbg_prefix}- Updating {self.name} Transform "
-      self.transform = Transform.make_transform(translation=self.origin_pos[:3], rotation=self.rotations)
+      self.local_transform = Transform.make_transform(translation=self.origin_pos[:3], rotation=self.local_rotation)
       # print(f"New transform for: {self.name}: {self.transform.mat}")
       if self.parent is not None:
         dbg += f"Using parent ({self.parent.name}) transform"
-        self.relative_pos = np.array(self.parent.transform.mat@np.array(self.origin_pos)).flatten()
-        self.transform = Transform.combine(self.parent.transform, self.transform)
+        # self.local_position = np.array(self.parent.transform.mat@np.array(self.origin_pos)).flatten()
+        self.transform = Transform.combine(self.parent.transform, self.local_transform)
+      else:
+        self.transform = Transform.combine(self.origin_transform, self.local_transform)
+        
       # Remember that the accumulated transform should always be applied to a hypothetical starting point 0 expressed in world coordinates,
       # and the last component should always be 1 (the 4th dimension used to apply transforms)
-      self.absolute_pos = np.array(self.transform.mat@np.array([0,0,0,1])).flatten()
+      self.absolute_position = np.array(self.transform.mat@np.array([0,0,0,1])).flatten()
+      self.absolute_quaternion = Quaternion.quaternion_from_rotation_matrix(self.transform)
+      # self.absolute_rotation = Quaternion.euler_from_quaternion(self.absolute_quaternion)
+      self.absolute_rotation = Transform.rotation_to_angles(self.transform, order="zyx")
       for child in self.children:
         child.update(dbg_prefix=dbg_prefix)
     except Exception as e:
@@ -67,9 +77,10 @@ class Model:
       
   def rotate(self, euler_angles):
     # print(f"Rotating {self.name} ({self.uuid}) with: {euler_angles}")
-    self.rotations = [euler_angles[0], euler_angles[1], euler_angles[2]]
-    self.quaternion = Quaternion(self.rotations[0], self.rotations[1], self.rotations[2])
-    # self.quaternion = Quaternion(euler_angles[0], euler_angles[1], euler_angles[2])
+    euler_angles = Quaternion.convert_angles(euler_angles)
+    self.local_rotation = [euler_angles[0], euler_angles[1], euler_angles[2]]
+    self.local_quaternion = Quaternion(self.local_rotation[0], self.local_rotation[1], self.local_rotation[2])
+    # self.local_quaternion = Quaternion(euler_angles[0], euler_angles[1], euler_angles[2])
     
   # I know this is conceputally not right here since this is about the 3D model and joints and not the actual front end
   # but look, it's much easier this way!
@@ -90,11 +101,11 @@ class Model:
     self.children.append(child)
     
   def get_trace_points(self):
-    points = [self.absolute_pos]
+    points = [self.absolute_position]
     # if self.parent is not None:
-    #   points = [self.parent.absolute_pos] + points
+    #   points = [self.parent.absolute_position] + points
     if len(self.children) > 0 is not None:
-      points = points + [self.children[0].absolute_pos] 
+      points = points + [self.children[0].absolute_position] 
     return points
   
   def get_vtk_model_data(self, draw_children=True, dbg_prefix=""):
@@ -102,9 +113,7 @@ class Model:
     radius = 10
     points = self.get_trace_points()
     color =  hex_to_rgb(self.trace_params.get('color', "#FFFFFF"))
-    angles = Transform.rotation_angles(self.transform)
-    # angles = self.rotations
-    print(f"Angles {angles}")
+    angles = Transform.rotation_to_angles(self.transform, order="zxy")
     model_data = []
     p1 = list(points[0][0:3])
     orientation = [angles[0], angles[1], angles[2]]
@@ -185,7 +194,7 @@ class Model:
   
   def draw_plotly(self, fig_data, draw_children=True, dbg_prefix=""):
     fig_data, traces = self.get_model_traces(fig_data)
-    print(f"Traces found for {self.name}: {[t['name'] for t in traces]}")
+    # print(f"Traces found for {self.name}: {[t['name'] for t in traces]}")
     for i in range(0, len(traces)):
       traces[i]['visible'] = self.visible
     # print(f"{dbg_prefix}Drawing {self.name}")
@@ -207,7 +216,6 @@ class Model:
           direction = [0,0,0]
           direction[i] = 1
           offset_point =  self.transform.get_direction_vector(direction) * 25
-          print(offset_point)
           traces[i+1]['x'] = [x[0], x[0]+offset_point[0]]
           traces[i+1]['y'] = [y[0], y[0]+offset_point[1]]
           traces[i+1]['z'] = [z[0], z[0]+offset_point[2]]

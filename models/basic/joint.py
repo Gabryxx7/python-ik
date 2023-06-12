@@ -25,10 +25,10 @@ class Joint(Model):
     self.trace_type = "joint"
   
   def force_update(self, override_transform):
-    self.absolute_pos = override_transform@self.origin_pos
+    self.absolute_position = override_transform@self.origin_pos
       
   def get_joint_length(self):
     if self.parent is not None:
-      return (np.linalg.norm(self.parent.absolute_pos - self.absolute_pos))
+      return (np.linalg.norm(self.parent.absolute_position - self.absolute_position))
     return -1.0
   

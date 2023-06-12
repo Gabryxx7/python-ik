@@ -7,49 +7,63 @@ except Exception as e:
   from quaternion import Quaternion
 from scipy.spatial.transform import Rotation   
 
-  
 
 X, Y, Z = 0,1,2
 AXIS_ORDER = [X, Y, Z]
 
 class Transform:
   
+  # From: https://github.com/mrdoob/three.js/blob/dev/src/math/Euler.js#L105
+  # http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToAngle/
   @staticmethod
-  def rotation_angles(transform):
+  def rotation_to_angles(transform, order="xyz"):
     matrix = transform.mat[0:3, 0:3]
-    print(np.array(matrix))
     matrix = np.array(matrix)
-    r11, r12, r13 = matrix[0]
-    r21, r22, r23 = matrix[1]
-    r31, r32, r33 = matrix[2]
-    # Checks for gymbal lock
-    if r31 > 0.998:
-        yaw = -np.pi/2
-        roll = 0
-        pitch = np.arctan2(r12, r13)
-    elif r31 < -0.998:
-        yaw = np.pi/2
-        roll = 0
-        pitch = np.arctan2(r12, r13)
-    else:
-        yaw = np.arcsin(-r31)
-        pitch = np.arctan2(r32,r33)
-        roll = np.arctan2(r21,r11)
+    m11, m12, m13 = matrix[0]
+    m21, m22, m23 = matrix[1]
+    m31, m32, m33 = matrix[2]
     
-    # # elif order == 'yxz':
-    pitch = np.arctan2(r13, r33)
-    yaw = np.arctan2(-r23 * np.cos(pitch), r33)
-    roll = np.arctan2(r21, r22)
-    
-    # # elif order == 'xyz':
-    # pitch = np.arctan2(-r23, r33)
-    # yaw = np.arctan2(r13 * np.cos(pitch), r33)
-    # roll = np.arctan2(-r12, r11)
-    
-    pitch = pitch*180/np.pi
-    yaw = yaw*180/np.pi
-    roll = roll*180/np.pi
-    return [pitch, yaw, roll]
+    if order == "xyz":
+      y = math.asin(np.clip(m13, -1, 1))
+      # Checks for gymbal lock
+      if abs(m13) < 0.999:
+        x = math.atan2(-m23, m33)
+        z = math.atan2(-m12, m11)
+      else:
+        x = math.atans(m32, m22)
+        z = 0
+    elif order == "yxz":
+      x = math.asin(-np.clip(m23, -1, 1))
+      # Checks for gymbal lock
+      if abs(m23) < 0.999:
+        y = math.atan2(m13, m33)
+        z = math.atan2(m21, m22)
+      else:
+        y = math.atan2(-m31, m11)
+        z = 0
+    elif order == "zxy":
+      x = math.asin(np.clip(m32, -1, 1))
+      # Checks for gymbal lock
+      if abs(m32) < 0.999:
+        y = math.atan2(-m31, m33)
+        z = math.atan2(-m12, m22)
+      else:
+        y = 0
+        z = math.atan2(m21, m11)
+    elif order == "zyx":
+      y = math.asin(-np.clip(m31, -1, 1))
+      # Checks for gymbal lock
+      if abs(m31) < 0.999:
+        x = math.atan2(m32, m33)
+        z = math.atan2(m21, m11)
+      else:
+        x = 0
+        z = math.atan2(-m12, m22)
+      
+    x = math.degrees(x)
+    y = math.degrees(y)
+    z = math.degrees(z)
+    return [x, y, z]
     # return [roll, pitch, yaw]
   
   @staticmethod
@@ -174,8 +188,7 @@ class Transform:
     Rz = np.matrix([[  math.cos(psi),   -math.sin(psi),      0.0,           ],
                     [  math.sin(psi),    math.cos(psi),      0.0,           ],
                     [       0.0,             0.0,            1.0,           ]])
-    rotations = [Rx, Ry, Rz]
-    rotation_matrix = rotations[AXIS_ORDER[0]] @ rotations[AXIS_ORDER[1]] @ rotations[AXIS_ORDER[2]]
+    rotation_matrix = Rz @ Ry @ Rx
     return rotation_matrix
   
   @staticmethod
