@@ -19,7 +19,7 @@ from frontend.pages.compound_model_page import CompoundModelPage
 from frontend.pages.plane_page import PlanePage
 from utils.plotly_plotter import PlotlyPlotter, BASE_FIGURE
 # from utils.vtk_view import vtk_view
-from utils.vtk_view import get_vtk_view
+from utils.vtk_view import get_vtk_geoms, get_vtk_view
 from utils.vtk_view import VTK_ID, VTK_ALG_ID, VTK_SLIDER_ID, VTK_CHECKLIST_ID
 import random
 
@@ -33,25 +33,45 @@ GRAPH_ID = "graph-kinematics"
 
 plotly_graph = dcc.Graph(id=GRAPH_ID, figure=BASE_FIGURE, className="plotly-graph")
 
+""" ========================= MODELS SETUP ========================= """
+models = []
+# models.append(machine)
+models.append(arm_test)
+# models.append(circle_test)
+# models.append(plane_test)
 
+vtk_outputs = []
+vtk_models = []
+vtk_geoms = []
+for model in models:
+    model.update()
+    vtk_model_data = model.get_vtk_model_data()
+    vtk_models.append(vtk_model_data)
+    states_out = [Output(m['id'], 'state') for m in vtk_model_data]
+    actors_out = [Output("repr_"+m['id'], 'actor') for m in vtk_model_data]
+    vtk_outputs.append([states_out, actors_out])
+    vtk_geoms += get_vtk_geoms(vtk_model_data)
 
-""" ========================= LAYOUT ========================= """
+vtk_view = get_vtk_view(vtk_geoms)
+
+""" ========================= PAGES SETUP ========================= """
 robots_show_options = ['Plane', 'Test Arm']
-arm_page = ArmPage(arm_test, app, label="Arm Test")
-circle_page = PlanePage(circle_test, app, label="Circle Test")
+pages = []
 
 machine_page = CompoundModelPage(machine, app, label="Machine")
-IK_point = Joint("IK_Point", [300, 200, 100], trace_params={'color':"#555555"})
-plane_page = PlanePage(plane_test, app, label="Plane Test")
-
-info_panel = html.Div("", className="info-panel")
-
-pages = []
 pages.append(machine_page)
+
+arm_page = ArmPage(arm_test, app, label="Arm Test")
 pages.append(arm_page)
+
+circle_page = PlanePage(circle_test, app, label="Circle Test")
 pages.append(circle_page)
+
+plane_page = PlanePage(plane_test, app, label="Plane Test")
 pages.append(plane_page)
 
+info_panel = html.Div("", className="info-panel")
+IK_point = Joint("IK_Point", [300, 200, 100], trace_params={'color':"#555555"})
 initial_page = pages[0]
 
 triggers = {}
@@ -64,9 +84,6 @@ for page in pages:
     machine_tabs.append(dcc.Tab(page_layout, label=page.label, value=page.id))
     triggers[page.id] = page.trigger.input
 
-arm_test.update()
-arm_model_data = arm_test.get_vtk_model_data()
-vtk_view = get_vtk_view(arm_model_data)
 
 plots_tabs = []
 plots_tabs.append(dcc.Tab(plotly_graph, label="Plotly", value='plotly'))
@@ -139,24 +156,24 @@ def update_vtk_models(*callback_data):
     # inputs = callback_data[0]
     # states = callback_data[1]
     # print(f"VTK Callbakc update {callback_data}")
-    arm_test.update()
-    updated_vtk_models = arm_test.get_vtk_model_data()
-    new_states = [model['state'] for model in updated_vtk_models]
-    new_actor = [model['actor'] for model in updated_vtk_models]
-    outputs = []
-    outputs.append(new_states)
-    outputs.append(new_actor)
-    return outputs
+    vtk_outputs = []
+    for model in models:
+        model.update()
+        updated_vtk_models = model.get_vtk_model_data()
+        new_states = [model['state'] for model in updated_vtk_models]
+        new_actor = [model['actor'] for model in updated_vtk_models]
+        vtk_outputs.append([new_states, new_actor])
+    return vtk_outputs
 
 graph_out = Output(GRAPH_ID, 'figure')
 graph_state = {'figure': State(GRAPH_ID, "figure"), 'relayout': State(GRAPH_ID, "relayoutData")}
 # triggers['machine'] = machine_page.trigger.input,
 app.callback(graph_out, triggers, graph_state)(plot_plotly)
 # app.callback(graph_out, triggers, graph_state)(plot_plotly)
-vtk_outputs = []
-vtk_outputs.append([Output(model['id'], 'state') for model in arm_model_data])
-vtk_outputs.append([Output("repr_"+model['id'], 'actor') for model in arm_model_data])
+
+
 vtk_inputs = triggers
+# [print(f"\n\n{vtk_out}") for vtk_out in vtk_outputs]
 app.callback(vtk_outputs, vtk_inputs, graph_state)(update_vtk_models)
 
 

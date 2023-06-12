@@ -180,6 +180,7 @@ class Model:
         }
       }
       model_data.append(joint_cube)
+    print(f"Model data for {self.name}")
     if not draw_children:
       return model_data
     
@@ -188,7 +189,6 @@ class Model:
       child_model = child.get_vtk_model_data(draw_children=False, dbg_prefix=dbg_prefix)
       if child_model is not None and len(child_model) > 0:
         model_data += child_model
-    # print(f"Model data for {self.name}")
     # print(model_data)
     return model_data
   

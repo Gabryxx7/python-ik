@@ -14,9 +14,9 @@ class Plane(Model):
   
   def add_vertex(self, offset_pos):
     # print(f"Adding vertex to {self.name}: {offset_pos}")
-    vertex = Joint(f"V_{len(self.children)+1}", offset_pos, trace_params={'color': "#888888", 'linewidth': 8, 'markersize': 8})
+    vertex = Joint(f"{self.name}_V_{len(self.children)+1}", offset_pos, trace_params={'color': "#888888", 'linewidth': 8, 'markersize': 8})
     vertex.set_parent(self)
-    self.children.append(vertex)
+    # self.children.append(vertex)
   
   def forward_kinematics(self):
     self.update()

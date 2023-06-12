@@ -75,7 +75,7 @@ default_geom_objs = [
 bounds = 500
 orientation = [45,0,45]
 
-def get_vtk_view(geom_objs):
+def get_vtk_geoms(geom_objs):
   # geom_objs = default_geom_objs
   geoms = []
   for geom_obj in geom_objs:
@@ -98,9 +98,10 @@ def get_vtk_view(geom_objs):
           actor=actor,
           property=properties
         )
-    geoms.append(geom_container)
+    geoms.append(geom_container)    
+  return geoms
 
-
+def get_vtk_view(geoms):
   axis_geom_placeholder = dash_vtk.Algorithm(
                 id="test",
                 vtkClass="vtkCubeSource",
@@ -141,8 +142,7 @@ def get_vtk_view(geom_objs):
               },
             },
         ))
-    
-  vtk_view = dash_vtk.View(
+  return dash_vtk.View(
       id=VTK_ID,
       background=[34/255, 47/255, 62/255], 
       pickingModes=["click"],
@@ -177,4 +177,4 @@ def get_vtk_view(geom_objs):
   #     ),
   #   ]
   # )
-  return vtk_view
+  # return vtk_view

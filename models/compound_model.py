@@ -82,6 +82,15 @@ class CompoundModel(Model):
     return fig_data
   
   
+  def get_vtk_model_data(self, draw_children=True, dbg_prefix=""):
+    model_data = super().get_vtk_model_data()
+    for a in self.arms:
+      model_data += a.get_vtk_model_data()
+    # for p in self.planes:
+    #   model_data += p.get_vtk_model_data()
+    return model_data
+  
+  
   """
   http://ww2.me.ntu.edu.tw/~measlab/download/2003/sensitivity%20of%203-PRS%202003.pdf
     Input:
