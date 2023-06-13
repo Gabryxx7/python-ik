@@ -134,7 +134,9 @@ class Quaternion:
   
 
   def to_string(self):
-    return f"[ x: {self.x:.2f}, y: {self.y:.2f}, z: {self.z:.2f}, w: {self.w:.2f} ]"
+    # return f"[ x: {self.x:.2f}, y: {self.y:.2f}, z: {self.z:.2f}, w: {self.w:.2f} ]"
+    # return f"xyzw[{self.x:.2f}, {self.y:.2f}, {self.z:.2f}, {self.w:.2f} ]"
+    return f"[{self.x:.2f}, {self.y:.2f}, {self.z:.2f}, {self.w:.2f} ]"
   def __str__(self):
       return self.to_string()
   def __repr__(self):

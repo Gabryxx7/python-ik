@@ -21,7 +21,8 @@ class TransformWidget:
     tf_info = self.get_transform_info()
     tf_info_id = f"{self.joint.uuid}-tf-info"
     tf_info_container = html.Div(tf_info, className="transform-infos", id=tf_info_id)
-    self.widget = html.Div([tf_title, tf_info_container], className="transform-widget")
+    # self.widget = html.Div([tf_title, tf_info_container], className="transform-widget")
+    self.widget = html.Div([tf_info_container], className="transform-widget")
     self.output = Output(tf_info_id, "children")
     return self.widget
   
@@ -47,30 +48,35 @@ class TransformWidget:
         matrix_data.append(html.Span(f"{col:.2f}"))
     tf_matrix_div = html.Div(matrix_data, className="transform-matrix-view")
     tf_extras = []
-    tf_extras.append(html.Div(f"\nAbs. Pos.: {np.round(self.joint.absolute_position, 2)}"))
-    tf_extras.append(html.Div(f"\nRel. Pos.: {np.round(self.joint.local_position, 2)}"))
-    try:
-      tf_extras.append(html.Div(f"\nDistance from prev: {np.round(self.joint.get_joint_length(), 2)}"))
-    except Exception as e:
-      pass
+    tf_extras.append(html.Div([html.Div(f"Abs. Pos.: "), html.Div(f"{np.round(self.joint.absolute_position, 2)}")], className='tf-widget-row'))
+    tf_extras.append(html.Div([html.Div(f"Rel. Pos.: "), html.Div(f"{np.round(self.joint.local_position, 2)}")], className='tf-widget-row'))
     
-    tf_extras.append(html.Div(f"\nAbs Quaternion: {self.joint.absolute_quaternion}"))
+    tf_extras.append(html.Div([html.Div(f"Abs Quaternion: "), html.Div(f"{self.joint.absolute_quaternion}")], className='tf-widget-row'))
+    
     calc_abs_quat = Quaternion.quaternion_from_rotation_matrix(self.joint.transform)
-    tf_extras.append(html.Div(f"\nQuat from Abs Transf: {calc_abs_quat}"))
+    tf_extras.append(html.Div([html.Div(f"Quat from Abs Transf: "), html.Div(f"{calc_abs_quat}")], className='tf-widget-row'))
     
-    tf_extras.append(html.Div(f"\nRel Quaternion: {self.joint.local_quaternion}"))
+    tf_extras.append(html.Div([html.Div(f"Rel Quaternion: "), html.Div(f"{self.joint.local_quaternion}")], className='tf-widget-row'))
+    
     calc_rel_quat = Quaternion.quaternion_from_rotation_matrix(self.joint.local_transform)
-    tf_extras.append(html.Div(f"\nQuat from Local Transf: {calc_rel_quat}"))
+    tf_extras.append(html.Div([html.Div(f"Quat from Local Transf: "), html.Div(f"{calc_rel_quat}")], className='tf-widget-row'))
     
     angles_str = [round(angle,2) for angle in self.joint.absolute_rotation]
-    tf_extras.append(html.Div(f"\nAbs. Rotation: {angles_str}"))
+    tf_extras.append(html.Div([html.Div(f"Abs. Rotation: "), html.Div(f"{angles_str}")], className='tf-widget-row'))
+    
     angles_str = [round(angle,2) for angle in Transform.rotation_to_angles(self.joint.transform, order="zyx")]
-    tf_extras.append(html.Div(f"\nRotation from Abs Transf: {angles_str}"))
+    tf_extras.append(html.Div([html.Div(f"Rotation from Abs Transf: "), html.Div(f"{angles_str}")], className='tf-widget-row'))
     
     angles_str = [round(angle,2) for angle in self.joint.local_rotation]
-    tf_extras.append(html.Div(f"\nRel. Rotation: {angles_str}"))
+    tf_extras.append(html.Div([html.Div(f"Rel. Rotation: "), html.Div(f"{angles_str}")], className='tf-widget-row'))
+    
     angles_str = [round(angle,2) for angle in Transform.rotation_to_angles(self.joint.transform, order="zyx")]
-    tf_extras.append(html.Div(f"\nRotation from Local Transf: {angles_str}"))
+    tf_extras.append(html.Div([html.Div(f"Rotation from Local Transf: "), html.Div(f"{angles_str}")], className='tf-widget-row'))
+    
+    try:
+      tf_extras.append(html.Div([html.Div(f"Distance from prev: "), html.Div(f"{np.round(self.joint.get_joint_length(), 2)}")], className='tf-widget-row'))
+    except Exception as e:
+      pass
     
     tf_extras_div = html.Div(tf_extras, className="transform-extras")
     tf_components = [tf_matrix_div, tf_extras_div]

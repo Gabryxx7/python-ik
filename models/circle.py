@@ -31,3 +31,4 @@ class Circle(Plane):
   def draw_plotly(self, fig_data, draw_children=False, dbg_prefix=""):
     fig_data = super().draw_plotly(fig_data, draw_children=False, dbg_prefix=dbg_prefix)
     return fig_data
+  

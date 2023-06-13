@@ -5,9 +5,20 @@
 }
 
 .info-panel{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1 1 0px;
   position: relative;
-  height: 20vh;
+  margin-top: 1rem;
+  /* position: relative; */
+  height: 30vh;
   background-color: rgb(33, 33, 36);
+}
+
+.info-panel textarea{
+  height: 100%;
+  width: 100%;
 }
 
 .view-panel{
@@ -16,14 +27,18 @@
   left: 35vw;
   margin-left: 0.1rem;
   width: 60vw;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
 }
 .view-panel > div:first-child{
   top: 0vh;
   height: 70vh;
+  width: 100%;
 }
-.view-panel > div:last-child{
+/* .view-panel > div:last-child{
   top: 30vh;
-}
+} */
 .view-panel .tab-content {
   height: 100%;
   width: 100%;
@@ -61,31 +76,66 @@
 }
 
 .quaternion-widget-container{
-  width: 50%;
+  width: 100%;
+  height: 100%;
 }
 .transform-widget{
-  width: 50%;
+  width: 100%;
+  height: 100%;
   font-size: 0.7rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
+.tf-widget-row{
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.tf-widget-row *:first-child{
+  width: 40%;
+  overflow: hidden;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+}
+
 .transform-infos{
   display: flex;
-  height: 90%;
-  flex-direction: column;
-  justify-content: space-evenly;
+  height: 100%;
+  width: 100%;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 1rem;
 }
 .transform-matrix-view{
   display: grid;
   grid-template-columns: 24% 24% 24% 24%;
-  column-gap: 1%;
+  /* place-items: center;
+  place-content: space-evenly; */
+  /* column-gap: 0.5rem;
+  row-gap: 1rem; */
+}
+
+.transform-matrix-view span{
+  padding: 0.5rem;
+  border: 1px solid var(--bs-body-color);
+  vertical-align: middle;
+  text-align: center;
+  display: flex;
+  place-content: center;
+  place-items: center;
 }
 
 .joint-widget-container{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  place-items: flex-start;
+  justify-items: flex-start;
+  flex: 1 1 0px;
   gap: 0.5rem;
 }
 

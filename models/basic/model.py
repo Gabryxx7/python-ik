@@ -1,3 +1,4 @@
+import dash
 import warnings
 import uuid
 import numpy as np
@@ -35,6 +36,7 @@ class Model:
     self.trace_type = "joint"
     self.trace_params = trace_params if trace_params is not None else {}
     self.visible = False
+    self.prev_visible = True
     self.transform = Transform.make_transform(translation=self.origin_pos[:3])
     self.local_transform = Transform.make_transform(translation=self.origin_pos[:3])
   
@@ -85,6 +87,8 @@ class Model:
   # I know this is conceputally not right here since this is about the 3D model and joints and not the actual front end
   # but look, it's much easier this way!
   def set_visibility(self, vis, propagate=True):
+    if self.visible != self.prev_visible:
+      self.prev_visible = self.visible
     self.visible = vis
     if propagate:
       for child in self.children:
@@ -113,15 +117,16 @@ class Model:
     radius = 10
     points = self.get_trace_points()
     color =  hex_to_rgb(self.trace_params.get('color', "#FFFFFF"))
-    angles = Transform.rotation_to_angles(self.transform, order="zxy")
+    orientation = Transform.rotation_to_angles(self.transform, order="zxy")
     model_data = []
     p1 = list(points[0][0:3])
-    orientation = [angles[0], angles[1], angles[2]]
     # I really don't get why the orientation does not work, everything seems ok except for the orientation of these stupid cubes
+    opacity = 1 if self.visible else 0
     joint_origin_point ={
       'id': self.uuid+"point",
       'vtkClass': 'vtkSphereSource',
       'property': {
+        'opacity': opacity,
         'color': color,
         'pointSize': 20,
         },
@@ -146,6 +151,7 @@ class Model:
         'id': self.uuid+"line",
         'vtkClass': 'vtkLineSource',
         'property': {
+          'opacity': opacity,
           'color': color,
           'pointSize': 10,
           },
@@ -163,6 +169,7 @@ class Model:
         'id': self.uuid+"cube",
         'vtkClass': 'vtkCubeSource',
         'property': {
+          'opacity': opacity,
           'color': color,
           # 'pointSize': 10,
           },
@@ -180,7 +187,6 @@ class Model:
         }
       }
       model_data.append(joint_cube)
-    print(f"Model data for {self.name}")
     if not draw_children:
       return model_data
     
@@ -192,9 +198,88 @@ class Model:
     # print(model_data)
     return model_data
   
+  
+  def update_vtk_model_data(self, draw_children=True, dbg_prefix=""):
+    model_data = []
+    points = self.get_trace_points()
+    # print(f"{self.name} - Visible: {self.visible} - Prev Visible: {self.prev_visible}")
+    if not self.visible:
+      if self.visible == self.prev_visible:
+        # print(f"No model update: {self.name}")
+        joint_origin =  {'property': dash.no_update, 'actor': dash.no_update, 'state': dash.no_update}
+        model_data.append(joint_origin)
+        if len(points) > 1:
+          joint_line =  {'property': dash.no_update, 'actor': dash.no_update, 'state': dash.no_update}
+          joint_cube =  {'property': dash.no_update, 'actor': dash.no_update, 'state': dash.no_update}
+          model_data.append(joint_line)
+          model_data.append(joint_cube)
+        if not draw_children:
+          return model_data
+        for child in self.children:
+          child_model = child.update_vtk_model_data(draw_children=False, dbg_prefix=dbg_prefix)
+          if child_model is not None and len(child_model) > 0:
+            model_data += child_model
+        return model_data
+    opacity = 1 if self.visible else 0
+    p1 = list(points[0][0:3])
+    orientation = Transform.rotation_to_angles(self.transform, order="zxy")
+    joint_origin =  {
+      'property': {
+        'opacity': opacity
+      },
+      'actor': {
+        'origin': p1,
+        'orientation': orientation
+        },
+      'state': {
+        "center": p1
+      }
+    }
+    model_data.append(joint_origin)
+    
+    if len(points) > 1:
+      p2 = list(points[1][0:3])
+      length = v_dist(p1, p2)
+      joint_line =  {
+        'property': {
+          'opacity': opacity
+        },
+        'actor': {},
+        'state': {'point1': p1, 'point2': p2}}
+      model_data.append(joint_line)
+      
+      joint_cube =  {
+        'property': {
+          'opacity': opacity
+        },
+        'actor': {
+          'origin': p1,
+          'orientation': orientation,
+        },
+        'state': {
+          'center': [p1[0], p1[1], p1[2]+length*0.5],
+        }
+      }
+      model_data.append(joint_cube)
+    print(f"VTK Model model update: {self.name}")
+    if not draw_children:
+      return model_data
+    
+    dbg_prefix += "  "
+    for child in self.children:
+      child_model = child.update_vtk_model_data(draw_children=False, dbg_prefix=dbg_prefix)
+      if child_model is not None and len(child_model) > 0:
+        model_data += child_model
+    # print(model_data)
+    return model_data
+  
   def draw_plotly(self, fig_data, draw_children=True, dbg_prefix=""):
     fig_data, traces = self.get_model_traces(fig_data)
     # print(f"Traces found for {self.name}: {[t['name'] for t in traces]}")
+    if not self.visible:
+      if self.visible == self.prev_visible:
+        return fig_data
+    print(f"Plotly Trace update: {self.name}")
     for i in range(0, len(traces)):
       traces[i]['visible'] = self.visible
     # print(f"{dbg_prefix}Drawing {self.name}")
