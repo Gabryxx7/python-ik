@@ -39,6 +39,8 @@ class Model:
     self.prev_visible = True
     self.transform = Transform.make_transform(translation=self.origin_pos[:3])
     self.local_transform = Transform.make_transform(translation=self.origin_pos[:3])
+    self.vtk_source = None
+    self.vtk_actor = None
   
   def get_model_traces(self, fig_data):
     traces = TracesHelper.find_model_traces(fig_data, self.uuid)
@@ -273,6 +275,19 @@ class Model:
     # print(model_data)
     return model_data
   
+  def vtk_update(self):
+    points = self.get_trace_points()
+    orientation = Transform.rotation_to_angles(self.transform, order="zxy")
+    p1 = list(points[0][0:3])
+    if len(points) > 1:
+      p2 = list(points[1][0:3])
+      length = v_dist(p1, p2)
+      if self.vtk_source is not None:
+        self.vtk_source.SetCenter([p1[0], p1[1], p1[2]+length*0.5])
+      if self.vtk_actor is not None:
+        self.vtk_actor.SetOrigin(p1)
+        self.vtk_actor.SetOrientation(orientation)
+    
   def draw_plotly(self, fig_data, draw_children=True, dbg_prefix=""):
     fig_data, traces = self.get_model_traces(fig_data)
     # print(f"Traces found for {self.name}: {[t['name'] for t in traces]}")

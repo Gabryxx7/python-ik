@@ -4,6 +4,7 @@ from scipy.spatial.transform import Rotation as R
 try:
   from utils.quaternion import Quaternion
 except Exception as e:
+  print(f"Exception importin Quaternion: {e}")
   from quaternion import Quaternion
 from scipy.spatial.transform import Rotation   
 
