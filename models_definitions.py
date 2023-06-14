@@ -1,9 +1,9 @@
-from models.basic.plane import Plane
-from models.circle import Circle
-from models.basic.joint import Joint
-from models.arm import Arm
-from models.compound_model import CompoundModel
-from models.compound_model import PISTON_HEIGHT, PISTON_ARM_LENGTH, PISTON_START_HEIGHT_RATIO, PLANE_INITIAL_HEIGHT, PISTON_START_HEIGHT
+from objects.plane import Plane
+from objects.circle import Circle
+from objects.joint import Joint
+from objects.arm import Arm
+from objects.compound_model import CompoundModel
+from objects.compound_model import PISTON_HEIGHT, PISTON_ARM_LENGTH, PISTON_START_HEIGHT_RATIO, PLANE_INITIAL_HEIGHT, PISTON_START_HEIGHT
 import numpy as np
 import math
 

@@ -1,10 +1,10 @@
 import uuid
 import numpy as np
 from copy import deepcopy
-from models.basic.joint import Joint
-from models.basic.model import Model
+from objects.joint import Joint
+from objects.Object3D import Object3D
 
-class Arm(Model):
+class Arm(Object3D):
   def __init__(self, _name="Arm", offset_pos=None, trace_params=None):
     super().__init__(_name, offset_pos, trace_params)
     self.page = None

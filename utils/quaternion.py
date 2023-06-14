@@ -16,7 +16,7 @@ class Quaternion:
     return angles
     # return [360.0+angle if angle < 0 else angle for angle in angles]
   
-  def quaternion_from_rotation_matrix(transform):
+  def from_rotation_matrix(transform):
     quat = Quaternion()
     try:
       matrix = transform.mat[0:3, 0:3]
@@ -59,15 +59,15 @@ class Quaternion:
     return quat
       
   @staticmethod
-  def quaternion_from_angles(alpha, beta, gamma):
-    return Quaternion.quaternion_from_rpt(math.radians(alpha), math.radians(beta), math.radians(gamma))
+  def from_angles(alpha, beta, gamma):
+    return Quaternion.from_rpt(math.radians(alpha), math.radians(beta), math.radians(gamma))
     
   @staticmethod
-  def quaternion_from_radians(alpha, beta, gamma):
-    return Quaternion.quaternion_from_rpt(alpha, beta, gamma)
+  def from_radians(alpha, beta, gamma):
+    return Quaternion.from_rpt(alpha, beta, gamma)
   
   @staticmethod
-  def quaternion_from_rpt(roll, pitch, yaw):
+  def from_rpt(roll, pitch, yaw):
     cr = math.cos(roll * 0.5)
     sr = math.sin(roll * 0.5)
     cp = math.cos(pitch * 0.5)
@@ -102,7 +102,8 @@ class Quaternion:
     t4 = +1.0 - 2.0 * (ysqr + z * z)
     Z = np.degrees(np.arctan2(t3, t4))
 
-    return Quaternion.convert_angles([X, Y, Z ])
+    # return Quaternion.convert_angles([X, Y, Z ])
+    return [X, Y, Z]
   
   @staticmethod
   def euler_from_quaternion_old(q):
@@ -129,8 +130,9 @@ class Quaternion:
     roll_x = math.degrees(roll_x)
     pitch_y = math.degrees(pitch_y)
     yaw_z = math.degrees(yaw_z)
-    return Quaternion.convert_angles([roll_x, pitch_y, yaw_z]) # in radians
-    # return [roll_x, pitch_y, yaw_z] # in radians
+    
+    # return Quaternion.convert_angles([roll_x, pitch_y, yaw_z])
+    return [roll_x, pitch_y, yaw_z]
   
 
   def to_string(self):
@@ -153,7 +155,7 @@ class Quaternion:
     self.roll = self.rpy[0]
     self.pitch = self.rpy[1]
     self.yaw = self.rpy[2]
-    self.quat = Quaternion.quaternion_from_angles(roll, pitch, yaw)
+    self.quat = Quaternion.from_angles(roll, pitch, yaw)
     self.x = self.quat[0]
     self.y = self.quat[1]
     self.z = self.quat[2]

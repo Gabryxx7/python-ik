@@ -1,8 +1,8 @@
 import uuid
 import numpy as np
 from copy import deepcopy
-from models.basic.joint import *
-from models.basic.model import Model
+from objects.joint import *
+from objects.Object3D import Object3D
 
 class MathManager():
   def __init__(self):

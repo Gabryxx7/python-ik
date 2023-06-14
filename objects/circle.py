@@ -1,9 +1,9 @@
 import uuid
 import numpy as np
-from models.basic.joint import *
-from models.basic.model import Model
+from objects.joint import *
+from objects.Object3D import Object3D
 import math
-from models.basic.plane import Plane
+from objects.plane import Plane
 
 class Circle(Plane):
   def __init__(self, _name="Circle", offset_pos=None, trace_params=None, radius=20):
@@ -20,7 +20,7 @@ class Circle(Plane):
     returns the circle parameterization
     """
     r = self.radius
-    # h = self.absolute_position[2]
+    # h = self.transform.position[2]
     h = 0
     theta = np.linspace(0, 2*np.pi, nt)
     x = r*np.cos(theta)

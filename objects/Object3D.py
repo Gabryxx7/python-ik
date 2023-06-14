@@ -5,7 +5,7 @@ import numpy as np
 from copy import deepcopy
 from dash import Dash, dcc, html, dash_table, Input, Output, State, callback
 from utils.trace_utils import TracesHelper
-from utils.transforms import Transform
+from components.Transform import Transform
 from utils.quaternion import Quaternion
 
 IMPL_MISSING_MSG = "implementatiom missing (did you override it in your new model class?)"
@@ -15,30 +15,19 @@ def hex_to_rgb(h):
   h = h.lstrip('#')
   return list(float(int(h[i:i+2], 16)/255) for i in (0, 2, 4))
 
-class Model:
-  def __init__(self, _name="Model", offset_pos=None, trace_params=None):
+class Object3D:
+  def __init__(self, _name="Object", offset_pos=None, trace_params=None):
     self.name = _name
     self.uuid = f"{self.name.replace(' ', '_')}_{str(uuid.uuid4())}"
-    if offset_pos is None:
-      offset_pos = np.array([0,0,0,1.0])
-    self.origin_pos = np.array(deepcopy(offset_pos))
-    if len(self.origin_pos) < 4:
-      self.origin_pos = np.append(self.origin_pos, [1.0])
-    self.local_position = deepcopy(self.origin_pos)
-    self.local_rotation = [0,0,0]
-    self.local_quaternion = Quaternion(self.local_rotation[0], self.local_rotation[1], self.local_rotation[2])
-    self.absolute_position = deepcopy(self.origin_pos)
-    self.absolute_rotation = [0,0,0]
-    self.absolute_quaternion = Quaternion(self.absolute_rotation[0], self.absolute_rotation[1], self.absolute_rotation[2])
-    self.parent = None
-    self.origin_transform = Transform.make_transform(translation=np.array([0,0,0]))
+    self.components = []
     self.children = []
+    self.parent = None
+    self.local_transform = Transform(translation=offset_pos)
+    self.transform = Transform()
     self.trace_type = "joint"
     self.trace_params = trace_params if trace_params is not None else {}
     self.visible = False
     self.prev_visible = True
-    self.transform = Transform.make_transform(translation=self.origin_pos[:3])
-    self.local_transform = Transform.make_transform(translation=self.origin_pos[:3])
     self.vtk_source = None
     self.vtk_actor = None
   
@@ -58,33 +47,26 @@ class Model:
   def update(self, dbg_prefix=""):
     try:
       dbg = f"{dbg_prefix}- Updating {self.name} Transform "
-      self.local_transform = Transform.make_transform(translation=self.origin_pos[:3], rotation=self.local_rotation)
       # print(f"New transform for: {self.name}: {self.transform.mat}")
+      self.local_transform.update()
       if self.parent is not None:
         dbg += f"Using parent ({self.parent.name}) transform"
-        # self.local_position = np.array(self.parent.transform.mat@np.array(self.origin_pos)).flatten()
         self.transform = Transform.combine(self.parent.transform, self.local_transform)
       else:
-        self.transform = Transform.combine(self.origin_transform, self.local_transform)
-        
-      # Remember that the accumulated transform should always be applied to a hypothetical starting point 0 expressed in world coordinates,
-      # and the last component should always be 1 (the 4th dimension used to apply transforms)
-      self.absolute_position = np.array(self.transform.mat@np.array([0,0,0,1])).flatten()
-      self.absolute_quaternion = Quaternion.quaternion_from_rotation_matrix(self.transform)
-      # self.absolute_rotation = Quaternion.euler_from_quaternion(self.absolute_quaternion)
-      self.absolute_rotation = Transform.rotation_to_angles(self.transform, order="zyx")
+        self.transform = self.local_transform
+      
       for child in self.children:
         child.update(dbg_prefix=dbg_prefix)
     except Exception as e:
       print(f"Exception updating {self.name} transform {e}")
       # print(f"Exception combining parent and child transform {e}")
       
+  def translate(self, translation):
+    self.local_transform.set_translation(translation[0], translation[1], translation[2])
+    
   def rotate(self, euler_angles):
     # print(f"Rotating {self.name} ({self.uuid}) with: {euler_angles}")
-    euler_angles = Quaternion.convert_angles(euler_angles)
-    self.local_rotation = [euler_angles[0], euler_angles[1], euler_angles[2]]
-    self.local_quaternion = Quaternion(self.local_rotation[0], self.local_rotation[1], self.local_rotation[2])
-    # self.local_quaternion = Quaternion(euler_angles[0], euler_angles[1], euler_angles[2])
+    self.local_transform.set_rotation(*euler_angles)
     
   # I know this is conceputally not right here since this is about the 3D model and joints and not the actual front end
   # but look, it's much easier this way!
@@ -107,11 +89,11 @@ class Model:
     self.children.append(child)
     
   def get_trace_points(self):
-    points = [self.absolute_position]
+    points = [self.transform.position]
     # if self.parent is not None:
-    #   points = [self.parent.absolute_position] + points
+    #   points = [self.parent.transform.position] + points
     if len(self.children) > 0 is not None:
-      points = points + [self.children[0].absolute_position] 
+      points = points + [self.children[0].transform.position] 
     return points
   
   def get_vtk_model_data(self, draw_children=True, dbg_prefix=""):
@@ -119,7 +101,7 @@ class Model:
     radius = 10
     points = self.get_trace_points()
     color =  hex_to_rgb(self.trace_params.get('color', "#FFFFFF"))
-    orientation = Transform.rotation_to_angles(self.transform, order="zxy")
+    orientation = self.transform.get_euler_angles(order="zxy")
     model_data = []
     p1 = list(points[0][0:3])
     # I really don't get why the orientation does not work, everything seems ok except for the orientation of these stupid cubes
@@ -224,7 +206,7 @@ class Model:
         return model_data
     opacity = 1 if self.visible else 0
     p1 = list(points[0][0:3])
-    orientation = Transform.rotation_to_angles(self.transform, order="zxy")
+    orientation = self.transform.get_euler_angles(order="zxy")
     joint_origin =  {
       'property': {
         'opacity': opacity
@@ -277,7 +259,7 @@ class Model:
   
   def vtk_update(self):
     points = self.get_trace_points()
-    orientation = Transform.rotation_to_angles(self.transform, order="zxy")
+    orientation = self.transform.get_euler_angles(order="zxy")
     p1 = list(points[0][0:3])
     if len(points) > 1:
       p2 = list(points[1][0:3])

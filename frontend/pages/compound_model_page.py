@@ -42,7 +42,7 @@ class CompoundModelPage:
     self.model.forward_kinematics()
     pistons_heights = [0,0,0]
     for i in range(0,3):
-      pistons_heights[i] = self.model.arms[i].children[0].origin_pos[2]
+      pistons_heights[i] = self.model.arms[i].children[0].local_transform.translation[2]
       pistons_heights[i] = pistons_heights[i]/self.model.max_piston_height
     # self.model.update_plane_vertices()
     yaw_output = [self.model.ik_res[5]]

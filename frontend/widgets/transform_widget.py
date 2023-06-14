@@ -6,7 +6,7 @@ import dash_bootstrap_components as dbc
 import numpy as np
 from frontend.components.widget_interface import Widget
 from utils.quaternion import Quaternion
-from utils.transforms import Transform
+from components.Transform import Transform
 
 class TransformWidget:  
   def __init__(self, joint, app):
@@ -48,29 +48,29 @@ class TransformWidget:
         matrix_data.append(html.Span(f"{col:.2f}"))
     tf_matrix_div = html.Div(matrix_data, className="transform-matrix-view")
     tf_extras = []
-    tf_extras.append(html.Div([html.Div(f"Abs. Pos.: "), html.Div(f"{np.round(self.joint.absolute_position, 2)}")], className='tf-widget-row'))
-    tf_extras.append(html.Div([html.Div(f"Rel. Pos.: "), html.Div(f"{np.round(self.joint.local_position, 2)}")], className='tf-widget-row'))
+    tf_extras.append(html.Div([html.Div(f"Abs. Pos.: "), html.Div(f"{np.round(self.joint.transform.position, 2)}")], className='tf-widget-row'))
+    tf_extras.append(html.Div([html.Div(f"Rel. Pos.: "), html.Div(f"{np.round(self.joint.local_transform.position, 2)}")], className='tf-widget-row'))
     
-    tf_extras.append(html.Div([html.Div(f"Abs Quaternion: "), html.Div(f"{self.joint.absolute_quaternion}")], className='tf-widget-row'))
+    tf_extras.append(html.Div([html.Div(f"Abs Quaternion: "), html.Div(f"{self.joint.transform.quaternion}")], className='tf-widget-row'))
     
-    calc_abs_quat = Quaternion.quaternion_from_rotation_matrix(self.joint.transform)
+    calc_abs_quat = Quaternion.from_rotation_matrix(self.joint.transform)
     tf_extras.append(html.Div([html.Div(f"Quat from Abs Transf: "), html.Div(f"{calc_abs_quat}")], className='tf-widget-row'))
     
-    tf_extras.append(html.Div([html.Div(f"Rel Quaternion: "), html.Div(f"{self.joint.local_quaternion}")], className='tf-widget-row'))
+    tf_extras.append(html.Div([html.Div(f"Rel Quaternion: "), html.Div(f"{self.joint.local_transform.quaternion}")], className='tf-widget-row'))
     
-    calc_rel_quat = Quaternion.quaternion_from_rotation_matrix(self.joint.local_transform)
+    calc_rel_quat = Quaternion.from_rotation_matrix(self.joint.local_transform)
     tf_extras.append(html.Div([html.Div(f"Quat from Local Transf: "), html.Div(f"{calc_rel_quat}")], className='tf-widget-row'))
     
-    angles_str = [round(angle,2) for angle in self.joint.absolute_rotation]
+    angles_str = [round(angle,2) for angle in self.joint.transform.rotation]
     tf_extras.append(html.Div([html.Div(f"Abs. Rotation: "), html.Div(f"{angles_str}")], className='tf-widget-row'))
     
-    angles_str = [round(angle,2) for angle in Transform.rotation_to_angles(self.joint.transform, order="zyx")]
+    angles_str = [round(angle,2) for angle in self.joint.transform.get_euler_angles(order="zyx")]
     tf_extras.append(html.Div([html.Div(f"Rotation from Abs Transf: "), html.Div(f"{angles_str}")], className='tf-widget-row'))
     
-    angles_str = [round(angle,2) for angle in self.joint.local_rotation]
+    angles_str = [round(angle,2) for angle in self.joint.local_transform.rotation]
     tf_extras.append(html.Div([html.Div(f"Rel. Rotation: "), html.Div(f"{angles_str}")], className='tf-widget-row'))
     
-    angles_str = [round(angle,2) for angle in Transform.rotation_to_angles(self.joint.transform, order="zyx")]
+    angles_str = [round(angle,2) for angle in self.joint.local_transform.get_euler_angles(order="zyx")]
     tf_extras.append(html.Div([html.Div(f"Rotation from Local Transf: "), html.Div(f"{angles_str}")], className='tf-widget-row'))
     
     try:

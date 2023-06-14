@@ -1,8 +1,8 @@
 import uuid
 import numpy as np
-from models.basic.joint import Joint
-from models.basic.model import Model
-from models.circle import Circle
+from objects.joint import Joint
+from objects.Object3D import Object3D
+from objects.circle import Circle
 import math
 
 PISTON_HEIGHT = 200.0
@@ -11,7 +11,7 @@ PISTON_ARM_LENGTH = 50
 PISTON_START_HEIGHT = PISTON_HEIGHT * PISTON_START_HEIGHT_RATIO
 PLANE_INITIAL_HEIGHT = PISTON_HEIGHT*1.5
 
-class CompoundModel(Model):
+class CompoundModel(Object3D):
   def __init__(self, _name="Compound", offset_pos=None, trace_params=None):
     super().__init__(_name, offset_pos, trace_params)
     self.arms = []
@@ -36,7 +36,9 @@ class CompoundModel(Model):
   def add_plane(self, plane):
     self.planes.append(plane)
     try:
-      self.Rsmall = abs(np.linalg.norm(plane.origin_pos[:2] - plane.children[0].origin_pos[:2]))
+      # The radius needs to be calculated using the actualy position of the plane vertices and NOT the translation
+      # Roll, Pitch and Yaw will change the position of those vertices while the translation in relation to the plane origin will stay the same
+      self.Rsmall = abs(np.linalg.norm(plane.local_transform.position[:2] - plane.children[0].local_transform.position[:2]))
       self.Rbig = self.Rsmall*1.5
       self.l = (self.Rsmall*1.2)
       # print(self.Rbig)
@@ -53,16 +55,19 @@ class CompoundModel(Model):
     # print("\n\nStarting Forward Kinematics:")
     for plane in self.planes:
       plane.update()
-      self.ik_res = self.Inverse_Kinematics(plane.origin_pos[2], plane.local_quaternion.y, plane.local_quaternion.x)
+      self.ik_res = self.Inverse_Kinematics(plane.local_transform.translation[2], plane.local_transform.quaternion.y, plane.local_transform.quaternion.x)
+      # The piston heigh instead should be changed in the translation and not the final position
+      # The final position will change when the transform gets applied and what is changing here is the offset from the piston origin (e.g. the ground contact point)
       if self.ik_res is not None:
         for i in range(0,3):
-          self.arms[i].children[0].origin_pos[2] = self.ik_res[i]
+          self.arms[i].children[0].local_transform.set_translation(z = self.ik_res[i])
+          self.arms[i].children[0].local_transform.update()
         # plane.forward_kinematics()
         yaw = self.ik_res[5]
-        q = plane.local_quaternion
+        q = plane.local_transform.quaternion
         q.z = yaw
         # plane.rotate(q)
-        print(f"Plane quat: {plane.local_quaternion}")
+        print(f"Plane quat: {plane.local_transform.quaternion}")
     for arm in self.arms:
       arm.forward_kinematics()
         

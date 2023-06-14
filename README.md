@@ -73,7 +73,7 @@ It matters for two reasons:
 So I finally re-wrote the function to go from rotation matrices to euler angles as such:
 
 ```python
-  def rotation_to_angles(transform, order="xyz"):
+  def get_euler_angles(transform, order="xyz"):
     matrix = transform.mat[0:3, 0:3]
     matrix = np.array(matrix)
     m11, m12, m13 = matrix[0]

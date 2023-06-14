@@ -1,7 +1,10 @@
 # Good soiurce of tutorials
 # https://examples.vtk.org/site/Python/#tutorial
 
+# VTK QT Example: https://stackoverflow.com/questions/69200800/pyqt5-and-vtk-object-integration
+
 # noinspection PyUnresolvedReferences
+import vtk
 import vtkmodules.vtkInteractionStyle
 # noinspection PyUnresolvedReferences
 import vtkmodules.vtkRenderingOpenGL2
@@ -17,48 +20,38 @@ from vtkmodules.vtkRenderingCore import (
     vtkRenderWindowInteractor,
     vtkRenderer,
 )
-import vtk
+from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QApplication, QMainWindow
 
 import pandas as pd
-from models.arm import Arm
-from models.basic.joint import Joint
 import json
-from models_definitions import arm_test, plane_test, circle_test, machine
 import random
 from timeit import default_timer as timer
 import time
+# from .models.arm import Arm
+# from .models.basic.joint import Joint
+from models_definitions import arm_test, plane_test, circle_test, machine
+from vtk_view.components.Model import *
+from vtk_view.components.KeyPressInteractor import *
+from vtk_qt import start_qt
 
-colors = vtk.vtkNamedColors()
+
+# if vtk.qt.PyQtImpl == 'PySide6':
+#     from PySide6.QtCore import Qt
+#     from PySide6.QtWidgets import QApplication, QMainWindow
+# elif vtk.qt.PyQtImpl == 'PySide2':
+#     from PySide2.QtCore import Qt
+#     from PySide2.QtWidgets import QApplication, QMainWindow
+# else:
+#     from PySide.QtCore import Qt
+#     from PySide.QtGui import QApplication, QMainWindow
+
+
 models = []
 models.append(machine)
 models.append(arm_test)
-
-updates_count = 0
-
-vtk_outputs = []
-vtk_geoms = []
-
-def update():
-  global updates_count
-  # print(f"Updating {updates_count}")
-  i = updates_count
-  for model in models:
-    model.rotate([1*i, 1*i*0.5, 1*i*2])
-    model.update()
-    model.vtk_update()
-  updates_count += 1
-  
-for model in models:
-    model.update()
-    vtk_model_data = model.get_vtk_model_data()
-    vtk_geoms += vtk_model_data
-    # vtk_geoms += get_vtk_geoms(vtk_model_data)
-    
-    # states_out = [Output(m['id'], 'state') for m in vtk_model_data]
-    # actors_out = [Output("repr_"+m['id'], 'actor') for m in vtk_model_data]
-    # properties_out = [Output("repr_"+m['id'], 'property') for m in vtk_model_data]
-    # vtk_outputs.append([states_out, actors_out, properties_out])
-
+offset = 0
 
 class vtkMyCallback(object):
   """
@@ -67,198 +60,84 @@ class vtkMyCallback(object):
 
   def __init__(self, renderer):
     self.renderer = renderer
+    self.last_time = time.time_ns()/1000000000
+    self.delta_time = 0
 
   def __call__(self, caller, ev):
+    global offset
+    global models
     timeInSeconds = self.renderer.GetLastRenderTimeInSeconds()
-    fps = 1.0 / timeInSeconds
+    now = time.time_ns()/1000000000
+    self.delta_time = now - self.last_time
+    self.last_time = now
+    fps = 1.0 / self.delta_time
     position = self.renderer.GetActiveCamera().GetPosition()
-    print(f"FPS: {fps:.2f} ({position[0]:5.2f}, {position[1]:5.2f}, {position[2]:5.2f})", end="\r")
+    print(f"FPS: {fps:.2f}\tElapsed: {self.delta_time}\tOffset: {offset}\t ({position[0]:5.2f}, {position[1]:5.2f}, {position[2]:5.2f})", end="\r")
+    update_models(self.delta_time, models, offset)
 
 
-class KeyPressInteractorStyle(vtkInteractorStyleTrackballCamera):
-  def __init__(self, parent=None, status=True):
-    self.parent = vtkRenderWindowInteractor()
-    self.status = status
-    if parent is not None:
-      self.parent = parent
-    self.AddObserver('KeyPressEvent', self.key_press_event)
+def main(ui_type="vtk"):
+  colors = vtkNamedColors()
+  # app = QApplication(['QVTKRenderWindowInteractor'])
+  # renderWindow = QMainWindow()
+  
+  renderWindow = vtkRenderWindow()
+  renderWindow.SetWindowName('Axes')
+  renderWindow.SetSize(1920,1080)
+  
+  # a renderer and render window
+  renderer = vtkRenderer()
+  renderWindow.AddRenderer(renderer)
+  br, bg, bb = [34/255, 47/255, 62/255]
+  renderer.SetBackground(br, bg, bb)
+  
+  camera= renderer.GetActiveCamera()
+  camera.SetViewUp([0,0,1])
+  camera.SetPosition([0.9,0.9,0.25])
+  
+  add_scene_cube(renderer)
+  add_models(models, renderer)
 
-  def key_press_event(self, obj, event):
-    key = self.parent.GetKeySym().lower()
-    update()
-    if key == 'e' or key == 'q':
-        self.status = False
-    return
+  # renderWindowInteractor = QVTKRenderWindowInteractor(renderWindow)
+  # renderWindow.setCentralWidget(renderWindowInteractor)
+  
+  renderWindowInteractor = vtkRenderWindowInteractor()
+  renderWindowInteractor.SetRenderWindow(renderWindow)
+  renderWindowInteractor.GetInteractorStyle().SetCurrentStyleToTrackballCamera()
+  kp_interactor = KeyPressInteractorStyle(parent=renderWindowInteractor)
+  renderWindowInteractor.SetInteractorStyle(kp_interactor)
+
+  # Here is where we setup the observer.
+  mo1 = vtkMyCallback(renderer)
+  renderer.AddObserver('StartEvent', mo1)
+  
+  if ui_type.lower() == "qt":
+    start_qt(renderer, renderWindow, renderWindowInteractor)
+  else:
+    start_vtk(renderer, renderWindow, renderWindowInteractor, kp_interactor)
   
   
-def make_joint(obj):
-    state = obj.get('state', {})
-    actor_prop = obj.get('actor', {})
-    properties = obj.get('property', {})
-    
-    if obj['vtkClass'] == 'vtkSphereSource':
-        source = vtkSphereSource()
-        source.SetCenter(state.get('center', [0,0,0]))
-        source.SetRadius(state.get('radius', 50))
-    elif obj['vtkClass'] == 'vtkCubeSource':
-        source = vtkCubeSource()
-        source.SetXLength(state['xLength'])
-        source.SetZLength(state['zLength'])
-        source.SetYLength(state['yLength'])
-        source.SetCenter(state.get('center', [0,0,0]))
-    elif obj['vtkClass'] == 'vtkLineSource':
-        source = vtkLineSource()
-        source.SetPoint1(state.get('p1', [0,0,0]))
-        source.SetPoint2(state.get('p2', [50,50,50]))
-        
-    properties["edgeVisibility"] = True
-    properties["lineWidth"] = 2
-    
-    # create an actor
-    actor = vtkActor()
-    actor.SetOrigin(actor_prop.get('origin', [0,0,0]))
-    actor.SetPosition(actor_prop.get('position', [0,0,0]))
-    actor.SetOrientation(actor_prop.get('orientation', [0,0,0]))
-    if properties["edgeVisibility"]:
-        actor.GetProperty().EdgeVisibilityOn()
-    actor.GetProperty().SetLineWidth(properties["lineWidth"])
-    
-    # actor.GetProperty().SetColor(colors.GetColor("Gray", r,g,b, 1))
-    # vtk_color = colors.GetColorRGB(f"{obj['id']}_Color", properties.get('color', [0.0,0.0,1.0]))
-    r, g, b = properties.get('color', [1.0,0.0,0.0])
-    actor.GetProperty().SetColor(r, g, b)
-    # opacity = 1 if properties['opacity'] else 0
-    actor.GetProperty().SetOpacity(1)
-    # create a mapper
-    mapper = vtkPolyDataMapper()
-    mapper.SetInputConnection(source.GetOutputPort())
-
-    actor.SetMapper(mapper)
-    return source, actor
-    # return {'actor':}
-
-
-def main():
-    colors = vtkNamedColors()
-    bounds = 500
-    sceneCube = vtkCubeSource()
-    sceneCube.SetCenter(0.0, 0.0, bounds/2)
-    sceneCube.SetXLength(bounds)
-    sceneCube.SetYLength(bounds)
-    sceneCube.SetZLength(bounds)
-
-    # create a mapper
-    sceneCubeMapper = vtkPolyDataMapper()
-    sceneCubeMapper.SetInputConnection(sceneCube.GetOutputPort())
-
-    # create an actor
-    sceneCubeActor = vtkActor()
-    sceneCubeActor.SetOrigin(0,0,0)
-    sceneCubeActor.SetMapper(sceneCubeMapper)
-    sceneCubeActor.SetVisibility(0)
-
-    # a renderer and render window
-    renderer = vtkRenderer()
-    renderWindow = vtkRenderWindow()
-    renderWindow.SetWindowName('Axes')
-    renderWindow.AddRenderer(renderer)
-    renderer.AddActor(sceneCubeActor)
-
-    # an interactor
-    renderWindowInteractor = vtkRenderWindowInteractor()
-    renderWindowInteractor.SetRenderWindow(renderWindow)
-
-
-    for model in models:
-      model.update()
-      vtk_model_data = model.get_vtk_model_data()
-      assigned = False
-      for vtk_model in vtk_model_data:
-        source, actor = make_joint(vtk_model)
-        print(f"Adding {vtk_model['id']}")
-        renderer.AddActor(actor)
-        if not assigned:
-          if 'cube' in vtk_model['id'].lower():
-            model.vtk_source = source
-            model.vtk_actor = actor
-            assigned = True
-        
-    br, bg, bb = [34/255, 47/255, 62/255]
-    renderer.SetBackground(br, bg, bb)
-
-    # transform = vtkTransform()
-    # transform.Translate(1.0, 0.0, 0.0)
-
-    renderer.GetActiveCamera().SetViewUp([0,0,1])
-    renderer.GetActiveCamera().SetPosition([0.9,0.9,0.25])
-    #  The axes are positioned with a user transform
-    # axes.SetUserTransform(transform)
-    # https://vtk.org/Wiki/VTK/Examples/Python/Visualization/CubeAxesActor
-    cubeAxesActor = vtkCubeAxesActor()
-    cubeAxesActor.SetMapper(sceneCubeMapper)
-    cubeAxesActor.SetBounds(sceneCubeMapper.GetBounds())
-    cubeAxesActor.SetCamera(renderer.GetActiveCamera())
-    cubeAxesActor.SetXTitle("AP (um)")
-    cubeAxesActor.SetYTitle("DV (um)")
-    cubeAxesActor.SetZTitle("ML (um)")
-    cubeAxesActor.GetTitleTextProperty(0).SetColor(1.0, 0.0, 0.0)
-    cubeAxesActor.GetLabelTextProperty(0).SetColor(1.0, 0.0, 0.0)
-    cubeAxesActor.GetTitleTextProperty(1).SetColor(0.0, 1.0, 0.0)
-    cubeAxesActor.GetLabelTextProperty(1).SetColor(0.0, 1.0, 0.0)
-    cubeAxesActor.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
-    cubeAxesActor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
-    cubeAxesActor.DrawXGridlinesOn()
-    cubeAxesActor.DrawYGridlinesOn()
-    cubeAxesActor.DrawZGridlinesOn()
-    cubeAxesActor.SetGridLineLocation(cubeAxesActor.VTK_GRID_LINES_FURTHEST)
-    # fig.scene.add_actor(cubeAxesActor)
-
-
-    # properties of the axes labels can be set as follows
-    # this sets the x axis label to red
-    # axes.GetXAxisCaptionActovtk_geomsr2D().GetCaptionTextProperty().SetColor(colors.GetColor3d('Red'));
-
-    # the actual text of the axis label can be changed:
-    # axes->SetXAxisLabelText('test');
-
-    renderer.AddActor(cubeAxesActor)
-
-    # renderer.GetActiveCamera().Azimuth(50)
-    # renderer.GetActiveCamera().Elevation(-30)
-
-    renderer.ResetCamera()
-    renderWindow.SetWindowName('Axes')
-    # renderWindow.SetPosition(x,y)
-    renderWindow.SetSize(1920,1080)
-    renderWindow.Render()
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
-    renderWindowInteractor.SetRenderWindow(renderWindow)
-    # renderWindowInteractor.GetInteractorStyle().SetCurrentStyleToTrackballCamera()
-    kp_interactor = KeyPressInteractorStyle(parent=renderWindowInteractor)
-    renderWindowInteractor.SetInteractorStyle(kp_interactor)
-
-    # Here is where we setup the observer.
-    mo1 = vtkMyCallback(renderer)
-    renderer.AddObserver('StartEvent', mo1)
-    
-    # begin mouse interaction
-    renderWindowInteractor.Initialize()
-    print("\n\n\n")
-    running = True
-    while running:
-        for i in range(0, 4):
-            running = kp_interactor.status
-            if running:
-                renderWindowInteractor.ProcessEvents()
-                renderWindowInteractor.Render()
-            else:
-                renderWindowInteractor.TerminateApp()
-    # renderWindowInteractor.Start()
-    
-    # for i in range(0, 100):
-    #   update(i)
-    #   time.sleep(1)
+def start_vtk(renderer, renderWindow, renderWindowInteractor, kp_interactor=None):
+  renderer.ResetCamera()
+  renderWindow.Render()
+  # show the widget
+  # renderWindow.show()
+  
+  # begin mouse interaction
+  renderWindowInteractor.Initialize()
+  print("\n\n\n")
+  running = True
+  while running:
+    if kp_interactor is not None:
+      running = kp_interactor.status
+    if running:
+        renderWindowInteractor.ProcessEvents()
+        renderWindowInteractor.Render()
+    else:
+        renderWindowInteractor.TerminateApp()
+  # renderWindowInteractor.Start()
 
 
 if __name__ == '__main__':
-  main()
+  # main("vtk")
+  main("qt")

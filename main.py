@@ -11,8 +11,7 @@ from frontend.components.cheatsheets_tab import cheatsheet
 from style_settings import EXTERNAL_STYLESHEETS, GLOBAL_PAGE_STYLE
 # from frontend.components.plot_3d import plotly_graph, GRAPH_ID, MachinePlotter
 from frontend.components.example_tabs import controls, colors, buttons, graph
-from models.arm import Arm
-from models.basic.joint import Joint
+from objects.joint import Joint
 import json
 from models_definitions import arm_test, plane_test, circle_test, machine
 from frontend.pages.arm_page import ArmPage
@@ -52,8 +51,8 @@ trigger = Trigger('main-trigger')
 
 """ ========================= MODELS SETUP ========================= """
 models = []
-models.append(machine)
-models.append(arm_test)
+# models.append(machine)
+# models.append(arm_test)
 # models.append(circle_test)
 # models.append(plane_test)
 
@@ -117,7 +116,7 @@ main_plot_page = html.Div([
                         ],
                         className="sidebar"
                     ),
-                    html.Div([dcc.Tabs(plots_tabs, value='vtk', id='plots-tabs'), info_panel], className="view-panel")
+                    html.Div([dcc.Tabs(plots_tabs, value='plotly', id='plots-tabs'), info_panel], className="view-panel")
                     # html.Div([plotly_graph, info_panel], className="view-panel")
                 ], className="main-container")
 

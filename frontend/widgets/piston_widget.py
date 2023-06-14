@@ -4,7 +4,7 @@ from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
 from frontend.components.trigger import Trigger
-from models.compound_model import PISTON_HEIGHT, PLANE_INITIAL_HEIGHT
+from objects.compound_model import PISTON_HEIGHT, PLANE_INITIAL_HEIGHT
 
 config = {'value': 0.5, 'min': 0, 'max': 1, 'res': 0.01}
 
@@ -37,7 +37,7 @@ class PistonWidget:
     return self.widget
     
   def update_piston(self, *slider_input):
-    self.piston.origin_pos[2] = PISTON_HEIGHT * float(slider_input[0])
+    self.piston.local_transform.set_translation(z = PISTON_HEIGHT * float(slider_input[0]))
     return ""
     
   def add_callback(self):

@@ -1,12 +1,12 @@
 import uuid
 import numpy as np
-from models.basic.joint import Joint
-from models.basic.model import Model
+from objects.joint import Joint
+from objects.Object3D import Object3D
 import math
 from copy import deepcopy
 from utils.trace_utils import TracesHelper
 
-class Plane(Model):
+class Plane(Object3D):
   def __init__(self, _name="Plane", offset_pos=None, trace_params=None):
     super().__init__(_name, offset_pos, trace_params)
     self.trace_type = "plane"
@@ -22,5 +22,5 @@ class Plane(Model):
     self.update()
   
   def get_trace_points(self):
-    return [x.absolute_position for x in self.children]
+    return [x.transform.position for x in self.children]
     
