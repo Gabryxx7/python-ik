@@ -81,9 +81,9 @@ class CompoundModel(Object3D):
   def draw_plotly(self, fig_data):
     super().draw_plotly(fig_data)
     for a in self.arms:
-      fig_data = a.draw_plotly(fig_data)
+      a.draw_plotly(fig_data)
     for p in self.planes:
-      fig_data = p.draw_plotly(fig_data)
+      p.draw_plotly(fig_data)
     return fig_data
   
   

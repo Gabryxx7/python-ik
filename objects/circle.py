@@ -29,6 +29,6 @@ class Circle(Plane):
     return x, y, z
   
   def draw_plotly(self, fig_data, draw_children=False, dbg_prefix=""):
-    fig_data = super().draw_plotly(fig_data, draw_children=False, dbg_prefix=dbg_prefix)
+    self.plotly_renderer.draw(fig_data, draw_children=False, dbg_prefix=dbg_prefix)
     return fig_data
   
