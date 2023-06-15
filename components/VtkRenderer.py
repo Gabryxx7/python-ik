@@ -3,6 +3,7 @@
   - VTK QT Example: https://stackoverflow.com/questions/69200800/pyqt5-and-vtk-object-integration
 """
 from copy import deepcopy
+import time
 import vtk
 import vtkmodules.vtkRenderingOpenGL2
 from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
@@ -13,7 +14,7 @@ from vtkmodules.vtkRenderingCore import ( vtkActor, vtkPolyDataMapper, vtkRender
 
 from components.Renderer import ModelType
 from components.vtk.DefaultVTKModels import *
-from components.vtk.Observers.FPSObserver import FPSObserver
+from components.vtk.Observers.Timer import Timer
 from components.vtk.Observers.ModelsUpdater import ModelsUpdater
 
 from components.vtk.Interactors.KeyPressInteractor import KeyPressInteractorStyle
@@ -308,6 +309,7 @@ class VtkModel:
 
 class VtkRenderer:
   def __init__(self):
+    self.models = []
     self.colors = vtkNamedColors()
     self.renderWindow = vtkRenderWindow()
     self.renderWindow.SetWindowName('Axes')
@@ -327,20 +329,15 @@ class VtkRenderer:
     self.renderWindowInteractor.SetRenderWindow(self.renderWindow)
     self.renderWindowInteractor.GetInteractorStyle().SetCurrentStyleToTrackballCamera()
     
-    kp_interactor = KeyPressInteractorStyle(parent=renderWindowInteractor)
-    self.renderWindowInteractor.SetInteractorStyle(kp_interactor)
-    self.interactors.append(kp_interactor)
+    self.kp_interactor = KeyPressInteractorStyle(parent=self.renderWindowInteractor)
+    self.renderWindowInteractor.SetInteractorStyle(self.kp_interactor)
+    self.interactors.append(self.kp_interactor)
+    
+    self.timer = Timer(self.renderer, self.renderWindow)
+    self.renderer.AddObserver('StartEvent', self.timer)
     
     self.observers = {}
-    self.observers['Timer'] = FPSObserver(self)
-    self.observers['Updater'] = ModelsUpdater(self)
-
-    self.start_time = time.time_ns()/1000000000
-    self.last_time = time.time_ns()/1000000000
-    self.delta_time = 0
-    self.time_elapsed = 0
-    self.fps = 0
-
+    # self.observers['Updater'] = ModelsUpdater(self)
     for k in self.observers.keys():
       # Here is where we setup the observer.
       self.renderer.AddObserver('StartEvent', self.observers[k])
@@ -351,7 +348,8 @@ class VtkRenderer:
     
   def add_model(self, model):
     # VtkModel.add_model_to_dash_vtk(model, self.renderer)
-    self.models
+    # self.models
+    pass
   
   def vtk_update(self):
     points = self.get_trace_points()
@@ -375,12 +373,12 @@ class VtkRenderer:
     else:
       self.start_vtk_app(self.renderer, self.renderWindow, self.renderWindowInteractor)
     
-  def start_qt_app(renderer=None, renderWindow=None, renderWindowInteractor=None):
+  def start_qt_app(self, renderer=None, renderWindow=None, renderWindowInteractor=None):
     app = QApplication(sys.argv)
     ex = MainWindow(renderer, renderWindow, renderWindowInteractor)
     sys.exit(app.exec_())
   
-  def start_vtk_app(self):
+  def start_vtk_app(self, renderer=None, renderWindow=None, renderWindowInteractor=None):
     self.renderer.ResetCamera()
     self.renderWindow.Render()
       

@@ -1,6 +1,5 @@
 import sys
 import vtk
-import vtk
 import vtkmodules.vtkInteractionStyle
 # noinspection PyUnresolvedReferences
 import vtkmodules.vtkRenderingOpenGL2
@@ -22,8 +21,7 @@ from PySide6 import QtGui
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QFrame, QVBoxLayout
 
-
-class MainWindow(QMainWindow):
+class QTVtkWindow(QMainWindow):
   def __init__(self, renderer=None, renderWindow=None, renderWindowInteractor=None):
     super().__init__()
     self.frame = QFrame()
@@ -43,7 +41,7 @@ class MainWindow(QMainWindow):
 
     self.show()
     self.rendererInteractor.Initialize()
-
+    
   def add_objects(self):
     # Create source
     source = vtkSphereSource()
@@ -59,13 +57,3 @@ class MainWindow(QMainWindow):
     actor.SetMapper(mapper)
 
     self.renderer.AddActor(actor)
-    
-
-def start_qt(renderer=None, renderWindow=None, renderWindowInteractor=None):
-  app = QApplication(sys.argv)
-  ex = MainWindow(renderer, renderWindow, renderWindowInteractor)
-  sys.exit(app.exec_())
-
-if __name__ == "__main__":
-  renderer = vtkRenderer()
-  start_qt(renderer)

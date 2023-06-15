@@ -1,7 +1,7 @@
-
-class ModelsUpdater(object):
+from components.vtk.Observers.Observer import Observer
+class ModelsUpdater(Observer):
   def update(self):
-    models = self.rendererComponent
+    models = self.rendererComponent.models
     for model in models:
       model.update()
     

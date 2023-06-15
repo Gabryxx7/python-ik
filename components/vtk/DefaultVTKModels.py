@@ -1,4 +1,4 @@
-
+from components.Renderer import ModelType
 MARKER_SIZE = 15
 LEG_OUTLINE_WIDTH = 15
 AXIS_LINE_LENGTH = 25
@@ -9,14 +9,14 @@ DefaultVTKModels= {
     "uuid": "Model_<UUID>",
     "name": "<NAME>_Model",
     'property': {
-      'opacity': opacity,
-      'color': color,
+      'opacity': 1.0,
+      'color': [1.0,0.0,0.0],
       'pointSize': 10,
     },
     'state': {
       "lineWidth": 10,
-      'point1': p1,
-      'point2': p2,
+      'point1': [0.0,0.0,0.0],
+      'point2': [0.0,0.0,0.0],
       'resolution': 600
     }
   },
@@ -25,15 +25,15 @@ DefaultVTKModels= {
     "uuid": "Model_<UUID>",
     "name": "<NAME>_Model",
     'property': {
-      'opacity': opacity,
-      'color': color,
+      'opacity': 1.0,
+      'color': [1.0,0.0,0.0],
       'pointSize': 10,
     },
     'actor': {},
     'state': {
       "lineWidth": 10,
-      'point1': p1,
-      'point2': p2,
+      'point1': [0.0,0.0,0.0],
+      'point2': [0.0,0.0,0.0],
       'resolution': 600
     }
   },

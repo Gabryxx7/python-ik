@@ -1,5 +1,7 @@
 import vtk
 from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+from vtkmodules.vtkRenderingCore import (vtkRenderWindowInteractor)
+
 
 class KeyPressInteractorStyle(vtkInteractorStyleTrackballCamera):
   def __init__(self, parent=None, status=True):
