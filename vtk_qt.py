@@ -60,7 +60,7 @@ class MainWindow(QMainWindow):
 
     self.renderer.AddActor(actor)
     
-    
+
 def start_qt(renderer=None, renderWindow=None, renderWindowInteractor=None):
   app = QApplication(sys.argv)
   ex = MainWindow(renderer, renderWindow, renderWindowInteractor)

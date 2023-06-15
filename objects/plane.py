@@ -4,12 +4,12 @@ from objects.joint import Joint
 from objects.Object3D import Object3D
 import math
 from copy import deepcopy
-from components.PlotlyRenderer import TraceType
+from components.PlotlyRenderer import ModelType
 
 class Plane(Object3D):
   def __init__(self, _name="Plane", offset_pos=None, trace_params=None):
     super().__init__(_name, offset_pos, trace_params)
-    self.trace_type = TraceType.PLANE
+    self.trace_type = ModelType.PLANE
     self.color = "#ff6348"
   
   def add_vertex(self, offset_pos):
