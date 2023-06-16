@@ -3,8 +3,8 @@ from dash import dcc
 from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
-from frontend.widgets.joint_widget import JointWidget
-from frontend.components.trigger import Trigger
+from frontend.dash.widgets.joint_widget import JointWidget
+from frontend.dash.components.trigger import Trigger
 
 class ArmPage:  
   def __init__(self, model, app, label="Arm"):

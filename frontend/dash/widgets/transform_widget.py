@@ -4,7 +4,7 @@ from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
 import numpy as np
-from frontend.components.widget_interface import Widget
+from frontend.dash.components.widget_interface import Widget
 from utils.quaternion import Quaternion
 from components.Transform import Transform
 

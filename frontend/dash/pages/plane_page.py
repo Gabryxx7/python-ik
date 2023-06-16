@@ -3,10 +3,10 @@ from dash import dcc
 from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
-from frontend.widgets.joint_widget import JointWidget
-from frontend.widgets.piston_widget import PistonWidget
-from frontend.widgets.roll_pitch_yaw_widget import RollPitchYawWidget
-from frontend.components.trigger import Trigger
+from frontend.dash.widgets.joint_widget import JointWidget
+from frontend.dash.widgets.piston_widget import PistonWidget
+from frontend.dash.widgets.roll_pitch_yaw_widget import RollPitchYawWidget
+from frontend.dash.components.trigger import Trigger
 
 CONTAINER_STYLE = {'display': 'flex', 'flex-direction': 'column'}
 

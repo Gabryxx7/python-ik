@@ -4,6 +4,8 @@
 """
 from copy import deepcopy
 import time
+import numpy as np
+import math
 import vtk
 import vtkmodules.vtkRenderingOpenGL2
 from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
@@ -19,214 +21,190 @@ from components.vtk.Observers.ModelsUpdater import ModelsUpdater
 
 from components.vtk.Interactors.KeyPressInteractor import KeyPressInteractorStyle
 
+from utils.utils import Utils
+
+v_dist = lambda p, orig=[0,0,0]: (np.linalg.norm(np.array(orig) - np.array(p)))
+
+def hex_to_rgb(h):
+  h = h.lstrip('#')
+  return list(float(int(h[i:i+2], 16)/255) for i in (0, 2, 4))
+
 class VtkModel:
   def __init__(self, obj, name="VtkModel", modelType=ModelType.SPHERE):
     self.obj = obj
     self.modelType = modelType
+    self.renderer = None
     self.uuid = f"VtkModel_{self.obj.uuid}"
     self.models = {
-      "model":  {"type": self.modelType},
+      "joint":  {"type": ModelType.SPHERE},
+      "line":   {"type": ModelType.LINE},
+      "cube":   {"type": ModelType.CUBE},
       "x_axis": {"type": ModelType.X_AXIS},
       "y_axis": {"type": ModelType.Y_AXIS},
       "z_axis": {"type": ModelType.Z_AXIS}
     }
+    self.make_vtk_models()
+    self.initialized = False
+    self.source = None
+    self.actor = None
+    self.mapper = None
   
-  def get_vtk_model_data(self, draw_children=True, dbg_prefix=""):
+  def add_models_to_scene(self, renderer, draw_children=True):
+    self.renderer = renderer
+    for k in self.models.keys():
+      name = self.models[k].get('name', f"NO NAME - {k} ({self.obj.name})")
+      instance = self.models[k].get('instance', None)
+      if instance is None:
+        print(f"{name} has no Instance, creating one")
+        self.models[k] = self.make_instance(self.models[k])
+        instance = self.models[k].get('instance', None)
+      actor = None
+      if instance is not None:
+        actor = instance.get('actor', None)
+      if actor is None:
+        print(f"ERROR: {name} has no Actor")
+        continue
+      print(f"Adding {name} Actor")
+      self.renderer.AddActor(actor)
+    if draw_children:
+      for child in self.obj.children:
+        child.vtk_renderer.add_models_to_scene(renderer, draw_children=False)
+  
+  def copy_default_model(self, model_data, color=None, opacity=None):
+    model_type = model_data['type']
+    model_data = deepcopy(DefaultVTKModels[model_type])
+    model_data['type'] = model_type
+    model_data['uuid'] = model_data['uuid'].replace("<UUID>", self.obj.uuid) 
+    model_data['name'] = model_data['name'].replace("<NAME>", self.obj.name)
+    if color is not None:
+      model_data['property']['color'] = color
+    if opacity is not None:
+      model_data['property']['opacity'] = opacity
+    return model_data
+  
+  def update_models(self, draw_children=True):
     thickness = 8
     radius = 10
     points = self.obj.get_trace_points()
-    color =  hex_to_rgb(self.obj.trace_params.get('color', "#FFFFFF"))
     orientation = self.obj.transform.get_euler_angles(order="zxy")
-    model_data = []
-    p1 = list(points[0][0:3])
-    # I really don't get why the orientation does not work, everything seems ok except for the orientation of these stupid cubes
+    p1 = [0,0,0]
+    p2 = [0,0,0]
+    if points is not None and len(points) > 0:
+      p1 = list(points[0][0:3])
+    
+    self.models['joint']['actor']['origin'] = p1
+    self.models['joint']['actor']['orientation'] = orientation
+    self.models['joint']['state']['center'] = p1
+    self.models['joint']['state']['radius'] = radius
+    # self.models['joint'] = self.make_instance(self.models['joint'])
+    
+    if len(points) > 1:
+      p1 = list(points[0][0:3])
+      p2 = list(points[1][0:3])
+      length = v_dist(p1, p2)
+      self.models['cube']['actor']['origin'] = p1
+      self.models['cube']['actor']['orientation'] = orientation
+      self.models['cube']['state']['center'] = [p1[0], p1[1], p1[2]+length*0.5]
+      self.models['cube']['state']['zLength'] = length
+      self.models['cube']['state']['xLength'] = thickness
+      self.models['cube']['state']['yLength'] = thickness
+      # self.models['cube'] = self.make_instance(self.models['cube'])
+    
+      self.models['line']['state']['point1'] = p1
+      self.models['line']['state']['point2'] = p2
+      # self.models['line'] = self.make_instance(self.models['line'])
+    
+    self.models['x_axis']['state']['point1'] = p1
+    p2 = self.obj.transform.get_direction_vector(self.models['x_axis']['direction']) * self.models['x_axis']['length']
+    p2 = list(p2[0:3])
+    self.models['x_axis']['state']['point2'] = p2
+    
+    self.models['y_axis']['state']['point1'] = p1
+    p2 = self.obj.transform.get_direction_vector(self.models['y_axis']['direction']) * self.models['y_axis']['length']
+    p2 = list(p2[0:3])
+    self.models['y_axis']['state']['point2'] = p2
+    
+    self.models['z_axis']['state']['point1'] = p1
+    p2 = self.obj.transform.get_direction_vector(self.models['z_axis']['direction']) * self.models['z_axis']['length']
+    p2 = list(p2[0:3])
+    self.models['z_axis']['state']['point2'] = p2
+    
+    for k in self.models.keys():
+      self.update_instance(self.models[k])
+    
+  def update_instance(self, obj):
+    vtk_class = obj.get('vtkClass', None)
+    instance = obj.get('instance', None)
+    if instance is None:
+      return
+    source = instance.get('source', None)
+    if source is not None:
+      state = obj.get('state', {})
+      center = state.get('center', [0,0,0])
+      p1 = state.get('point1', [0,0,0])
+      p2 = state.get('point2', [50,50,50])
+      print(f"Updating instance {obj['name']}: P: {center}\tP1: {p1}\tP2{p2}")
+      if vtk_class == 'vtkSphereSource':
+          source.SetCenter(center)
+          source.SetRadius(state.get('radius', 50))
+      elif vtk_class == 'vtkCubeSource':
+          source.SetXLength(state['xLength'])
+          source.SetZLength(state['zLength'])
+          source.SetYLength(state['yLength'])
+          source.SetCenter(center)
+      elif vtk_class == 'vtkLineSource':
+          source.SetPoint1(p1)
+          source.SetPoint2(p2)
+    
+    actor = instance.get('actor', None)
+    if actor is not None:
+      actor_prop = obj.get('actor', {})
+      actor.SetOrigin(actor_prop.get('origin', [0,0,0]))
+      actor.SetPosition(actor_prop.get('position', [0,0,0]))
+      actor.SetOrientation(actor_prop.get('orientation', [0,0,0]))
+    
+    
+  def make_vtk_models(self, draw_children=True, dbg_prefix=""):
+    color = hex_to_rgb(self.obj.trace_params.get('color', "#FFFFFF"))
     opacity = 1 if self.obj.visible else 0
-    joint_origin_point = {
-      'id': self.obj.uuid+"point",
-      'vtkClass': 'vtkSphereSource',
-      'property': {
-        'opacity': opacity,
-        'color': color,
-        'pointSize': 20,
-      },
-      'actor': {
-        'origin': p1,
-        'position': [0,0,0],
-        'orientation': orientation,
-      },
-      'state': {
-        "lineWidth": 10,
-        "center": p1,
-        "radius": radius,
-        'resolution': 600
-      }
-    }
-    model_data.append(joint_origin_point)
-    
-    if len(points) > 1:
-      p2 = list(points[1][0:3])
-      length = v_dist(p1, p2)
-      joint_line = {
-        'id': self.uuid+"line",
-        'vtkClass': 'vtkLineSource',
-        'property': {
-          'opacity': opacity,
-          'color': color,
-          'pointSize': 10,
-          },
-        'actor': {
-        },
-        'state': {
-          "lineWidth": 10,
-          'point1': p1,
-          'point2': p2,
-          'resolution': 600
-        }
-      }
-      model_data.append(joint_line)
-      joint_cube = {
-        'id': self.uuid+"cube",
-        'vtkClass': 'vtkCubeSource',
-        'property': {
-          'opacity': opacity,
-          'color': color,
-          # 'pointSize': 10,
-          },
-        'actor': {
-          'origin': p1,
-          'position': [0,0,0],
-          'orientation': orientation,
-        },
-        'state': {
-          'center': [p1[0], p1[1], p1[2]+length*0.5],
-          'zLength': length,
-          'xLength': thickness,
-          'yLength': thickness,
-          'resolution': 600
-        }
-      }
-      model_data.append(joint_cube)
-    if not draw_children:
-      return model_data
-    
-    dbg_prefix += "  "
-    for child in self.children:
-      child_model = child.get_vtk_model_data(draw_children=False, dbg_prefix=dbg_prefix)
-      if child_model is not None and len(child_model) > 0:
-        model_data += child_model
-    # print(model_data)
-    return model_data
+    self.models['joint'] = self.copy_default_model(self.models['joint'], color, opacity)
+    self.models['x_axis'] = self.copy_default_model(self.models['x_axis'], color, opacity)
+    self.models['y_axis'] = self.copy_default_model(self.models['y_axis'], color, opacity)
+    self.models['z_axis'] = self.copy_default_model(self.models['z_axis'], color, opacity)
+    self.models['cube'] = self.copy_default_model(self.models['cube'], color, opacity)
+    self.models['line'] = self.copy_default_model(self.models['line'], color, opacity)
   
-  def update_vtk_model_data(self, draw_children=True, dbg_prefix=""):
-    model_data = []
-    points = self.get_trace_points()
-    # print(f"{self.name} - Visible: {self.visible} - Prev Visible: {self.prev_visible}")
-    if not self.visible:
-      if self.visible == self.prev_visible:
-        # print(f"No model update: {self.name}")
-        joint_origin =  {'property': dash.no_update, 'actor': dash.no_update, 'state': dash.no_update}
-        model_data.append(joint_origin)
-        if len(points) > 1:
-          joint_line =  {'property': dash.no_update, 'actor': dash.no_update, 'state': dash.no_update}
-          joint_cube =  {'property': dash.no_update, 'actor': dash.no_update, 'state': dash.no_update}
-          model_data.append(joint_line)
-          model_data.append(joint_cube)
-        if not draw_children:
-          return model_data
-        for child in self.children:
-          child_model = child.update_vtk_model_data(draw_children=False, dbg_prefix=dbg_prefix)
-          if child_model is not None and len(child_model) > 0:
-            model_data += child_model
-        return model_data
-    opacity = 1 if self.visible else 0
-    p1 = list(points[0][0:3])
-    orientation = self.transform.get_euler_angles(order="zxy")
-    joint_origin =  {
-      'property': {
-        'opacity': opacity
-      },
-      'actor': {
-        'origin': p1,
-        'orientation': orientation
-        },
-      'state': {
-        "center": p1
-      }
-    }
-    model_data.append(joint_origin)
-    
-    if len(points) > 1:
-      p2 = list(points[1][0:3])
-      length = v_dist(p1, p2)
-      joint_line =  {
-        'property': {
-          'opacity': opacity
-        },
-        'actor': {},
-        'state': {'point1': p1, 'point2': p2}}
-      model_data.append(joint_line)
-      
-      joint_cube =  {
-        'property': {
-          'opacity': opacity
-        },
-        'actor': {
-          'origin': p1,
-          'orientation': orientation,
-        },
-        'state': {
-          'center': [p1[0], p1[1], p1[2]+length*0.5],
-        }
-      }
-      model_data.append(joint_cube)
-    print(f"VTK Model model update: {self.name}")
-    if not draw_children:
-      return model_data
-    
-    dbg_prefix += "  "
-    for child in self.children:
-      child_model = child.update_vtk_model_data(draw_children=False, dbg_prefix=dbg_prefix)
-      if child_model is not None and len(child_model) > 0:
-        model_data += child_model
-    # print(model_data)
-    return model_data
+    for k in self.models.keys():
+      self.models[k] = self.make_instance(self.models[k])
   
-  def make_vtk_model(self, obj):
-    obj['model'] = deepcopy(DefaultVTKModels[obj['type']])
-    state = obj['model'].get('state', {})
-    actor_prop = obj['model'].get('actor', {})
-    properties = obj['model'].get('property', {})
-    
-    if obj['model']['vtkClass'] == 'vtkSphereSource':
+  def make_instance(self, obj):
+    state = obj.get('state', {})
+    actor_prop = obj.get('actor', {})
+    properties = obj.get('property', {})
+    vtk_class = obj.get('vtkClass', None)
+    if vtk_class is None:
+      print(f"Error: no class for {obj.get('type', 'NO TYPE')} of ({self.obj.name}). Keys: {obj.keys()}")
+      return obj
+    if vtk_class == 'vtkSphereSource':
         source = vtkSphereSource()
-        source.SetCenter(state.get('center', [0,0,0]))
-        source.SetRadius(state.get('radius', 50))
-    elif obj['model']['vtkClass'] == 'vtkCubeSource':
+    elif vtk_class == 'vtkCubeSource':
         source = vtkCubeSource()
-        source.SetXLength(state['xLength'])
-        source.SetZLength(state['zLength'])
-        source.SetYLength(state['yLength'])
-        source.SetCenter(state.get('center', [0,0,0]))
-    elif obj['model']['vtkClass'] == 'vtkLineSource':
+    elif vtk_class == 'vtkLineSource':
         source = vtkLineSource()
-        source.SetPoint1(state.get('p1', [0,0,0]))
-        source.SetPoint2(state.get('p2', [50,50,50]))
         
     properties["edgeVisibility"] = True
     properties["lineWidth"] = 2
     
     # create an actor
     actor = vtkActor()
-    actor.SetOrigin(actor_prop.get('origin', [0,0,0]))
-    actor.SetPosition(actor_prop.get('position', [0,0,0]))
-    actor.SetOrientation(actor_prop.get('orientation', [0,0,0]))
     if properties["edgeVisibility"]:
         actor.GetProperty().EdgeVisibilityOn()
     actor.GetProperty().SetLineWidth(properties["lineWidth"])
     
     # actor.GetProperty().SetColor(colors.GetColor("Gray", r,g,b, 1))
     # vtk_color = colors.GetColorRGB(f"{obj['id']}_Color", properties.get('color', [0.0,0.0,1.0]))
-    r, g, b = properties.get('color', [1.0,0.0,0.0])
+    col = properties.get('color', [1.0,0.0,0.0])
+    r, g, b = col
     actor.GetProperty().SetColor(r, g, b)
     # opacity = 1 if properties['opacity'] else 0
     actor.GetProperty().SetOpacity(1)
@@ -235,34 +213,23 @@ class VtkModel:
     mapper.SetInputConnection(source.GetOutputPort())
 
     actor.SetMapper(mapper)
-    return actor, source, mapper
+    obj['instance'] = {}
+    obj['instance']['actor'] = actor
+    obj['instance']['source'] = source
+    obj['instance']['mapper'] = mapper
+    return obj
   
-  def get_vtk_models(self):
-    for k in self.models.keys():
-      actor = self.models[k].get('actor', None)
-      source = self.models[k].get('source', None)
-      mapper = self.models[k].get('mapper', None)
-      if actor is None:
-        actor, source, mapper = self.make_vtk_model(self.models[k])
-        self.models[k]['actor'] = actor
-        self.models[k]['source'] = source
-        self.models[k]['mapper'] = mapper
-      return actor
-  
-  @staticmethod
-  def add_model_to_dash_vtk(model, renderer):
-    model.update()
-    vtk_model_data = model.get_vtk_model_data()
-    assigned = False
-    for vtk_model in vtk_model_data:
-      source, actor = VtkModel.make_vtk_model(vtk_model)
-      print(f"Adding {vtk_model['id']}")
-      renderer.AddActor(actor)
-      if not assigned:
-        if 'cube' in vtk_model['id'].lower():
-          model.vtk_source = source
-          model.vtk_actor = actor
-          assigned = True
+  # def get_vtk_models(self):
+  #   for k in self.models.keys():
+  #     actor = self.models[k].get('actor', None)
+  #     source = self.models[k].get('source', None)
+  #     mapper = self.models[k].get('mapper', None)
+  #     if actor is None:
+  #       actor, source, mapper = self.make_vtk_model(self.models[k])
+  #       self.models[k]['actor'] = actor
+  #       self.models[k]['source'] = source
+  #       self.models[k]['mapper'] = mapper
+  #     return actor
 
   @staticmethod
   def add_axis_to_scene(renderer):
@@ -309,7 +276,7 @@ class VtkModel:
 
 class VtkRenderer:
   def __init__(self):
-    self.models = []
+    self.vtk_models = []
     self.colors = vtkNamedColors()
     self.renderWindow = vtkRenderWindow()
     self.renderWindow.SetWindowName('Axes')
@@ -337,19 +304,16 @@ class VtkRenderer:
     self.renderer.AddObserver('StartEvent', self.timer)
     
     self.observers = {}
-    # self.observers['Updater'] = ModelsUpdater(self)
+    self.observers['Updater'] = ModelsUpdater(self)
     for k in self.observers.keys():
       # Here is where we setup the observer.
       self.renderer.AddObserver('StartEvent', self.observers[k])
       
     VtkModel.add_axis_to_scene(self.renderer)
-    # for model in models:
-    #   VtkModel.add_model_to_dash_vtk(model, renderer)
     
-  def add_model(self, model):
-    # VtkModel.add_model_to_dash_vtk(model, self.renderer)
-    # self.models
-    pass
+  def add_model(self, vtk_model):
+    vtk_model.vtk_renderer.add_models_to_scene(self.renderer)
+    self.vtk_models.append(vtk_model)
   
   def vtk_update(self):
     points = self.get_trace_points()

@@ -3,16 +3,17 @@ MARKER_SIZE = 15
 LEG_OUTLINE_WIDTH = 15
 AXIS_LINE_LENGTH = 25
 
-DefaultVTKModels= {
-  ModelType.MODEL: {
+DefaultVTKModels = {
+  ModelType.CUBE: {
     "vtkClass": "vtkLineSource",
-    "uuid": "Model_<UUID>",
-    "name": "<NAME>_Model",
+    "uuid": "Cube_<UUID>",
+    "name": "<NAME>_Cube",
     'property': {
       'opacity': 1.0,
       'color': [1.0,0.0,0.0],
-      'pointSize': 10,
+      'pointSize': 20,
     },
+    'actor': {},
     'state': {
       "lineWidth": 10,
       'point1': [0.0,0.0,0.0],
@@ -20,10 +21,10 @@ DefaultVTKModels= {
       'resolution': 600
     }
   },
-  ModelType.PLANE: {
+  ModelType.LINE: {
     "vtkClass": "vtkLineSource",
-    "uuid": "Model_<UUID>",
-    "name": "<NAME>_Model",
+    "uuid": "Line_<UUID>",
+    "name": "<NAME>_Line",
     'property': {
       'opacity': 1.0,
       'color': [1.0,0.0,0.0],
@@ -39,8 +40,8 @@ DefaultVTKModels= {
   },
   ModelType.SPHERE: {
     "vtkClass": "vtkSphereSource",
-    "uuid": "Model_<UUID>",
-    "name": "<NAME>_Model",
+    "uuid": "Sphere_<UUID>",
+    "name": "<NAME>_Sphere",
     'property': {
       'opacity': 1.0,
       'color': [1,0,0]

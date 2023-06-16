@@ -17,7 +17,8 @@ class ModelType(AutoNameLowerStrEnum):
   Y_AXIS = 0
   X_AXIS = 1
   Z_AXIS = 2
-  MODEL = 3
+  CUBE = 3
   PLANE = 4
   JOINT = 5
   SPHERE = 6
+  LINE = 7

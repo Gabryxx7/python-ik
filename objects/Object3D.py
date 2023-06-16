@@ -6,14 +6,12 @@ from copy import deepcopy
 from dash import Dash, dcc, html, dash_table, Input, Output, State, callback
 from components.Transform import Transform
 from components.PlotlyRenderer import PlotlyRenderer, ModelType
+from components.VtkRenderer import VtkModel
 from utils.quaternion import Quaternion
 
 IMPL_MISSING_MSG = "implementatiom missing (did you override it in your new model class?)"
 
 v_dist = lambda p, orig=[0,0,0]: (np.linalg.norm(np.array(orig) - np.array(p)))
-def hex_to_rgb(h):
-  h = h.lstrip('#')
-  return list(float(int(h[i:i+2], 16)/255) for i in (0, 2, 4))
 
 class Object3D:
   def __init__(self, _name="Object", offset_pos=None, trace_params=None):
@@ -32,8 +30,8 @@ class Object3D:
     self.vtk_source = None
     self.vtk_actor = None
     self.plotly_renderer = PlotlyRenderer(self)
+    self.vtk_renderer = VtkModel(self)
   
-    
   def forward_kinematics(self):
     warnings.warn(f"forward_kinematics() {IMPL_MISSING_MSG}")
   

@@ -9,7 +9,7 @@ AXIS_LINE_LENGTH = 25
 AXIS_LINE_WIDTH = 3
 
 DefaultTraces = {
-  ModelType.MODEL: {
+  ModelType.CUBE: {
     "trace": {
       "uuid": "Model_<UUID>",
       "name": "<NAME>_Model",
@@ -112,7 +112,7 @@ DefaultTraces = {
 
     
 class PlotlyRenderer:
-  def __init__(self, obj, name="PlotlyRenderer", modelType=ModelType.MODEL):
+  def __init__(self, obj, name="PlotlyRenderer", modelType=ModelType.CUBE):
     self.obj = obj
     self.modelType = ModelType
     self.uuid = f"Trace_{self.obj.uuid}"
@@ -179,7 +179,7 @@ class PlotlyRenderer:
     for key in default_trace.keys():
       if key not in obj_trace:
         obj_trace[key] = default_trace[key]
-    obj_trace['trace']['uuid'] = obj_trace['trace']['uuid'].replace("<UUID>", self.obj.uuid) 
+    obj_trace['trace']['uuid'] = obj_trace['trace']['uuid'].replace("<UUID>", self.obj.uuid)
     obj_trace['trace']['name'] = obj_trace['trace']['name'].replace("<NAME>", self.obj.name)
     if legendgroup is not None:
       obj_trace['trace']["legendgroup"] = self.obj.name

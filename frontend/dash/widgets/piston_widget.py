@@ -3,7 +3,7 @@ from dash import dcc
 from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
-from frontend.components.trigger import Trigger
+from frontend.dash.components.trigger import Trigger
 from objects.compound_model import PISTON_HEIGHT, PLANE_INITIAL_HEIGHT
 
 config = {'value': 0.5, 'min': 0, 'max': 1, 'res': 0.01}

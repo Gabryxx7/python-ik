@@ -3,7 +3,7 @@ from dash import dcc
 from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
-from frontend.components.trigger import Trigger
+from frontend.dash.components.trigger import Trigger
 
 quat_components = {
   'x': {'value': 0, 'min': -90, 'max': 90, 'res': 0.01},

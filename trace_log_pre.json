@@ -68,6 +68,3176 @@
         0,
         200
       ]
+    },
+    {
+      "uuid": "Joint_Machine_727c0cd1-6aa1-4a28-a0ea-75e0a6181848",
+      "name": "Machine_Joint",
+      "line": {
+        "color": "#ff6348",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        0
+      ],
+      "y": [
+        0
+      ],
+      "z": [
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Machine_727c0cd1-6aa1-4a28-a0ea-75e0a6181848",
+      "name": "Machine_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        25
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Machine_727c0cd1-6aa1-4a28-a0ea-75e0a6181848",
+      "name": "Machine_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        25
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Machine_727c0cd1-6aa1-4a28-a0ea-75e0a6181848",
+      "name": "Machine_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        25
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_Arm1_Piston_4995be9a-c877-4cdc-ae6f-69f7b42bc524",
+      "name": "Arm1_Piston_Joint",
+      "line": {
+        "color": "#22DAE6",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        -191.4213562373095,
+        -191.4213562373095
+      ],
+      "z": [
+        0,
+        145.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Arm1_Piston_4995be9a-c877-4cdc-ae6f-69f7b42bc524",
+      "name": "Arm1_Piston_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        25
+      ],
+      "y": [
+        -191.4213562373095,
+        -191.4213562373095
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Arm1_Piston_4995be9a-c877-4cdc-ae6f-69f7b42bc524",
+      "name": "Arm1_Piston_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        -191.4213562373095,
+        -166.4213562373095
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Arm1_Piston_4995be9a-c877-4cdc-ae6f-69f7b42bc524",
+      "name": "Arm1_Piston_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        -191.4213562373095,
+        -191.4213562373095
+      ],
+      "z": [
+        0,
+        25
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_Arm1_Joint0_f440a26a-5438-485c-b2a8-ecc2adad3bc9",
+      "name": "Arm1_Joint0_Joint",
+      "line": {
+        "color": "#ff6666",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        -191.4213562373095,
+        -141.4213562373095
+      ],
+      "z": [
+        145.72751379458487,
+        195.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Arm1_Joint0_f440a26a-5438-485c-b2a8-ecc2adad3bc9",
+      "name": "Arm1_Joint0_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        25
+      ],
+      "y": [
+        -191.4213562373095,
+        -191.4213562373095
+      ],
+      "z": [
+        145.72751379458487,
+        145.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Arm1_Joint0_f440a26a-5438-485c-b2a8-ecc2adad3bc9",
+      "name": "Arm1_Joint0_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        -191.4213562373095,
+        -166.4213562373095
+      ],
+      "z": [
+        145.72751379458487,
+        145.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Arm1_Joint0_f440a26a-5438-485c-b2a8-ecc2adad3bc9",
+      "name": "Arm1_Joint0_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        -191.4213562373095,
+        -191.4213562373095
+      ],
+      "z": [
+        145.72751379458487,
+        170.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_Arm1_EE_8ed636a0-db2e-4289-8650-535cb0d6d5f7",
+      "name": "Arm1_EE_Joint",
+      "line": {
+        "color": "#90FF33",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        0
+      ],
+      "y": [
+        -141.4213562373095
+      ],
+      "z": [
+        195.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Arm1_EE_8ed636a0-db2e-4289-8650-535cb0d6d5f7",
+      "name": "Arm1_EE_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        25
+      ],
+      "y": [
+        -141.4213562373095,
+        -141.4213562373095
+      ],
+      "z": [
+        195.72751379458487,
+        195.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Arm1_EE_8ed636a0-db2e-4289-8650-535cb0d6d5f7",
+      "name": "Arm1_EE_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        -141.4213562373095,
+        -116.42135623730951
+      ],
+      "z": [
+        195.72751379458487,
+        195.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Arm1_EE_8ed636a0-db2e-4289-8650-535cb0d6d5f7",
+      "name": "Arm1_EE_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        -141.4213562373095,
+        -141.4213562373095
+      ],
+      "z": [
+        195.72751379458487,
+        220.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_Arm3_Piston_cac66283-a57c-4151-8b06-9c4ad284b029",
+      "name": "Arm3_Piston_Joint",
+      "line": {
+        "color": "#22DAE6",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        -150,
+        -150
+      ],
+      "y": [
+        150,
+        150
+      ],
+      "z": [
+        0,
+        145.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Arm3_Piston_cac66283-a57c-4151-8b06-9c4ad284b029",
+      "name": "Arm3_Piston_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -150,
+        -125
+      ],
+      "y": [
+        150,
+        150
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Arm3_Piston_cac66283-a57c-4151-8b06-9c4ad284b029",
+      "name": "Arm3_Piston_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -150,
+        -150
+      ],
+      "y": [
+        150,
+        175
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Arm3_Piston_cac66283-a57c-4151-8b06-9c4ad284b029",
+      "name": "Arm3_Piston_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -150,
+        -150
+      ],
+      "y": [
+        150,
+        150
+      ],
+      "z": [
+        0,
+        25
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_Arm3_Joint0_e60ca411-b2c6-4b41-9745-40a684ecae10",
+      "name": "Arm3_Joint0_Joint",
+      "line": {
+        "color": "#ff6666",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        -150,
+        -100
+      ],
+      "y": [
+        150,
+        100
+      ],
+      "z": [
+        145.72751379458487,
+        195.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Arm3_Joint0_e60ca411-b2c6-4b41-9745-40a684ecae10",
+      "name": "Arm3_Joint0_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -150,
+        -125
+      ],
+      "y": [
+        150,
+        150
+      ],
+      "z": [
+        145.72751379458487,
+        145.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Arm3_Joint0_e60ca411-b2c6-4b41-9745-40a684ecae10",
+      "name": "Arm3_Joint0_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -150,
+        -150
+      ],
+      "y": [
+        150,
+        175
+      ],
+      "z": [
+        145.72751379458487,
+        145.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Arm3_Joint0_e60ca411-b2c6-4b41-9745-40a684ecae10",
+      "name": "Arm3_Joint0_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -150,
+        -150
+      ],
+      "y": [
+        150,
+        150
+      ],
+      "z": [
+        145.72751379458487,
+        170.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_Arm3_EE_cab9cb87-b72a-4c87-bac0-8135dce94651",
+      "name": "Arm3_EE_Joint",
+      "line": {
+        "color": "#33C1FF",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        -100
+      ],
+      "y": [
+        100
+      ],
+      "z": [
+        195.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Arm3_EE_cab9cb87-b72a-4c87-bac0-8135dce94651",
+      "name": "Arm3_EE_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -100,
+        -75
+      ],
+      "y": [
+        100,
+        100
+      ],
+      "z": [
+        195.72751379458487,
+        195.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Arm3_EE_cab9cb87-b72a-4c87-bac0-8135dce94651",
+      "name": "Arm3_EE_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -100,
+        -100
+      ],
+      "y": [
+        100,
+        125
+      ],
+      "z": [
+        195.72751379458487,
+        195.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Arm3_EE_cab9cb87-b72a-4c87-bac0-8135dce94651",
+      "name": "Arm3_EE_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -100,
+        -100
+      ],
+      "y": [
+        100,
+        100
+      ],
+      "z": [
+        195.72751379458487,
+        220.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_Arm2_Piston_540d5929-9898-4dd3-a6b5-4f23afeed633",
+      "name": "Arm2_Piston_Joint",
+      "line": {
+        "color": "#22DAE6",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        150,
+        150
+      ],
+      "y": [
+        150,
+        150
+      ],
+      "z": [
+        0,
+        145.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Arm2_Piston_540d5929-9898-4dd3-a6b5-4f23afeed633",
+      "name": "Arm2_Piston_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        150,
+        175
+      ],
+      "y": [
+        150,
+        150
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Arm2_Piston_540d5929-9898-4dd3-a6b5-4f23afeed633",
+      "name": "Arm2_Piston_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        150,
+        150
+      ],
+      "y": [
+        150,
+        175
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Arm2_Piston_540d5929-9898-4dd3-a6b5-4f23afeed633",
+      "name": "Arm2_Piston_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        150,
+        150
+      ],
+      "y": [
+        150,
+        150
+      ],
+      "z": [
+        0,
+        25
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_Arm2_Joint0_4a754683-35a3-4abd-a358-14a0217f1624",
+      "name": "Arm2_Joint0_Joint",
+      "line": {
+        "color": "#ff6666",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        150,
+        100
+      ],
+      "y": [
+        150,
+        100
+      ],
+      "z": [
+        145.72751379458487,
+        195.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Arm2_Joint0_4a754683-35a3-4abd-a358-14a0217f1624",
+      "name": "Arm2_Joint0_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        150,
+        175
+      ],
+      "y": [
+        150,
+        150
+      ],
+      "z": [
+        145.72751379458487,
+        145.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Arm2_Joint0_4a754683-35a3-4abd-a358-14a0217f1624",
+      "name": "Arm2_Joint0_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        150,
+        150
+      ],
+      "y": [
+        150,
+        175
+      ],
+      "z": [
+        145.72751379458487,
+        145.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Arm2_Joint0_4a754683-35a3-4abd-a358-14a0217f1624",
+      "name": "Arm2_Joint0_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        150,
+        150
+      ],
+      "y": [
+        150,
+        150
+      ],
+      "z": [
+        145.72751379458487,
+        170.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_Arm2_EE_7748c949-1f64-42c8-8a92-21852d157d40",
+      "name": "Arm2_EE_Joint",
+      "line": {
+        "color": "#33FFEC",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        100
+      ],
+      "y": [
+        100
+      ],
+      "z": [
+        195.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Arm2_EE_7748c949-1f64-42c8-8a92-21852d157d40",
+      "name": "Arm2_EE_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        100,
+        125
+      ],
+      "y": [
+        100,
+        100
+      ],
+      "z": [
+        195.72751379458487,
+        195.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Arm2_EE_7748c949-1f64-42c8-8a92-21852d157d40",
+      "name": "Arm2_EE_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        100,
+        100
+      ],
+      "y": [
+        100,
+        125
+      ],
+      "z": [
+        195.72751379458487,
+        195.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Arm2_EE_7748c949-1f64-42c8-8a92-21852d157d40",
+      "name": "Arm2_EE_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        100,
+        100
+      ],
+      "y": [
+        100,
+        100
+      ],
+      "z": [
+        195.72751379458487,
+        220.72751379458487
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Plane_PTriangle_99047d2d-5e1c-4c36-a8bf-5ff6eab43706",
+      "name": "PTriangle_Plane",
+      "showlegend": true,
+      "type": "mesh3d",
+      "mode": "lines+markers",
+      "opacity": 0.5,
+      "color": "#ff6348",
+      "x": [
+        -100,
+        100,
+        0,
+        0,
+        0
+      ],
+      "y": [
+        100,
+        100,
+        -141.4213562373095,
+        0,
+        0
+      ],
+      "z": [
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_PTriangle_99047d2d-5e1c-4c36-a8bf-5ff6eab43706",
+      "name": "PTriangle_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -100,
+        -75
+      ],
+      "y": [
+        100,
+        100
+      ],
+      "z": [
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_PTriangle_99047d2d-5e1c-4c36-a8bf-5ff6eab43706",
+      "name": "PTriangle_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -100,
+        -100
+      ],
+      "y": [
+        100,
+        125
+      ],
+      "z": [
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_PTriangle_99047d2d-5e1c-4c36-a8bf-5ff6eab43706",
+      "name": "PTriangle_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -100,
+        -100
+      ],
+      "y": [
+        100,
+        100
+      ],
+      "z": [
+        200,
+        225
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_PTriangle_V_1_247690b1-7345-4eb3-a2d1-a087dd81a91f",
+      "name": "PTriangle_V_1_Joint",
+      "line": {
+        "color": "#888888",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        -100
+      ],
+      "y": [
+        100
+      ],
+      "z": [
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_PTriangle_V_1_247690b1-7345-4eb3-a2d1-a087dd81a91f",
+      "name": "PTriangle_V_1_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -100,
+        -75
+      ],
+      "y": [
+        100,
+        100
+      ],
+      "z": [
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_PTriangle_V_1_247690b1-7345-4eb3-a2d1-a087dd81a91f",
+      "name": "PTriangle_V_1_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -100,
+        -100
+      ],
+      "y": [
+        100,
+        125
+      ],
+      "z": [
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_PTriangle_V_1_247690b1-7345-4eb3-a2d1-a087dd81a91f",
+      "name": "PTriangle_V_1_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -100,
+        -100
+      ],
+      "y": [
+        100,
+        100
+      ],
+      "z": [
+        200,
+        225
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_PTriangle_V_2_05cc4fb0-ee76-4ee6-a511-70e8bb078219",
+      "name": "PTriangle_V_2_Joint",
+      "line": {
+        "color": "#888888",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        100
+      ],
+      "y": [
+        100
+      ],
+      "z": [
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_PTriangle_V_2_05cc4fb0-ee76-4ee6-a511-70e8bb078219",
+      "name": "PTriangle_V_2_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        100,
+        125
+      ],
+      "y": [
+        100,
+        100
+      ],
+      "z": [
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_PTriangle_V_2_05cc4fb0-ee76-4ee6-a511-70e8bb078219",
+      "name": "PTriangle_V_2_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        100,
+        100
+      ],
+      "y": [
+        100,
+        125
+      ],
+      "z": [
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_PTriangle_V_2_05cc4fb0-ee76-4ee6-a511-70e8bb078219",
+      "name": "PTriangle_V_2_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        100,
+        100
+      ],
+      "y": [
+        100,
+        100
+      ],
+      "z": [
+        200,
+        225
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_PTriangle_V_3_40bcf0b4-f1d8-4953-959b-6a847462729a",
+      "name": "PTriangle_V_3_Joint",
+      "line": {
+        "color": "#888888",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        0
+      ],
+      "y": [
+        -141.4213562373095
+      ],
+      "z": [
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_PTriangle_V_3_40bcf0b4-f1d8-4953-959b-6a847462729a",
+      "name": "PTriangle_V_3_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        25
+      ],
+      "y": [
+        -141.4213562373095,
+        -141.4213562373095
+      ],
+      "z": [
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_PTriangle_V_3_40bcf0b4-f1d8-4953-959b-6a847462729a",
+      "name": "PTriangle_V_3_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        -141.4213562373095,
+        -116.42135623730951
+      ],
+      "z": [
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_PTriangle_V_3_40bcf0b4-f1d8-4953-959b-6a847462729a",
+      "name": "PTriangle_V_3_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        -141.4213562373095,
+        -141.4213562373095
+      ],
+      "z": [
+        200,
+        225
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Plane_Circle_Big_5ff2fac8-e09c-4652-a8d5-f349df90dc1e",
+      "name": "Circle_Big_Plane",
+      "showlegend": true,
+      "type": "mesh3d",
+      "mode": "lines+markers",
+      "opacity": 0.3,
+      "color": "#9999ff",
+      "x": [
+        212.13203435596427,
+        211.70494394012837,
+        210.42539243498638,
+        208.29853214283975,
+        205.33292717942285,
+        201.5405189892316,
+        196.93657826154103,
+        191.5396434407294,
+        185.37144607850558,
+        178.45682332862043,
+        170.82361793641473,
+        162.50256612591056,
+        153.5271738358855,
+        143.93358180328266,
+        133.76042003721884,
+        123.04865226957186,
+        111.84141100849041,
+        100.18382385900689,
+        88.12283181009951,
+        75.70700021989724,
+        62.98632326012342,
+        50.01202260721139,
+        36.83634119069187,
+        23.51233282935452,
+        10.093648602244675,
+        -3.365679185295983,
+        -16.811454570652952,
+        -30.18953616195204,
+        -43.44605514633561,
+        -56.52763220065933,
+        -69.38159243118655,
+        -81.95617747679411,
+        -94.20075392162475,
+        -106.06601717798218,
+        -117.50419001850362,
+        -128.4692149581923,
+        -138.91693971165319,
+        -148.80529497876356,
+        -158.094463842896,
+        -166.74704209958904,
+        -174.72818887007648,
+        -182.00576689320965,
+        -188.55047193086511,
+        -194.3359507657692,
+        -199.33890731660242,
+        -203.53919644309687,
+        -206.91990506340608,
+        -209.46742025711606,
+        -211.1714840796714,
+        -212.02523486749732,
+        -212.02523486749732,
+        -211.1714840796714,
+        -209.46742025711606,
+        -206.91990506340608,
+        -203.53919644309687,
+        -199.33890731660242,
+        -194.3359507657692,
+        -188.55047193086514,
+        -182.00576689320962,
+        -174.72818887007648,
+        -166.747042099589,
+        -158.094463842896,
+        -148.80529497876353,
+        -138.9169397116532,
+        -128.46921495819225,
+        -117.50419001850366,
+        -106.06601717798205,
+        -94.20075392162471,
+        -81.95617747679411,
+        -69.3815924311866,
+        -56.52763220065925,
+        -43.44605514633557,
+        -30.18953616195204,
+        -16.811454570653005,
+        -3.3656791852958943,
+        10.093648602244718,
+        23.51233282935447,
+        36.836341190691776,
+        50.012022607211435,
+        62.986323260123406,
+        75.7070002198972,
+        88.1228318100996,
+        100.18382385900694,
+        111.84141100849041,
+        123.04865226957182,
+        133.7604200372189,
+        143.9335818032827,
+        153.5271738358855,
+        162.5025661259105,
+        170.82361793641476,
+        178.45682332862043,
+        185.37144607850558,
+        191.53964344072938,
+        196.93657826154106,
+        201.5405189892316,
+        205.33292717942285,
+        208.29853214283975,
+        210.42539243498638,
+        211.70494394012837,
+        212.13203435596427
+      ],
+      "y": [
+        0,
+        13.454245103576259,
+        26.85431471071239,
+        40.14625147057153,
+        53.276533445127974,
+        66.19228962312137,
+        78.84151281295865,
+        91.1732690573188,
+        103.13790272622232,
+        114.68723646272743,
+        125.7747651761426,
+        136.3558433016131,
+        146.38786457205325,
+        155.83043357854635,
+        164.64552842839916,
+        172.79765384588413,
+        180.25398409918688,
+        186.98449517804275,
+        192.962085689829,
+        198.16268598730812,
+        202.56535508860156,
+        206.15236499913306,
+        208.90927209600568,
+        210.82497528737352,
+        211.89176071262045,
+        212.10533280335426,
+        211.4648315801445,
+        209.9728361153561,
+        207.63535414813532,
+        204.46179789336438,
+        200.4649461419944,
+        195.66089280536423,
+        190.06898211069975,
+        183.71173070873834,
+        176.6147370071235,
+        168.8065780946518,
+        160.3186946714229,
+        151.1852644482364,
+        141.44306452501394,
+        131.13132330239745,
+        120.29156252282573,
+        108.96743007713194,
+        97.20452424989305,
+        85.05021011123091,
+        72.55342879439262,
+        59.76450042707982,
+        46.734921510055266,
+        33.51715755890897,
+        20.164431843944854,
+        6.730511078855837,
+        -6.73051107885588,
+        -20.164431843944897,
+        -33.51715755890901,
+        -46.734921510055216,
+        -59.76450042707985,
+        -72.55342879439256,
+        -85.05021011123094,
+        -97.20452424989301,
+        -108.96743007713197,
+        -120.29156252282567,
+        -131.13132330239748,
+        -141.4430645250139,
+        -151.18526444823644,
+        -160.31869467142286,
+        -168.80657809465183,
+        -176.61473700712347,
+        -183.7117307087384,
+        -190.06898211069978,
+        -195.66089280536423,
+        -200.46494614199437,
+        -204.4617978933644,
+        -207.63535414813532,
+        -209.9728361153561,
+        -211.46483158014448,
+        -212.10533280335426,
+        -211.89176071262045,
+        -210.82497528737352,
+        -208.9092720960057,
+        -206.15236499913306,
+        -202.56535508860156,
+        -198.16268598730812,
+        -192.962085689829,
+        -186.98449517804272,
+        -180.25398409918688,
+        -172.79765384588416,
+        -164.6455284283991,
+        -155.83043357854632,
+        -146.38786457205325,
+        -136.35584330161316,
+        -125.77476517614255,
+        -114.68723646272743,
+        -103.13790272622234,
+        -91.17326905731886,
+        -78.84151281295858,
+        -66.19228962312137,
+        -53.27653344512801,
+        -40.14625147057143,
+        -26.854314710712345,
+        -13.454245103576262,
+        -5.19573633741296e-14
+      ],
+      "z": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Circle_Big_5ff2fac8-e09c-4652-a8d5-f349df90dc1e",
+      "name": "Circle_Big_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        212.13203435596427,
+        237.13203435596427
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Circle_Big_5ff2fac8-e09c-4652-a8d5-f349df90dc1e",
+      "name": "Circle_Big_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        212.13203435596427,
+        212.13203435596427
+      ],
+      "y": [
+        0,
+        25
+      ],
+      "z": [
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Circle_Big_5ff2fac8-e09c-4652-a8d5-f349df90dc1e",
+      "name": "Circle_Big_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        212.13203435596427,
+        212.13203435596427
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        200,
+        225
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Plane_Circle_Small_3f7825b3-d914-4ca6-a513-10ee6153ea97",
+      "name": "Circle_Small_Plane",
+      "showlegend": true,
+      "type": "mesh3d",
+      "mode": "lines+markers",
+      "opacity": 0.3,
+      "color": "#00ffcc",
+      "x": [
+        141.4213562373095,
+        141.13662929341893,
+        140.2835949566576,
+        138.8656880952265,
+        136.88861811961522,
+        134.36034599282107,
+        131.2910521743607,
+        127.69309562715294,
+        123.58096405233707,
+        118.97121555241363,
+        113.88241195760982,
+        108.33504408394037,
+        102.35144922392367,
+        95.95572120218844,
+        89.17361335814589,
+        82.03243484638124,
+        74.56094067232695,
+        66.7892159060046,
+        58.748554540066344,
+        50.471333479931495,
+        41.99088217341561,
+        33.3413484048076,
+        24.55756079379458,
+        15.674888552903013,
+        6.7290990681631175,
+        -2.2437861235306555,
+        -11.207636380435302,
+        -20.12635744130136,
+        -28.964036764223742,
+        -37.68508813377289,
+        -46.254394954124365,
+        -54.637451651196066,
+        -62.8005026144165,
+        -70.71067811865478,
+        -78.33612667900242,
+        -85.64614330546154,
+        -92.61129314110212,
+        -99.20352998584237,
+        -105.39630922859733,
+        -111.16469473305935,
+        -116.48545924671764,
+        -121.33717792880643,
+        -125.70031462057675,
+        -129.55730051051282,
+        -132.89260487773493,
+        -135.69279762873126,
+        -137.94660337560404,
+        -139.64494683807737,
+        -140.78098938644757,
+        -141.35015657833154,
+        -141.35015657833154,
+        -140.78098938644757,
+        -139.64494683807737,
+        -137.94660337560404,
+        -135.69279762873126,
+        -132.89260487773495,
+        -129.55730051051282,
+        -125.70031462057676,
+        -121.33717792880641,
+        -116.48545924671765,
+        -111.16469473305933,
+        -105.39630922859735,
+        -99.20352998584235,
+        -92.61129314110214,
+        -85.64614330546151,
+        -78.33612667900245,
+        -70.7106781186547,
+        -62.80050261441648,
+        -54.637451651196066,
+        -46.2543949541244,
+        -37.68508813377284,
+        -28.964036764223714,
+        -20.12635744130136,
+        -11.207636380435337,
+        -2.243786123530596,
+        6.729099068163146,
+        15.674888552902981,
+        24.557560793794515,
+        33.34134840480762,
+        41.990882173415606,
+        50.47133347993147,
+        58.7485545400664,
+        66.78921590600463,
+        74.56094067232695,
+        82.03243484638121,
+        89.17361335814593,
+        95.95572120218846,
+        102.35144922392365,
+        108.33504408394035,
+        113.88241195760985,
+        118.97121555241363,
+        123.58096405233707,
+        127.69309562715293,
+        131.29105217436071,
+        134.36034599282107,
+        136.88861811961522,
+        138.86568809522652,
+        140.2835949566576,
+        141.13662929341893,
+        141.4213562373095
+      ],
+      "y": [
+        0,
+        8.969496735717506,
+        17.90287647380826,
+        26.764167647047685,
+        35.51768896341865,
+        44.12819308208091,
+        52.561008541972434,
+        60.782179371545865,
+        68.75860181748155,
+        76.45815764181829,
+        83.84984345076174,
+        90.90389553440873,
+        97.59190971470217,
+        103.8869557190309,
+        109.76368561893277,
+        115.19843589725608,
+        120.16932273279126,
+        124.65633011869515,
+        128.641390459886,
+        132.10845732487206,
+        135.04357005906772,
+        137.43490999942205,
+        139.2728480640038,
+        140.5499835249157,
+        141.26117380841364,
+        141.4035552022362,
+        140.976554386763,
+        139.98189074357074,
+        138.4235694320902,
+        136.30786526224293,
+        133.64329742799626,
+        130.44059520357615,
+        126.7126547404665,
+        122.4744871391589,
+        117.743158004749,
+        112.53771872976787,
+        106.87912978094859,
+        100.79017629882428,
+        94.29537635000929,
+        87.4208822015983,
+        80.19437501521715,
+        72.64495338475463,
+        64.80301616659537,
+        56.700140074153936,
+        48.36895252959508,
+        39.84300028471988,
+        31.156614340036842,
+        22.344771705939316,
+        13.442954562629904,
+        4.487007385903892,
+        -4.487007385903921,
+        -13.44295456262993,
+        -22.344771705939344,
+        -31.15661434003681,
+        -39.8430002847199,
+        -48.36895252959504,
+        -56.70014007415396,
+        -64.80301616659534,
+        -72.64495338475464,
+        -80.19437501521712,
+        -87.42088220159832,
+        -94.29537635000926,
+        -100.79017629882429,
+        -106.87912978094857,
+        -112.53771872976789,
+        -117.74315800474899,
+        -122.47448713915894,
+        -126.71265474046652,
+        -130.44059520357615,
+        -133.64329742799626,
+        -136.30786526224293,
+        -138.4235694320902,
+        -139.98189074357074,
+        -140.97655438676298,
+        -141.4035552022362,
+        -141.26117380841364,
+        -140.5499835249157,
+        -139.2728480640038,
+        -137.43490999942205,
+        -135.04357005906772,
+        -132.1084573248721,
+        -128.641390459886,
+        -124.65633011869514,
+        -120.16932273279126,
+        -115.19843589725609,
+        -109.76368561893274,
+        -103.88695571903088,
+        -97.59190971470217,
+        -90.90389553440878,
+        -83.8498434507617,
+        -76.45815764181829,
+        -68.75860181748156,
+        -60.78217937154591,
+        -52.56100854197239,
+        -44.12819308208091,
+        -35.51768896341867,
+        -26.764167647047618,
+        -17.902876473808227,
+        -8.969496735717508,
+        -3.463824224941973e-14
+      ],
+      "z": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Circle_Small_3f7825b3-d914-4ca6-a513-10ee6153ea97",
+      "name": "Circle_Small_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        141.4213562373095,
+        166.4213562373095
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Circle_Small_3f7825b3-d914-4ca6-a513-10ee6153ea97",
+      "name": "Circle_Small_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        141.4213562373095,
+        141.4213562373095
+      ],
+      "y": [
+        0,
+        25
+      ],
+      "z": [
+        200,
+        200
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Circle_Small_3f7825b3-d914-4ca6-a513-10ee6153ea97",
+      "name": "Circle_Small_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        141.4213562373095,
+        141.4213562373095
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        200,
+        225
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_Test_Arm_77a3c980-a919-48d5-aecf-418add825f24",
+      "name": "Test_Arm_Joint",
+      "line": {
+        "color": "#22DAE6",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        0,
+        -27.414995232178313
+      ],
+      "y": [
+        0,
+        -43.500838622303405
+      ],
+      "z": [
+        0,
+        61.286989447809866
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "XAxis_Test_Arm_77a3c980-a919-48d5-aecf-418add825f24",
+      "name": "Test_Arm_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        22.82085443082607
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        10.208261509534625
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "YAxis_Test_Arm_77a3c980-a919-48d5-aecf-418add825f24",
+      "name": "Test_Arm_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        -5.550849206756713
+      ],
+      "y": [
+        0,
+        20.981011316309544
+      ],
+      "z": [
+        0,
+        12.40907882273053
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "ZAxis_Test_Arm_77a3c980-a919-48d5-aecf-418add825f24",
+      "name": "Test_Arm_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        -8.567186010055723
+      ],
+      "y": [
+        0,
+        -13.594012069469812
+      ],
+      "z": [
+        0,
+        19.152184202440584
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "Joint_First_1586bf8e-506b-4d71-9090-3c2fd70184d7",
+      "name": "First_Joint",
+      "line": {
+        "color": "#33FF74",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        -27.414995232178313,
+        -54.82999046435663
+      ],
+      "y": [
+        -43.500838622303405,
+        -87.00167724460681
+      ],
+      "z": [
+        61.286989447809866,
+        122.57397889561973
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "XAxis_First_1586bf8e-506b-4d71-9090-3c2fd70184d7",
+      "name": "First_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -27.414995232178313,
+        -4.594140801352246
+      ],
+      "y": [
+        -43.500838622303405,
+        -43.500838622303405
+      ],
+      "z": [
+        61.286989447809866,
+        71.4952509573445
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "YAxis_First_1586bf8e-506b-4d71-9090-3c2fd70184d7",
+      "name": "First_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -27.414995232178313,
+        -32.965844438934994
+      ],
+      "y": [
+        -43.500838622303405,
+        -22.519827305993815
+      ],
+      "z": [
+        61.286989447809866,
+        73.69606827054032
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "ZAxis_First_1586bf8e-506b-4d71-9090-3c2fd70184d7",
+      "name": "First_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -27.414995232178313,
+        -35.98218124223406
+      ],
+      "y": [
+        -43.500838622303405,
+        -57.094850691773246
+      ],
+      "z": [
+        61.286989447809866,
+        80.43917365025041
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "Joint_Second_fa84384e-d0d0-4c57-a2e0-736979763ba8",
+      "name": "Second_Joint",
+      "line": {
+        "color": "#FF3F33",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        -54.82999046435663,
+        -82.24498569653494
+      ],
+      "y": [
+        -87.00167724460681,
+        -130.50251586691022
+      ],
+      "z": [
+        122.57397889561973,
+        183.8609683434296
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "XAxis_Second_fa84384e-d0d0-4c57-a2e0-736979763ba8",
+      "name": "Second_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -54.82999046435663,
+        -32.009136033530496
+      ],
+      "y": [
+        -87.00167724460681,
+        -87.00167724460681
+      ],
+      "z": [
+        122.57397889561973,
+        132.7822404051542
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "YAxis_Second_fa84384e-d0d0-4c57-a2e0-736979763ba8",
+      "name": "Second_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -54.82999046435663,
+        -60.38083967111332
+      ],
+      "y": [
+        -87.00167724460681,
+        -66.02066592829735
+      ],
+      "z": [
+        122.57397889561973,
+        134.9830577183504
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "ZAxis_Second_fa84384e-d0d0-4c57-a2e0-736979763ba8",
+      "name": "Second_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -54.82999046435663,
+        -63.397176474412326
+      ],
+      "y": [
+        -87.00167724460681,
+        -100.59568931407657
+      ],
+      "z": [
+        122.57397889561973,
+        141.72616309806037
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "Joint_EE_9a64637e-1859-41c9-83f1-9497bd22e299",
+      "name": "EE_Joint",
+      "line": {
+        "color": "#33C1FF",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        -82.24498569653494
+      ],
+      "y": [
+        -130.50251586691022
+      ],
+      "z": [
+        183.8609683434296
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "XAxis_EE_9a64637e-1859-41c9-83f1-9497bd22e299",
+      "name": "EE_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -82.24498569653494,
+        -59.424131265708965
+      ],
+      "y": [
+        -130.50251586691022,
+        -130.50251586691022
+      ],
+      "z": [
+        183.8609683434296,
+        194.06922985296444
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "YAxis_EE_9a64637e-1859-41c9-83f1-9497bd22e299",
+      "name": "EE_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -82.24498569653494,
+        -87.79583490329163
+      ],
+      "y": [
+        -130.50251586691022,
+        -109.52150455060075
+      ],
+      "z": [
+        183.8609683434296,
+        196.27004716616025
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "ZAxis_EE_9a64637e-1859-41c9-83f1-9497bd22e299",
+      "name": "EE_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        -82.24498569653494,
+        -90.81217170659065
+      ],
+      "y": [
+        -130.50251586691022,
+        -144.09652793637997
+      ],
+      "z": [
+        183.8609683434296,
+        203.0131525458702
+      ],
+      "visible": true
+    },
+    {
+      "uuid": "Plane_circle_test_689323eb-95ff-4ac0-a34e-0ffbe62dfb03",
+      "name": "circle_test_Plane",
+      "showlegend": true,
+      "type": "mesh3d",
+      "mode": "lines+markers",
+      "opacity": 0.5,
+      "color": "#ff6348",
+      "x": [],
+      "y": [],
+      "z": [],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_circle_test_689323eb-95ff-4ac0-a34e-0ffbe62dfb03",
+      "name": "circle_test_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        1
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_circle_test_689323eb-95ff-4ac0-a34e-0ffbe62dfb03",
+      "name": "circle_test_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        1
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_circle_test_689323eb-95ff-4ac0-a34e-0ffbe62dfb03",
+      "name": "circle_test_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        1
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Plane_Plane_Test_1741a3f1-28ee-48f2-afd3-43c004d1844d",
+      "name": "Plane_Test_Plane",
+      "showlegend": true,
+      "type": "mesh3d",
+      "mode": "lines+markers",
+      "opacity": 0.5,
+      "color": "#ff6348",
+      "x": [],
+      "y": [],
+      "z": [],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Plane_Test_1741a3f1-28ee-48f2-afd3-43c004d1844d",
+      "name": "Plane_Test_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        1
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Plane_Test_1741a3f1-28ee-48f2-afd3-43c004d1844d",
+      "name": "Plane_Test_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        1
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Plane_Test_1741a3f1-28ee-48f2-afd3-43c004d1844d",
+      "name": "Plane_Test_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        1
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_Plane_Test_V_1_8ff750ca-a57a-4f03-85f2-2c6e11c10098",
+      "name": "Plane_Test_V_1_Joint",
+      "line": {
+        "color": "#888888",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        0
+      ],
+      "y": [
+        0
+      ],
+      "z": [
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Plane_Test_V_1_8ff750ca-a57a-4f03-85f2-2c6e11c10098",
+      "name": "Plane_Test_V_1_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        1
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Plane_Test_V_1_8ff750ca-a57a-4f03-85f2-2c6e11c10098",
+      "name": "Plane_Test_V_1_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        1
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Plane_Test_V_1_8ff750ca-a57a-4f03-85f2-2c6e11c10098",
+      "name": "Plane_Test_V_1_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        1
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_Plane_Test_V_2_7e279bde-8ec9-4c81-8eda-dadabf4bf277",
+      "name": "Plane_Test_V_2_Joint",
+      "line": {
+        "color": "#888888",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        0
+      ],
+      "y": [
+        0
+      ],
+      "z": [
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Plane_Test_V_2_7e279bde-8ec9-4c81-8eda-dadabf4bf277",
+      "name": "Plane_Test_V_2_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        1
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Plane_Test_V_2_7e279bde-8ec9-4c81-8eda-dadabf4bf277",
+      "name": "Plane_Test_V_2_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        1
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Plane_Test_V_2_7e279bde-8ec9-4c81-8eda-dadabf4bf277",
+      "name": "Plane_Test_V_2_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        1
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_Plane_Test_V_3_c5da24ca-63d7-4cac-94cb-48772783ccef",
+      "name": "Plane_Test_V_3_Joint",
+      "line": {
+        "color": "#888888",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        0
+      ],
+      "y": [
+        0
+      ],
+      "z": [
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_Plane_Test_V_3_c5da24ca-63d7-4cac-94cb-48772783ccef",
+      "name": "Plane_Test_V_3_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        1
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_Plane_Test_V_3_c5da24ca-63d7-4cac-94cb-48772783ccef",
+      "name": "Plane_Test_V_3_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        1
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_Plane_Test_V_3_c5da24ca-63d7-4cac-94cb-48772783ccef",
+      "name": "Plane_Test_V_3_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        1
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "Joint_IK_Point_671e0159-0a0f-48e8-aa2e-10af95f091ac",
+      "name": "IK_Point_Joint",
+      "line": {
+        "color": "#555555",
+        "width": 15
+      },
+      "marker": {
+        "size": 15
+      },
+      "mode": "lines+markers",
+      "showlegend": true,
+      "type": "scatter3d",
+      "x": [
+        0
+      ],
+      "y": [
+        0
+      ],
+      "z": [
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "XAxis_IK_Point_671e0159-0a0f-48e8-aa2e-10af95f091ac",
+      "name": "IK_Point_XAxis",
+      "line": {
+        "color": "#e64722",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        1
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "YAxis_IK_Point_671e0159-0a0f-48e8-aa2e-10af95f091ac",
+      "name": "IK_Point_YAxis",
+      "line": {
+        "color": "#4de622",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        1
+      ],
+      "z": [
+        0,
+        0
+      ],
+      "visible": false
+    },
+    {
+      "uuid": "ZAxis_IK_Point_671e0159-0a0f-48e8-aa2e-10af95f091ac",
+      "name": "IK_Point_ZAxis",
+      "line": {
+        "color": "#2284e6",
+        "width": 3
+      },
+      "showlegend": false,
+      "mode": "lines",
+      "opacity": 1,
+      "type": "scatter3d",
+      "x": [
+        0,
+        0
+      ],
+      "y": [
+        0,
+        0
+      ],
+      "z": [
+        0,
+        1
+      ],
+      "visible": false
     }
   ],
   "layout": {
@@ -116,8 +3286,8 @@
       "xaxis": {
         "nticks": 1,
         "range": [
-          -100,
-          100
+          -700,
+          700
         ],
         "zerolinecolor": "#079992",
         "showbackground": false,
@@ -126,8 +3296,8 @@
       "yaxis": {
         "nticks": 1,
         "range": [
-          -100,
-          100
+          -700,
+          700
         ],
         "zerolinecolor": "#079992",
         "showbackground": false,
@@ -136,8 +3306,8 @@
       "zaxis": {
         "nticks": 1,
         "range": [
-          0,
-          200
+          -10,
+          1420
         ],
         "zerolinecolor": "#079992",
         "showbackground": true,

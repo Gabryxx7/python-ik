@@ -4,10 +4,10 @@ from dash import html
 from dash import Dash, dcc, html, dash_table, Input, State, Output, callback
 import dash_bootstrap_components as dbc
 import numpy as np
-from frontend.widgets.transform_widget import TransformWidget
-from frontend.widgets.quaternion_widget import QuaternionWidget
-from frontend.components.widget_interface import Widget
-from frontend.components.trigger import Trigger
+from frontend.dash.widgets.transform_widget import TransformWidget
+from frontend.dash.widgets.quaternion_widget import QuaternionWidget
+from frontend.dash.components.widget_interface import Widget
+from frontend.dash.components.trigger import Trigger
 
 class JointWidget:
   def __init__(self, joint, app):

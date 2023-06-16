@@ -4,13 +4,17 @@ from components.VtkRenderer import VtkRenderer
 
 models = []
 # models.append(machine)
-# models.append(arm_test)
+models.append(arm_test)
 offset = 0
 
-def main(ui_type="vtk"):
+def start_viewer(ui_type="vtk", p_models=None):
+  global models
+  models = models if p_models is None else p_models
   renderer_app = VtkRenderer()
+  for model in models:
+    renderer_app.add_model(model)
   renderer_app.start()
 
 if __name__ == '__main__':
   # main("qt")
-  main("vtk")
+  start_viewer("vtk")
