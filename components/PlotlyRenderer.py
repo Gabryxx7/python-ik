@@ -182,7 +182,7 @@ class PlotlyRenderer:
     obj_trace['trace']['uuid'] = obj_trace['trace']['uuid'].replace("<UUID>", self.obj.uuid)
     obj_trace['trace']['name'] = obj_trace['trace']['name'].replace("<NAME>", self.obj.name)
     if legendgroup is not None:
-      obj_trace['trace']["legendgroup"] = self.obj.name
+      obj_trace['trace']["legendgroup"] = legendgroup
     obj_trace = self.update_trace_params(obj_trace)
     return obj_trace['trace']
 
@@ -204,7 +204,7 @@ class PlotlyRenderer:
     for k in self.traces.keys():
       trace = self.traces[k].get('trace', None)
       if trace is None:
-        trace = self.make_trace(self.traces[k])
+        trace = self.make_trace(self.traces[k], legendgroup=f"{self.uuid}_legendgroup")
         # print(f"Making Trace: {k} for {self.obj.name}: {trace is None}")
         if trace is not None:
           fig_data.append(trace)

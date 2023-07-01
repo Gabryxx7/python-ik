@@ -143,7 +143,7 @@ class VtkModel:
       center = state.get('center', [0,0,0])
       p1 = state.get('point1', [0,0,0])
       p2 = state.get('point2', [50,50,50])
-      print(f"Updating instance {obj['name']}: P: {center}\tP1: {p1}\tP2{p2}")
+      # print(f"Updating instance {obj['name']}: P: {center}\tP1: {p1}\tP2{p2}")
       if vtk_class == 'vtkSphereSource':
           source.SetCenter(center)
           source.SetRadius(state.get('radius', 50))
